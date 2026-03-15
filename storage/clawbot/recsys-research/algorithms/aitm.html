@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AITM - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#multitask">多任务学习</a> &gt;
+        <span>AITM</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>AITM - Adaptive Information Transfer Multi-task</h1>
+        <p class="algo-subtitle">自适应信息传递 | 阿里巴巴 | KDD 2021</p>
+        <div class="algo-tags">
+            <span class="algo-tag">多任务学习</span>
+            <span class="algo-tag">转化漏斗</span>
+            <span class="algo-tag">信息传递</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>AITM是阿里巴巴提出的<strong>转化漏斗多任务模型</strong>，建模用户从点击到转化的渐进过程，自适应地在不同任务间传递信息。</p>
+
+            <div class="info-box">
+                <strong>核心创新：</strong>建模转化漏斗中的信息传递，早期任务(CTR)的信息可以帮助后期任务(CVR)，同时避免负迁移。
+            </div>
+        </section>
+
+        <!-- 转化漏斗 -->
+        <section id="funnel">
+            <h2>转化漏斗</h2>
+
+            <div class="funnel-diagram">
+                <div class="funnel-stage">
+                    <div class="stage-name">曝光 (Impression)</div>
+                    <div class="stage-count">100%</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">点击 (Click) - CTR</div>
+                    <div class="stage-count">早期任务</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">转化 (Conversion) - CVR</div>
+                    <div class="stage-count">后期任务</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">复购 (Repurchase)</div>
+                    <div class="stage-count">最终目标</div>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: 20px;">
+                <strong>关键洞察：</strong>转化是一个渐进过程，早期任务学到的高层语义信息对后期任务有帮助。
+            </div>
+        </section>
+
+        <!-- 模型架构 -->
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">输入层</div>
+                        <div class="arch-content">
+                            <p style="text-align: center; margin: 0;">用户特征 + 物品特征 + 上下文特征</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component highlight" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">共享 Embedding 层</div>
+                        <div class="arch-content">
+                            <p style="text-align: center; margin: 0; color: #fff;">所有任务共享特征嵌入</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row">
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">CTR Tower</div>
+                        <div class="arch-content">
+                            <div class="arch-item">MLP层</div>
+                            <div class="arch-item active">h<sub>CTR</sub></div>
+                        </div>
+                    </div>
+                    <div class="arch-component primary" style="flex: 1;">
+                        <div class="arch-title">AIT Module</div>
+                        <div class="arch-content">
+                            <div class="ait-visual">
+                                <div class="ait-flow">
+                                    <span class="ait-source">h<sub>CTR</sub></span>
+                                    <span class="ait-arrow">──AIT──→</span>
+                                    <span class="ait-target">h<sub>CVR</sub></span>
+                                </div>
+                                <div class="ait-desc">自适应信息传递</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">CVR Tower</div>
+                        <div class="arch-content">
+                            <div class="arch-item">MLP层</div>
+                            <div class="arch-item active">h<sub>CVR</sub></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row">
+                    <div class="arch-component success" style="flex: 1; text-align: center;">
+                        <div class="arch-title">CTR输出</div>
+                        <div class="arch-content">pCTR</div>
+                    </div>
+                    <div class="arch-component success" style="flex: 1; text-align: center;">
+                        <div class="arch-title">CVR输出</div>
+                        <div class="arch-content">pCVR</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AIT模块 -->
+        <section id="ait-module">
+            <h2>AIT模块详解</h2>
+
+            <div class="formula-card">
+                <h4>自适应信息传递公式</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        <strong>注意力计算:</strong><br>
+                        α = Attention(h<sub>CTR</sub>, h<sub>CVR</sub>)<br><br>
+                        <strong>信息传递:</strong><br>
+                        transfer = α · h<sub>CTR</sub><br><br>
+                        <strong>融合更新:</strong><br>
+                        h'<sub>CVR</sub> = h<sub>CVR</sub> + transfer · (h<sub>CTR</sub> - h<sub>CVR</sub>)
+                    </div>
+                </div>
+            </div>
+
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 700px;">
+                        <div class="arch-title">AIT模块可视化</div>
+                        <div class="arch-content">
+                            <div class="ait-detail">
+                                <div class="ait-input-group">
+                                    <div class="ait-input">
+                                        <span class="input-label">CTR表示</span>
+                                        <span class="input-vec">[0.8, 0.3, ...]</span>
+                                    </div>
+                                    <div class="ait-input">
+                                        <span class="input-label">CVR表示</span>
+                                        <span class="input-vec">[0.2, 0.7, ...]</span>
+                                    </div>
+                                </div>
+                                <div class="ait-process">
+                                    <div class="ait-step">
+                                        <span class="step-name">计算注意力</span>
+                                        <span class="step-value">α = 0.75</span>
+                                    </div>
+                                    <div class="ait-step">
+                                        <span class="step-name">传递信息</span>
+                                        <span class="step-value">transfer = 0.75 × h<sub>CTR</sub></span>
+                                    </div>
+                                    <div class="ait-step highlight">
+                                        <span class="step-name">融合更新</span>
+                                        <span class="step-value">h'<sub>CVR</sub> = h<sub>CVR</sub> + transfer</span>
+                                    </div>
+                                </div>
+                                <div class="ait-output">
+                                    <span class="output-label">增强的CVR表示</span>
+                                    <span class="output-vec">[0.65, 0.45, ...]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 对比 -->
+        <section id="comparison">
+            <h2>与其他多任务模型对比</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>MMoE</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">📊</span>
+                            <span>所有专家共享</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>无任务间信息传递</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card">
+                    <div class="compare-card-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                        <h4>PLE</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>任务特定+共享专家</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>无任务间信息传递</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card highlight">
+                    <div class="compare-card-header model-b">
+                        <h4>AITM</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>建模转化漏斗</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>自适应信息传递</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>建模转化漏斗关系</li>
+                        <li>自适应信息传递</li>
+                        <li>避免负迁移</li>
+                        <li>阿里广告大规模验证</li>
+                        <li>可解释性好</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>假设漏斗结构</li>
+                        <li>需要明确任务顺序</li>
+                        <li>对非漏斗任务不适用</li>
+                        <li>结构相对复杂</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>多任务学习发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>MMoE</strong>
+                        <p>多门控混合专家</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>ESMM</strong>
+                        <p>全空间CVR建模</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2020</div>
+                    <div class="content">
+                        <strong>PLE</strong>
+                        <p>任务特定专家</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <div class="content">
+                        <strong>AITM</strong>
+                        <p>自适应信息传递</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>AITM: Adaptive Information Transfer Multi-task Learning, Xi et al., KDD 2021
+                    <a href="https://arxiv.org/abs/2105.07906" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="mmoe.html">MMoE</a>
+                <a href="ple.html">PLE</a>
+                <a href="esmm.html">ESMM</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</a></p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

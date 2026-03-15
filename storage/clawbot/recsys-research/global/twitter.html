@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter/X搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Twitter/X</span>
+    </nav>
+
+    <header>
+        <h1>Twitter/X搜索推荐系统</h1>
+        <p>Timeline推荐 | 实时推荐 | 社交图谱 | For You</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Twitter(现X)是全球最大的实时信息平台，其推荐系统负责为用户提供"For You"时间线推荐。Twitter的推荐系统以实时性著称，需要处理海量的实时推文和用户互动。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="日活用户">2亿+</div>
+                <div class="stat" data-label="日均推文">5亿+</div>
+                <div class="stat" data-label="推荐延迟">&lt;1秒</div>
+                <div class="stat" data-label="候选池">数亿推文</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>PyTorch</td><td>深度学习训练</td><td>开源</td></tr>
+                <tr><td>TensorFlow</td><td>模型训练</td><td>开源</td></tr>
+                <tr><td>Scalding</td><td>数据处理</td><td>Twitter开源</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 实时特征处理</li>
+                <li><strong>向量检索</strong>: 候选生成</li>
+                <li><strong>排序模型</strong>: 深度神经网络</li>
+                <li><strong>流处理</strong>: 实时数据管道</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>基础设施</h3>
+            <ul>
+                <li><strong>GPU集群</strong>: 模型训练</li>
+                <li><strong>分布式存储</strong>: 推文存储</li>
+                <li><strong>流处理</strong>: 实时数据</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>Timeline推荐</h3>
+            <div class="algorithm-card">
+                <h4>For You时间线</h4>
+                <p>Twitter推荐系统架构：</p>
+                <ul>
+                    <li>候选生成: 从数亿推文中筛选</li>
+                    <li>粗排: 轻量级模型快速筛选</li>
+                    <li>精排: 复杂模型精细排序</li>
+                    <li>混合: 关注+推荐混合</li>
+                </ul>
+                <p class="source">来源: Twitter Engineering Blog</p>
+            </div>
+
+            <h3>实时处理</h3>
+            <div class="algorithm-card">
+                <h4>实时推荐</h4>
+                <ul>
+                    <li>推文实时索引</li>
+                    <li>用户行为实时反馈</li>
+                    <li>热点话题实时追踪</li>
+                </ul>
+            </div>
+
+            <h3>图神经网络</h3>
+            <div class="algorithm-card">
+                <h4>社交图谱</h4>
+                <ul>
+                    <li>关注关系建模</li>
+                    <li>互动图分析</li>
+                    <li>影响力预测</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户打开Twitter
+    ↓
+┌────────────────────────────────────────┐
+│  候选生成 (Candidate Generation)       │
+│  - 关注用户推文                         │
+│  - 相似用户推文                         │
+│  - 热门推文                             │
+│  候选集: 数亿 → 数千                    │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  粗排 (Light Ranker)                    │
+│  - 轻量级模型                           │
+│  候选集: 数百                           │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  精排 (Heavy Ranker)                    │
+│  - 深度神经网络                         │
+│  - 多目标优化                           │
+│  候选集: 数十                           │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  混合与输出                             │
+│  - 关注+推荐混合                        │
+│  - 多样性控制                           │
+│  - 广告插入                             │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>实时性</strong>: 毫秒级响应</li>
+                <li><strong>大规模</strong>: 数亿候选池</li>
+                <li><strong>混合时间线</strong>: 关注+推荐</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://blog.twitter.com/engineering/">Twitter Engineering Blog</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: Twitter Engineering Blog</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

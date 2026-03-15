@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGCF - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#graph">图神经网络</a> &gt;
+        <span>NGCF</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>NGCF - Neural Graph Collaborative Filtering</h1>
+        <p class="algo-subtitle">神经图协同过滤 | SIGIR 2019</p>
+        <div class="algo-tags">
+            <span class="algo-tag">图神经网络</span>
+            <span class="algo-tag">协同过滤</span>
+            <span class="algo-tag">消息传递</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>NGCF是将<strong>图神经网络</strong>应用于协同过滤的开创性工作，通过用户-物品二部图上的消息传递，学习用户和物品的高阶表示。</p>
+            <div class="info-box">
+                <strong>核心贡献：</strong>首次将图神经网络的消息传递机制引入推荐系统，显式建模用户-物品交互图的高阶连通性。
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <!-- 用户-物品二部图 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 700px;">
+                        <div class="arch-title">用户-物品交互图</div>
+                        <div class="arch-content">
+                            <div class="bipartite-graph">
+                                <div class="bipartite-side users">
+                                    <div class="node user">U₁</div>
+                                    <div class="node user">U₂</div>
+                                    <div class="node user">U₃</div>
+                                </div>
+                                <div class="bipartite-edges">
+                                    <div class="edge">───</div>
+                                    <div class="edge">───</div>
+                                    <div class="edge">───</div>
+                                    <div class="edge">───</div>
+                                </div>
+                                <div class="bipartite-side items">
+                                    <div class="node item">I₁</div>
+                                    <div class="node item">I₂</div>
+                                    <div class="node item">I₃</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- NGCF Layer -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">NGCF Layer (×L层)</div>
+                        <div class="arch-content">
+                            <div class="ngcf-block">
+                                <!-- Message Construction -->
+                                <div class="ngcf-step">
+                                    <div class="ngcf-step-title">Message Construction</div>
+                                    <div class="ngcf-step-content">
+                                        <div class="message-flow">
+                                            <span class="msg-box">e<sub>u</sub></span>
+                                            <span class="msg-op">⊕</span>
+                                            <span class="msg-box">e<sub>i</sub></span>
+                                            <span class="msg-op">⊕</span>
+                                            <span class="msg-box">e<sub>u</sub>⊙e<sub>i</sub></span>
+                                            <span class="msg-arrow">→</span>
+                                            <span class="msg-result">m<sub>u←i</sub></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="ngcf-arrow">↓</div>
+
+                                <!-- Message Aggregation -->
+                                <div class="ngcf-step">
+                                    <div class="ngcf-step-title">Message Aggregation</div>
+                                    <div class="ngcf-step-content">
+                                        <div class="aggregate-formula">
+                                            e<sub>u</sub><sup>(l)</sup> = LeakyReLU(Σ W · m<sub>u←i</sub>)
+                                        </div>
+                                        <div class="aggregate-note">
+                                            <span>特征变换 W</span>
+                                            <span>非线性激活 LeakyReLU</span>
+                                            <span>邻居聚合 Σ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 层组合 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component highlight" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">层组合 → 最终表示</div>
+                        <div class="arch-content">
+                            <div class="layer-combine">
+                                <span class="combine-item">e<sup>(0)</sup></span>
+                                <span class="combine-op">⊕</span>
+                                <span class="combine-item">e<sup>(1)</sup></span>
+                                <span class="combine-op">⊕</span>
+                                <span class="combine-item">...</span>
+                                <span class="combine-op">⊕</span>
+                                <span class="combine-item">e<sup>(L)</sup></span>
+                                <span class="combine-arrow">→</span>
+                                <span class="combine-result">e<sub>final</sub></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 输出 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">预测层</div>
+                        <div class="arch-content">
+                            <span class="formula">ŷ<sub>ui</sub> = e<sub>u</sub><sup>T</sup> e<sub>i</sub> (内积)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>显式建模图结构</li>
+                        <li>高阶连通性</li>
+                        <li>协同信号显式编码</li>
+                        <li>开创性工作</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>结构复杂</li>
+                        <li>参数多</li>
+                        <li>被LightGCN超越</li>
+                        <li>特征变换可能多余</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Neural Graph Collaborative Filtering, Wang et al., SIGIR 2019</li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="lightgcn.html">LightGCN</a>
+                <a href="pinsage.html">PinSage</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRU4Rec - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#sequence">序列建模</a> &gt;
+        <span>GRU4Rec</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>GRU4Rec</h1>
+        <p class="algo-subtitle">会话推荐GRU | ICLR 2016 | 序列推荐开创者</p>
+        <div class="algo-tags">
+            <span class="algo-tag">序列建模</span>
+            <span class="algo-tag">会话推荐</span>
+            <span class="algo-tag">GRU</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>GRU4Rec是将<strong>GRU(门控循环单元)</strong>应用于会话推荐的开创性工作，开创了序列推荐的深度学习方向。</p>
+            <div class="info-box">
+                <strong>核心贡献：</strong>首次将RNN应用于推荐系统，解决了会话数据的序列建模问题，为后续序列推荐研究奠定基础。
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <!-- 输入序列 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">会话物品序列</div>
+                        <div class="arch-content">
+                            <div class="sequence-flow">
+                                <div class="seq-item">
+                                    <span class="seq-time">t=1</span>
+                                    <span class="seq-name">i₁</span>
+                                </div>
+                                <div class="seq-arrow">→</div>
+                                <div class="seq-item">
+                                    <span class="seq-time">t=2</span>
+                                    <span class="seq-name">i₂</span>
+                                </div>
+                                <div class="seq-arrow">→</div>
+                                <div class="seq-item">
+                                    <span class="seq-time">t=3</span>
+                                    <span class="seq-name">i₃</span>
+                                </div>
+                                <div class="seq-arrow">→</div>
+                                <div class="seq-item">
+                                    <span class="seq-time">t=n</span>
+                                    <span class="seq-name">iₙ</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- Embedding -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component highlight" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">Item Embedding</div>
+                        <div class="arch-content">
+                            <div class="embedding-row">
+                                <span class="embed-box">E₁</span>
+                                <span class="embed-box">E₂</span>
+                                <span class="embed-box">E₃</span>
+                                <span class="embed-box">...</span>
+                                <span class="embed-box">Eₙ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- GRU层 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">GRU层 (可堆叠多层)</div>
+                        <div class="arch-content">
+                            <div class="gru-flow">
+                                <div class="gru-cell">
+                                    <div class="gru-header">t=1</div>
+                                    <div class="gru-gates">
+                                        <div class="gate reset">r (Reset)</div>
+                                        <div class="gate update">z (Update)</div>
+                                    </div>
+                                    <div class="gru-state">h₁</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="gru-cell">
+                                    <div class="gru-header">t=2</div>
+                                    <div class="gru-gates">
+                                        <div class="gate reset">r</div>
+                                        <div class="gate update">z</div>
+                                    </div>
+                                    <div class="gru-state">h₂</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="gru-cell">
+                                    <div class="gru-header">t=3</div>
+                                    <div class="gru-gates">
+                                        <div class="gate reset">r</div>
+                                        <div class="gate update">z</div>
+                                    </div>
+                                    <div class="gru-state">h₃</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="gru-cell">
+                                    <div class="gru-header">t=n</div>
+                                    <div class="gru-gates">
+                                        <div class="gate reset">r</div>
+                                        <div class="gate update">z</div>
+                                    </div>
+                                    <div class="gru-state">hₙ</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 前向网络 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 500px;">
+                        <div class="arch-title">Feedforward Layer</div>
+                        <div class="arch-content">
+                            <div class="mlp-block">
+                                <div class="mlp-layer">Dense</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 输出 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">输出层</div>
+                        <div class="arch-content">
+                            <span class="formula">Softmax → 下一物品概率分布</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="training">
+            <h2>训练技巧</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>负采样</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <p>随机采样负样本减少计算量</p>
+                    </div>
+                </div>
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>Mini-batch</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <p>处理变长会话序列</p>
+                    </div>
+                </div>
+                <div class="compare-card highlight">
+                    <div class="compare-card-header model-b">
+                        <h4>Ranking Loss</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <p>TOP1 或 BPR 损失函数</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>开创序列推荐方向</li>
+                        <li>适合会话场景</li>
+                        <li>处理变长序列</li>
+                        <li>工业界广泛应用</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>序列计算无法并行</li>
+                        <li>长序列梯度消失</li>
+                        <li>无自注意力机制</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Session-based Recommendations with Recurrent Neural Networks, Hidasi et al., ICLR 2016</li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="sasrec.html">SASRec</a>
+                <a href="bert4rec.html">BERT4Rec</a>
+                <a href="dien.html">DIEN</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

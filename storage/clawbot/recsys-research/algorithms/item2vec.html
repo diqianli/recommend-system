@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item2Vec - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#recall">召回算法</a> &gt;
+        <span>Item2Vec</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>Item2Vec</h1>
+        <p class="algo-subtitle">物品嵌入向量 | Embedding召回 | Airbnb等使用</p>
+        <div class="algo-tags">
+            <span class="algo-tag">召回算法</span>
+            <span class="algo-tag">Word2Vec</span>
+            <span class="algo-tag">Embedding</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>Item2Vec将Word2Vec的思想应用于推荐系统，将用户行为序列视为"句子"，物品视为"单词"，学习物品的低维嵌入表示。</p>
+
+            <div class="info-box">
+                <strong>核心思想：</strong>出现在相似上下文中的物品应该有相似的嵌入向量。
+            </div>
+        </section>
+
+        <section id="method">
+            <h2>方法介绍</h2>
+
+            <h3>Skip-gram模型</h3>
+            <p>给定中心物品，预测上下文物物品：</p>
+            <div class="formula-block">
+                <div class="formula">
+                    max Σ log p(context_items | center_item)
+                </div>
+            </div>
+
+            <h3>物品相似度</h3>
+            <p>学习到嵌入后，通过向量相似度找相似物品：</p>
+            <div class="formula-block">
+                <div class="formula">
+                    sim(i, j) = cosine(emb<sub>i</sub>, emb<sub>j</sub>)
+                </div>
+            </div>
+        </section>
+
+        <section id="applications">
+            <h2>工业应用</h2>
+            <table class="tech-table">
+                <tr><th>公司</th><th>应用</th></tr>
+                <tr><td>Airbnb</td><td>房源推荐，实时嵌入</td></tr>
+                <tr><td>阿里巴巴</td><td>商品Embedding</td></tr>
+                <tr><td>多家公司</td><td>作为召回通道</td></tr>
+            </table>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>学习隐式特征</li>
+                        <li>计算效率高</li>
+                        <li>可离线预计算</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>忽略用户信息</li>
+                        <li>静态嵌入，不实时更新</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Item2Vec: Neural Item Embedding for Collaborative Filtering, Barkan et al., 2016</li>
+                <li>Real-time Personalization using Embeddings for Search Ranking at Airbnb, Haldar et al., KDD 2018</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

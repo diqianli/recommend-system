@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Microsoft</span>
+    </nav>
+
+    <header>
+        <h1>Microsoft搜索推荐系统</h1>
+        <p>Bing搜索 | 广告推荐 | Copilot | Azure AI</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Microsoft是全球最大的科技公司之一，其搜索和推荐系统应用于Bing搜索引擎、Microsoft Advertising、Microsoft 365等产品。Microsoft在搜索排序、广告推荐和AI助手方面有深厚积累。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="Bing市场份额">10%+</div>
+                <div class="stat" data-label="Azure AI用户">数亿</div>
+                <div class="stat" data-label="Copilot用户">数千万</div>
+                <div class="stat" data-label="搜索次数/月">数十亿</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>PyTorch</td><td>深度学习训练</td><td>开源/Meta</td></tr>
+                <tr><td>DeepSpeed</td><td>大规模训练</td><td>Microsoft开源</td></tr>
+                <tr><td>Azure ML</td><td>机器学习平台</td><td>Azure服务</td></tr>
+                <tr><td>ONNX</td><td>模型格式/推理</td><td>Microsoft开源</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: Azure Feature Store</li>
+                <li><strong>向量检索</strong>: Azure Cognitive Search</li>
+                <li><strong>在线服务</strong>: Azure ML推理</li>
+                <li><strong>LLM</strong>: GPT/Copilot集成</li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <table class="tech-table">
+                <tr><th>项目</th><th>描述</th><th>GitHub</th></tr>
+                <tr><td>DeepSpeed</td><td>大规模训练框架</td><td>microsoft/DeepSpeed</td></tr>
+                <tr><td>ONNX</td><td>开放神经网络交换</td><td>onnx/onnx</td></tr>
+                <tr><td>LightGBM</td><td>梯度提升框架</td><td>microsoft/LightGBM</td></tr>
+            </table>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>Azure基础设施</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>描述</th><th>来源</th></tr>
+                <tr><td>Maia</td><td>自研AI芯片</td><td>Microsoft</td></tr>
+                <tr><td>Cobalt</td><td>自研ARM芯片</td><td>Microsoft</td></tr>
+                <tr><td>GPU实例</td><td>NVIDIA A100/H100</td><td>Azure</td></tr>
+            </table>
+
+            <h3>自研芯片</h3>
+            <ul>
+                <li><strong>Maia</strong>: 专为AI工作负载设计</li>
+                <li><strong>Cobalt</strong>: ARM架构通用计算</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>Bing搜索排序</h3>
+            <div class="algorithm-card">
+                <h4>搜索排序算法</h4>
+                <p>Bing搜索排序技术：</p>
+                <ul>
+                    <li>深度学习排序模型</li>
+                    <li>语义理解 (BERT变体)</li>
+                    <li>知识图谱增强</li>
+                    <li>用户行为信号</li>
+                </ul>
+                <p class="source">来源: Microsoft Research</p>
+            </div>
+
+            <h3>广告推荐</h3>
+            <div class="algorithm-card">
+                <h4>Microsoft Advertising</h4>
+                <ul>
+                    <li>点击率预估</li>
+                    <li>转化率预估</li>
+                    <li>竞价优化</li>
+                </ul>
+            </div>
+
+            <h3>LLM增强</h3>
+            <div class="algorithm-card">
+                <h4>Copilot集成</h4>
+                <p>LLM与搜索推荐结合：</p>
+                <ul>
+                    <li>生成式搜索</li>
+                    <li>对话式推荐</li>
+                    <li>智能摘要</li>
+                </ul>
+            </div>
+
+            <h3>LightGBM</h3>
+            <div class="algorithm-card">
+                <h4>梯度提升框架</h4>
+                <p>Microsoft开源的高效梯度提升框架：</p>
+                <ul>
+                    <li>快速训练</li>
+                    <li>低内存占用</li>
+                    <li>高准确率</li>
+                    <li>广泛用于推荐排序</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户查询
+    ↓
+┌────────────────────────────────────────┐
+│  理解层                                 │
+│  - 查询理解                             │
+│  - 意图识别                             │
+│  - LLM增强                              │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - 倒排索引                             │
+│  - 向量检索                             │
+│  - 知识图谱                             │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度学习模型                         │
+│  - LLM增强排序                          │
+│  - 多目标优化                           │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  生成层                                 │
+│  - Copilot生成                          │
+│  - 摘要生成                             │
+│  - 答案生成                             │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>LLM集成</strong>: Copilot深度融合</li>
+                <li><strong>自研芯片</strong>: Maia AI芯片</li>
+                <li><strong>云原生</strong>: Azure基础设施</li>
+                <li><strong>开源贡献</strong>: DeepSpeed/ONNX/LightGBM</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://www.microsoft.com/en-us/research/">Microsoft Research</a></li>
+                <li><a href="https://azure.microsoft.com/blog/">Azure Blog</a></li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/microsoft/DeepSpeed">DeepSpeed</a></li>
+                <li><a href="https://github.com/microsoft/LightGBM">LightGBM</a></li>
+                <li><a href="https://github.com/onnx/onnx">ONNX</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: Microsoft Research, Azure Blog</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

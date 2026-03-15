@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Amazon</span>
+    </nav>
+
+    <header>
+        <h1>Amazon搜索推荐系统</h1>
+        <p>商品推荐 | 搜索排序 | Alexa语音 | AWS</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Amazon是全球最大的电商平台，其推荐系统从早期的协同过滤发展到现代的深度学习推荐，是电商推荐领域的标杆。Amazon的推荐系统影响35%的购买决策，每年贡献数千亿美元GMV。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="Prime会员">2亿+</div>
+                <div class="stat" data-label="商品SKU">数亿</div>
+                <div class="stat" data-label="推荐GMV贡献">35%</div>
+                <div class="stat" data-label="年收入">5000亿+美元</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>PyTorch</td><td>深度学习训练</td><td>开源</td></tr>
+                <tr><td>TensorFlow</td><td>模型训练</td><td>开源</td></tr>
+                <tr><td>MXNet</td><td>深度学习框架</td><td>Amazon支持</td></tr>
+                <tr><td>SageMaker</td><td>机器学习平台</td><td>AWS服务</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 实时特征处理</li>
+                <li><strong>向量检索</strong>: 大规模向量搜索</li>
+                <li><strong>在线服务</strong>: 高并发推理服务</li>
+                <li><strong>A/B测试</strong>: 强大的实验平台</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>AWS基础设施</h3>
+            <p>Amazon的推荐系统运行在AWS云基础设施上：</p>
+            <table class="tech-table">
+                <tr><th>组件</th><th>描述</th><th>来源</th></tr>
+                <tr><td>Trainium</td><td>自研训练芯片</td><td>AWS</td></tr>
+                <tr><td>Inferentia</td><td>自研推理芯片</td><td>AWS</td></tr>
+                <tr><td>GPU实例</td><td>NVIDIA A100/H100</td><td>AWS</td></tr>
+            </table>
+
+            <h3>自研芯片</h3>
+            <ul>
+                <li><strong>Trainium</strong>: 专为深度学习训练设计</li>
+                <li><strong>Inferentia</strong>: 高性价比推理芯片</li>
+                <li><strong>性能优势</strong>: 相比GPU更优性价比</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>协同过滤</h3>
+            <div class="algorithm-card">
+                <h4>Item-to-Item协同过滤</h4>
+                <p>Amazon经典的推荐算法：</p>
+                <ul>
+                    <li>商品相似度计算</li>
+                    <li>"买了又买"推荐</li>
+                    <li>"看了又看"推荐</li>
+                </ul>
+                <p class="source">来源: Amazon.com Recommendations: Item-to-Item Collaborative Filtering, IEEE 2003</p>
+            </div>
+
+            <h3>深度学习推荐</h3>
+            <div class="algorithm-card">
+                <h4>现代推荐架构</h4>
+                <p>Amazon现代推荐系统：</p>
+                <ul>
+                    <li>深度神经网络排序</li>
+                    <li>序列建模: 用户行为序列</li>
+                    <li>多任务学习: 点击、加购、购买</li>
+                </ul>
+            </div>
+
+            <h3>搜索排序</h3>
+            <div class="algorithm-card">
+                <h4>A9搜索算法</h4>
+                <p>Amazon搜索排序系统：</p>
+                <ul>
+                    <li>文本相关性</li>
+                    <li>销售排名</li>
+                    <li>用户行为信号</li>
+                    <li>价格竞争力</li>
+                </ul>
+            </div>
+
+            <h3>Alexa语音推荐</h3>
+            <div class="algorithm-card">
+                <h4>语音购物推荐</h4>
+                <ul>
+                    <li>语音理解</li>
+                    <li>对话式推荐</li>
+                    <li>个性化语音助手</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户访问Amazon
+    ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - Item-to-Item协同过滤                 │
+│  - 向量召回                             │
+│  - 热门/新品召回                        │
+│  候选集: 数千个商品                     │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度学习模型                         │
+│  - 多目标优化                           │
+│  候选集: 数十个商品                     │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 库存检查                             │
+│  - 价格优化                             │
+│  - 多样性                               │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>云原生</strong>: 基于AWS构建</li>
+                <li><strong>自研芯片</strong>: Trainium/Inferentia</li>
+                <li><strong>实时性</strong>: 毫秒级响应</li>
+                <li><strong>规模</strong>: 全球最大电商推荐</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>Amazon.com Recommendations: Item-to-Item Collaborative Filtering, Linden et al., IEEE 2003</li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://www.amazon.science/">Amazon Science</a></li>
+                <li><a href="https://aws.amazon.com/blogs/machine-learning/">AWS ML Blog</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: Amazon Science, 学术论文</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DCN - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#ranking">排序算法</a> &gt;
+        <span>DCN</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>DCN - Deep Cross Network</h1>
+        <p class="algo-subtitle">深度交叉网络 | Google | ADKDD 2017</p>
+        <div class="algo-tags">
+            <span class="algo-tag">排序算法</span>
+            <span class="algo-tag">特征交叉</span>
+            <span class="algo-tag">显式交叉</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>DCN (Deep Cross Network) 是Google在2017年提出的模型，通过<strong>交叉网络(Cross Network)</strong>显式建模有界阶的特征交叉，同时与深度网络结合捕捉高阶隐式交互。</p>
+
+            <div class="info-box">
+                <strong>核心创新：</strong>交叉网络可以高效学习有界阶的特征交叉，每层增加一阶交互，参数效率高。
+            </div>
+        </section>
+
+        <!-- 模型架构 -->
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 700px;">
+                        <div class="arch-title">输入层</div>
+                        <div class="arch-content">
+                            <p style="text-align: center; margin: 0;">稀疏特征 → Embedding → 拼接 → x₀</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="twin-tower">
+                    <div class="tower">
+                        <div class="tower-title">Cross Network</div>
+                        <div class="tower-layers">
+                            <div class="tower-layer">x₀ (原始输入)</div>
+                            <div class="tower-layer active">x₁ = x₀x₀ᵀw₀ + b₀ + x₀</div>
+                            <div class="tower-layer">x₂ = x₀x₁ᵀw₁ + b₁ + x₁</div>
+                            <div class="tower-layer">x₃ = x₀x₂ᵀw₂ + b₂ + x₂</div>
+                            <div class="tower-layer">...</div>
+                        </div>
+                    </div>
+
+                    <div class="tower-connector">
+                        <div class="dot"></div>
+                        <div class="line"></div>
+                        <div class="symbol">Concat</div>
+                        <div class="line"></div>
+                        <div class="dot"></div>
+                    </div>
+
+                    <div class="tower">
+                        <div class="tower-title">Deep Network</div>
+                        <div class="tower-layers">
+                            <div class="tower-layer">输入 x₀</div>
+                            <div class="tower-layer active">Hidden 1 (ReLU)</div>
+                            <div class="tower-layer">Hidden 2 (ReLU)</div>
+                            <div class="tower-layer">Hidden 3 (ReLU)</div>
+                            <div class="tower-layer">...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">输出层</div>
+                        <div class="arch-content">
+                            <span class="formula">Concat(Cross输出, Deep输出) → MLP → CTR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 交叉层详解 -->
+        <section id="cross-layer">
+            <h2>交叉层详解</h2>
+
+            <div class="formula-card">
+                <h4>交叉层公式</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        x<sub>l+1</sub> = x<sub>0</sub> ⊙ (x<sub>l</sub><sup>T</sup> · w<sub>l</sub>) + b<sub>l</sub> + x<sub>l</sub><br><br>
+                        其中：<br>
+                        • x₀ 是原始输入向量<br>
+                        • xₗ 是第l层输出<br>
+                        • wₗ, bₗ 是第l层参数<br>
+                        • ⊙ 表示逐元素乘法
+                    </div>
+                </div>
+            </div>
+
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">交叉层可视化</div>
+                        <div class="arch-content">
+                            <div class="cross-visual">
+                                <div class="cross-flow">
+                                    <div class="cross-box input">x₀ (d维)</div>
+                                    <div class="cross-arrow">⊙</div>
+                                    <div class="cross-box">xₗᵀ · wₗ (标量)</div>
+                                    <div class="cross-arrow">+</div>
+                                    <div class="cross-box">xₗ</div>
+                                    <div class="cross-arrow">→</div>
+                                    <div class="cross-box output">xₗ₊₁</div>
+                                </div>
+                                <div class="cross-note">
+                                    每层只增加d个参数，但能学习(l+1)阶特征交叉
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DCN vs Wide&Deep -->
+        <section id="comparison">
+            <h2>DCN vs Wide & Deep</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>Wide & Deep</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">📊</span>
+                            <span>Wide部分需要特征工程</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">⚠️</span>
+                            <span>交叉特征需人工设计</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>工业界验证有效</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card highlight">
+                    <div class="compare-card-header model-b">
+                        <h4>DCN</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>Cross网络自动学习交叉</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>无需人工特征工程</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>参数效率高</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>显式建模特征交叉</li>
+                        <li>有界阶交叉，复杂度可控</li>
+                        <li>无需手工特征工程</li>
+                        <li>参数效率高</li>
+                        <li>DCN-v2进一步改进</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>交叉方式受限(bit-wise)</li>
+                        <li>高阶交互能力有限</li>
+                        <li>向量级交叉不如xDeepFM</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>后续发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2017</div>
+                    <div class="content">
+                        <strong>DCN</strong>
+                        <p>Google提出交叉网络</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>xDeepFM</strong>
+                        <p>压缩交互网络，向量级交叉</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <div class="content">
+                        <strong>DCN-v2</strong>
+                        <p>矩阵形式交叉，效果大幅提升</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2022</div>
+                    <div class="content">
+                        <strong>DCN-v3</strong>
+                        <p>进一步优化计算效率</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Deep & Cross Network for Ad Click Predictions, Wang et al., ADKDD 2017
+                    <a href="https://arxiv.org/abs/1708.05123" class="link-btn">[arXiv]</a>
+                </li>
+                <li>DCN V2: Improved Deep & Cross Network, Wang et al., WWW 2021
+                    <a href="https://arxiv.org/abs/2008.13535" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="wide-deep.html">Wide & Deep</a>
+                <a href="deepfm.html">DeepFM</a>
+                <a href="autoint.html">AutoInt</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLE - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#multitask">多任务学习</a> &gt;
+        <span>PLE</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>PLE - Progressive Layered Extraction</h1>
+        <p class="algo-subtitle">渐进式分层提取 | 腾讯 | RecSys 2020</p>
+        <div class="algo-tags">
+            <span class="algo-tag">多任务学习</span>
+            <span class="algo-tag">多专家</span>
+            <span class="algo-tag">负迁移</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>PLE是腾讯在2020年RecSys上提出的模型，解决了多任务学习中的<strong>负迁移(Negative Transfer)</strong>和<strong>跷跷板现象(Seesaw Phenomenon)</strong>问题。</p>
+
+            <div class="info-box">
+                <strong>核心创新：</strong>将专家分为任务特定专家(Task-specific)和共享专家(Shared)，通过多层渐进提取分离任务共享和任务特定信息。
+            </div>
+        </section>
+
+        <!-- 多任务学习挑战 -->
+        <section id="challenges">
+            <h2>多任务学习的挑战</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>负迁移</h4>
+                    <p>一个任务的梯度损害另一个任务的性能</p>
+                </div>
+                <div class="feature-item">
+                    <h4>跷跷板现象</h4>
+                    <p>提升一个任务时，另一个任务性能下降</p>
+                </div>
+                <div class="feature-item">
+                    <h4>任务冲突</h4>
+                    <p>不同任务需要不同的特征表示</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- MMoE vs PLE 对比 -->
+        <section id="comparison">
+            <h2>MMoE vs PLE 架构对比</h2>
+
+            <div class="arch-diagram">
+                <div class="arch-row" style="align-items: flex-start;">
+                    <!-- MMoE -->
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">MMoE (所有专家共享)</div>
+                        <div class="arch-content">
+                            <div class="expert-diagram">
+                                <div class="expert-row">
+                                    <div class="expert shared">E1</div>
+                                    <div class="expert shared">E2</div>
+                                    <div class="expert shared">E3</div>
+                                    <div class="expert shared">E4</div>
+                                </div>
+                                <div class="gate-row">
+                                    <div class="gate">Gate A → 选择所有专家</div>
+                                </div>
+                                <div class="gate-row">
+                                    <div class="gate">Gate B → 选择所有专家</div>
+                                </div>
+                            </div>
+                            <div class="info-box warning" style="margin-top: 10px;">
+                                问题: 任务间无区分，可能导致负迁移
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PLE -->
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">PLE (任务特定+共享)</div>
+                        <div class="arch-content">
+                            <div class="expert-diagram">
+                                <div class="expert-row">
+                                    <div class="expert task-a">EA1</div>
+                                    <div class="expert task-a">EA2</div>
+                                    <div class="expert shared">ES1</div>
+                                    <div class="expert shared">ES2</div>
+                                    <div class="expert task-b">EB1</div>
+                                    <div class="expert task-b">EB2</div>
+                                </div>
+                                <div class="gate-row">
+                                    <div class="gate">Gate A → EA + ES</div>
+                                </div>
+                                <div class="gate-row">
+                                    <div class="gate">Gate B → EB + ES</div>
+                                </div>
+                            </div>
+                            <div class="info-box success" style="margin-top: 10px;">
+                                优势: 任务A不使用任务B的专家，避免负迁移
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PLE核心架构 -->
+        <section id="architecture">
+            <h2>PLE核心架构 (CGC)</h2>
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 700px;">
+                        <div class="arch-title">CGC (Customized Gate Control)</div>
+                        <div class="arch-content">
+                            <div class="ple-experts">
+                                <div class="ple-group">
+                                    <div class="ple-group-title">任务A专家</div>
+                                    <div class="ple-expert-list">
+                                        <span class="ple-expert task-a">EA1</span>
+                                        <span class="ple-expert task-a">EA2</span>
+                                    </div>
+                                </div>
+                                <div class="ple-group">
+                                    <div class="ple-group-title">共享专家</div>
+                                    <div class="ple-expert-list">
+                                        <span class="ple-expert shared">ES1</span>
+                                        <span class="ple-expert shared">ES2</span>
+                                    </div>
+                                </div>
+                                <div class="ple-group">
+                                    <div class="ple-group-title">任务B专家</div>
+                                    <div class="ple-expert-list">
+                                        <span class="ple-expert task-b">EB1</span>
+                                        <span class="ple-expert task-b">EB2</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ple-flow">
+                                <div class="ple-flow-item">
+                                    <span class="ple-flow-label">Gate A:</span>
+                                    <span class="ple-flow-value">只选择 [EA + ES]</span>
+                                </div>
+                                <div class="ple-flow-item">
+                                    <span class="ple-flow-label">Gate B:</span>
+                                    <span class="ple-flow-value">只选择 [EB + ES]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 多层PLE -->
+        <section id="multi-layer">
+            <h2>多层PLE</h2>
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">渐进式提取</div>
+                        <div class="arch-content">
+                            <div class="ple-layers">
+                                <div class="ple-layer">
+                                    <span class="layer-num">Layer 1</span>
+                                    <span class="layer-desc">提取通用特征</span>
+                                </div>
+                                <div class="ple-layer">
+                                    <span class="layer-num">Layer 2</span>
+                                    <span class="layer-desc">分离任务特定特征</span>
+                                </div>
+                                <div class="ple-layer">
+                                    <span class="layer-num">Layer 3</span>
+                                    <span class="layer-desc">精细任务表示</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 腾讯视频案例 -->
+        <section id="case-study">
+            <h2>腾讯视频推荐案例</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>VCR (完成率)</h4>
+                    <p>视频观看完成比例</p>
+                </div>
+                <div class="feature-item">
+                    <h4>VTR (点击率)</h4>
+                    <p>视频点击转化</p>
+                </div>
+                <div class="feature-item">
+                    <h4>SHR (分享率)</h4>
+                    <p>用户分享行为</p>
+                </div>
+                <div class="feature-item">
+                    <h4>CMR (评论率)</h4>
+                    <p>用户评论互动</p>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <strong>效果：</strong>相比MMoE，多个任务指标同时提升，有效缓解跷跷板现象。
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>有效缓解负迁移问题</li>
+                        <li>解决跷跷板现象</li>
+                        <li>任务特定信息被保护</li>
+                        <li>共享信息被充分利用</li>
+                        <li>腾讯大规模验证</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>参数量较大</li>
+                        <li>需要设计专家数量分配</li>
+                        <li>超参数较多</li>
+                        <li>任务数增加时复杂度上升</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Progressive Layered Extraction (PLE): A Novel Multi-Task Learning Model, Tang et al., RecSys 2020
+                    <a href="https://dl.acm.org/doi/10.1145/3383313.3412236" class="link-btn">[ACM]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="mmoe.html">MMoE</a>
+                <a href="esmm.html">ESMM</a>
+                <a href="aitm.html">AITM</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

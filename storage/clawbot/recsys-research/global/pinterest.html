@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinterest搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Pinterest</span>
+    </nav>
+
+    <header>
+        <h1>Pinterest搜索推荐系统</h1>
+        <p>图片推荐 | PinSage | 视觉发现 | 图神经网络</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Pinterest是全球最大的视觉发现引擎，拥有4亿+月活用户。Pinterest的推荐系统以PinSage图神经网络推荐著称，是GNN在推荐系统中的经典应用案例。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="月活用户">4亿+</div>
+                <div class="stat" data-label="Pin数量">数千亿</div>
+                <div class="stat" data-label="搜索次数">50亿/月</div>
+                <div class="stat" data-label="图规模">数十亿节点</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>PyTorch</td><td>深度学习训练</td><td>开源</td></tr>
+                <tr><td>TensorFlow</td><td>模型训练</td><td>开源</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 图像、文本、用户行为</li>
+                <li><strong>向量检索</strong>: 高维向量检索</li>
+                <li><strong>图计算</strong>: 大规模图神经网络</li>
+                <li><strong>视觉理解</strong>: 图像特征提取</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>云基础设施</h3>
+            <ul>
+                <li><strong>AWS</strong>: 主要云服务商</li>
+                <li><strong>GPU集群</strong>: 模型训练</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>PinSage</h3>
+            <div class="algorithm-card">
+                <h4>PinSage图神经网络</h4>
+                <p>Pinterest开创性的GNN推荐算法：</p>
+                <ul>
+                    <li>随机游走采样: 高效邻居采样</li>
+                    <li>图卷积: 聚合邻居信息</li>
+                    <li>节点嵌入: 学习Pin表示</li>
+                    <li>规模: 30亿节点、180亿边</li>
+                </ul>
+                <pre class="code">
+Pin Node → Random Walk Sampling
+         → Graph Convolution
+         → Node Embedding
+         → Similarity Search
+                </pre>
+                <p class="source">来源: Graph Convolutional Neural Networks for Web-Scale Recommender Systems, KDD 2018</p>
+            </div>
+
+            <h3>视觉推荐</h3>
+            <div class="algorithm-card">
+                <h4>图像理解</h4>
+                <ul>
+                    <li>CNN特征提取</li>
+                    <li>视觉相似度匹配</li>
+                    <li>多模态融合</li>
+                </ul>
+            </div>
+
+            <h3>P2P推荐</h3>
+            <div class="algorithm-card">
+                <h4>Pin to Pin推荐</h4>
+                <ul>
+                    <li>基于内容的相似度</li>
+                    <li>基于图结构的相似度</li>
+                    <li>用户行为协同信号</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户浏览/搜索
+    ↓
+┌────────────────────────────────────────┐
+│  理解层                                 │
+│  - 图像特征提取                         │
+│  - 文本理解                             │
+│  - 查询意图                             │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - PinSage嵌入检索                      │
+│  - 视觉相似检索                         │
+│  - 协同过滤                             │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度神经网络                         │
+│  - 多目标优化                           │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 多样性                               │
+│  - 新鲜度                               │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>图神经网络</strong>: PinSage大规模GNN</li>
+                <li><strong>视觉优先</strong>: 图像理解为核心</li>
+                <li><strong>图规模</strong>: 数十亿节点图</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>Graph Convolutional Neural Networks for Web-Scale Recommender Systems, Ying et al., KDD 2018</li>
+                <li>PinSage: Random Walk based GNN for Pinterest</li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://medium.com/pinterest-engineering">Pinterest Engineering Blog</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: KDD论文, Pinterest Engineering Blog</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

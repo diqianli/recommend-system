@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EBD双塔召回 - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#recall">召回算法</a> &gt;
+        <span>双塔召回</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>Embedding-Based Retrieval (EBD)</h1>
+        <p class="algo-subtitle">双塔召回模型 | 工业标准 | 大规模召回</p>
+        <div class="algo-tags">
+            <span class="algo-tag">召回算法</span>
+            <span class="algo-tag">双塔架构</span>
+            <span class="algo-tag">ANN检索</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>双塔召回(EBD)是工业界最常用的召回架构，通过<strong>用户塔</strong>和<strong>物品塔</strong>分别编码用户和物品，最后通过向量相似度检索。</p>
+            <div class="info-box">
+                <strong>核心优势：</strong>用户和物品向量可离线预计算，在线只需ANN检索，支持毫秒级响应。
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>双塔架构</h2>
+
+            <div class="arch-diagram">
+                <!-- 双塔 -->
+                <div class="arch-row">
+                    <!-- 用户塔 -->
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">用户塔 (User Tower)</div>
+                        <div class="arch-content">
+                            <div class="tower-structure">
+                                <div class="tower-input">
+                                    <span class="feature-badge">用户ID</span>
+                                    <span class="feature-badge">行为历史</span>
+                                    <span class="feature-badge">画像特征</span>
+                                    <span class="feature-badge">上下文</span>
+                                </div>
+                                <div class="arch-arrow vertical small">↓</div>
+                                <div class="tower-embedding">
+                                    <span class="embed-box">Embedding Layer</span>
+                                </div>
+                                <div class="arch-arrow vertical small">↓</div>
+                                <div class="mlp-block compact">
+                                    <div class="mlp-layer">Dense</div>
+                                    <div class="mlp-arrow">↓</div>
+                                    <div class="mlp-layer">Dense</div>
+                                </div>
+                                <div class="arch-arrow vertical small">↓</div>
+                                <div class="tower-output">
+                                    <span class="vector-badge user">用户向量 u</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 相似度计算 -->
+                    <div class="arch-component primary" style="flex: 0.5; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="similarity-compute">
+                            <div class="sim-input left">u</div>
+                            <div class="sim-op">×</div>
+                            <div class="sim-input right">v</div>
+                        </div>
+                        <div class="similarity-result">
+                            <p style="margin-top: 15px; font-weight: bold;">相似度 score</p>
+                            <p style="font-size: 0.9em; color: #ccc;">= dot(u, v)</p>
+                        </div>
+                    </div>
+
+                    <!-- 物品塔 -->
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">物品塔 (Item Tower)</div>
+                        <div class="arch-content">
+                            <div class="tower-structure">
+                                <div class="tower-input">
+                                    <span class="feature-badge">物品ID</span>
+                                    <span class="feature-badge">类别特征</span>
+                                    <span class="feature-badge">统计特征</span>
+                                    <span class="feature-badge">内容特征</span>
+                                </div>
+                                <div class="arch-arrow vertical small">↓</div>
+                                <div class="tower-embedding">
+                                    <span class="embed-box">Embedding Layer</span>
+                                </div>
+                                <div class="arch-arrow vertical small">↓</div>
+                                <div class="mlp-block compact">
+                                    <div class="mlp-layer">Dense</div>
+                                    <div class="mlp-arrow">↓</div>
+                                    <div class="mlp-layer">Dense</div>
+                                </div>
+                                <div class="arch-arrow vertical small">↓</div>
+                                <div class="tower-output">
+                                    <span class="vector-badge item">物品向量 v</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- ANN检索 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">ANN 检索 (近似最近邻)</div>
+                        <div class="arch-content">
+                            <div class="ann-flow">
+                                <div class="ann-item">用户向量</div>
+                                <div class="ann-arrow">→</div>
+                                <div class="ann-item highlight">向量索引库<br>(Faiss/Milvus/HNSW)</div>
+                                <div class="ann-arrow">→</div>
+                                <div class="ann-item success">Top-K 候选物品</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="training">
+            <h2>训练方式</h2>
+            <h3>对比学习</h3>
+            <p>正样本: 用户实际交互的物品; 负样本: 随机采样或困难负样本</p>
+            <div class="formula-card">
+                <h4>InfoNCE Loss</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        L = -log(exp(sim(u, i<sup>+</sup>)) / (exp(sim(u, i<sup>+</sup>)) + Σ exp(sim(u, i<sub>j</sub><sup>-</sup>)))
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>可离线预计算向量</li>
+                        <li>ANN检索高效</li>
+                        <li>支持十亿级物品</li>
+                        <li>工业标准架构</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>用户塔和物品塔独立，无特征交叉</li>
+                        <li>内积表达能力有限</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Deep Neural Networks for YouTube Recommendations, Covington et al., RecSys 2016</li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="youtube-dnn.html">YouTube DNN</a>
+                <a href="dssm.html">DSSM</a>
+                <a href="hnsw.html">HNSW</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

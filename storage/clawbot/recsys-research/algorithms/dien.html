@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIEN - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#ranking">排序算法</a> &gt;
+        <span>DIEN</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>DIEN - Deep Interest Evolution Network</h1>
+        <p class="algo-subtitle">深度兴趣演化网络 | 阿里巴巴 | AAAI 2019</p>
+        <div class="algo-tags">
+            <span class="algo-tag">序列建模</span>
+            <span class="algo-tag">兴趣演化</span>
+            <span class="algo-tag">GRU</span>
+            <span class="algo-tag">注意力机制</span>
+        </div>
+    </div>
+
+    <main>
+        <!-- 概述 -->
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>DIEN是阿里巴巴在2019年AAAI上提出的模型，是DIN的升级版。核心创新是建模<strong>用户兴趣的时序演化</strong>，捕捉兴趣随时间变化的动态过程。</p>
+
+            <div class="info-box">
+                <strong>核心思想：</strong>用户的兴趣不是静态的，而是随时间演化的。DIEN通过兴趣提取层和兴趣演化层来建模这种动态过程。
+            </div>
+        </section>
+
+        <!-- DIN vs DIEN -->
+        <section id="comparison">
+            <h2>DIN vs DIEN 对比</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>DIN 深度兴趣网络</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">📊</span>
+                            <span>静态兴趣表示</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">🔢</span>
+                            <span>注意力加权求和</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>未考虑时序信息</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>行为间相互独立</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card highlight">
+                    <div class="compare-card-header model-b">
+                        <h4>DIEN 深度兴趣演化网络</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>动态兴趣演化</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>GRU序列建模</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>显式时序建模</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>行为间时序依赖</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模型架构 -->
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <!-- 行为序列 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">用户行为序列</div>
+                        <div class="arch-content">
+                            <div class="sequence-flow">
+                                <div class="seq-item">
+                                    <span class="seq-time">t=1</span>
+                                    <span class="seq-name">键盘</span>
+                                </div>
+                                <div class="seq-arrow">→</div>
+                                <div class="seq-item">
+                                    <span class="seq-time">t=2</span>
+                                    <span class="seq-name">鼠标</span>
+                                </div>
+                                <div class="seq-arrow">→</div>
+                                <div class="seq-item">
+                                    <span class="seq-time">t=3</span>
+                                    <span class="seq-name">显示器</span>
+                                </div>
+                                <div class="seq-arrow">→</div>
+                                <div class="seq-item">
+                                    <span class="seq-time">t=4</span>
+                                    <span class="seq-name">...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- Embedding层 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component highlight" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">Embedding Layer</div>
+                        <div class="arch-content">
+                            <div class="embedding-row">
+                                <span class="embed-box">[E₁]</span>
+                                <span class="embed-box">[E₂]</span>
+                                <span class="embed-box">[E₃]</span>
+                                <span class="embed-box">...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 兴趣提取层 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">Interest Extractor Layer (兴趣提取层)</div>
+                        <div class="arch-content">
+                            <div class="gru-flow">
+                                <div class="gru-cell">
+                                    <div class="gru-name">GRU</div>
+                                    <div class="gru-output">h₁</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="gru-cell">
+                                    <div class="gru-name">GRU</div>
+                                    <div class="gru-output">h₂</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="gru-cell">
+                                    <div class="gru-name">GRU</div>
+                                    <div class="gru-output">h₃</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="gru-cell">
+                                    <div class="gru-name">GRU</div>
+                                    <div class="gru-output">...</div>
+                                </div>
+                            </div>
+                            <div class="info-box warning" style="margin-top: 15px;">
+                                <strong>辅助损失：</strong>预测下一个行为，让GRU学到有意义的兴趣表示
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 兴趣演化层 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component warning" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">Interest Evolving Layer (兴趣演化层)</div>
+                        <div class="arch-content">
+                            <div class="augru-flow">
+                                <div class="augru-cell">
+                                    <div class="augru-name">AUGRU</div>
+                                    <div class="augru-attention">α₁</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="augru-cell">
+                                    <div class="augru-name">AUGRU</div>
+                                    <div class="augru-attention">α₂</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="augru-cell">
+                                    <div class="augru-name">AUGRU</div>
+                                    <div class="augru-attention">α₃</div>
+                                </div>
+                                <div class="gru-arrow">→</div>
+                                <div class="augru-cell highlight">
+                                    <div class="augru-name">Final</div>
+                                    <div class="augru-attention">h'</div>
+                                </div>
+                            </div>
+                            <p style="text-align: center; margin-top: 15px; color: #fff;">注意力权重来自候选物品与各时间步兴趣的相关性</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 输出 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">输出层</div>
+                        <div class="arch-content">
+                            <span class="formula">最终兴趣向量 + MLP → CTR预测</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 辅助损失 -->
+        <section id="auxiliary-loss">
+            <h2>辅助损失 (Auxiliary Loss)</h2>
+
+            <div class="formula-card">
+                <h4>辅助损失公式</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        L<sub>aux</sub> = -Σ log(σ(h<sub>t</sub><sup>T</sup> e<sub>t+1</sub>)) - Σ log(1 - σ(h<sub>t</sub><sup>T</sup> ê<sub>t+1</sub>))<br><br>
+                        其中 ê 是负样本embedding（随机采样的物品）
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>正样本</h4>
+                    <p>真实下一个行为，拉近兴趣表示与下一个行为</p>
+                </div>
+                <div class="feature-item">
+                    <h4>负样本</h4>
+                    <p>随机采样的物品，推开兴趣表示与无关物品</p>
+                </div>
+                <div class="feature-item">
+                    <h4>作用</h4>
+                    <p>让GRU学到有意义的兴趣表示，而非无监督编码</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- AUGRU -->
+        <section id="augru">
+            <h2>AUGRU - 注意力更新门GRU</h2>
+
+            <div class="formula-card">
+                <h4>AUGRU公式</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        α<sub>t</sub> = Attention(e<sub>target</sub>, h<sub>t</sub>)<br><br>
+                        u'<sub>t</sub> = α<sub>t</sub> · u<sub>t</sub> (注意力加权更新门)<br><br>
+                        h'<sub>t</sub> = (1 - u'<sub>t</sub>) · h'<sub>t-1</sub> + u'<sub>t</sub> · h̃<sub>t</sub>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arch-diagram">
+                <div class="arch-row">
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">标准GRU</div>
+                        <div class="arch-content">
+                            <div style="text-align: center;">
+                                <span class="formula-small">u_t ∈ [0,1]</span><br>
+                                <span class="formula-small">固定更新强度</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">AUGRU</div>
+                        <div class="arch-content">
+                            <div style="text-align: center;">
+                                <span class="formula-small">u'_t = α_t · u_t</span><br>
+                                <span class="formula-small">注意力加权更新强度</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: 20px;">
+                <strong>AUGRU的优势：</strong>注意力权重软性控制信息流，与候选物品相关的兴趣演化被保留，不相关的被抑制。
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>显式建模兴趣演化过程</li>
+                        <li>考虑行为序列的时序依赖</li>
+                        <li>辅助损失提升兴趣表示质量</li>
+                        <li>AUGRU软性选择相关兴趣</li>
+                        <li>阿里大规模验证有效</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>GRU序列计算无法并行</li>
+                        <li>长序列效率问题</li>
+                        <li>需要更多训练时间</li>
+                        <li>超参数(α)需要调优</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>后续发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>DIN</strong>
+                        <p>注意力机制捕捉用户兴趣</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2019</div>
+                    <div class="content">
+                        <strong>DIEN</strong>
+                        <p>GRU建模兴趣演化</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2019</div>
+                    <div class="content">
+                        <strong>BST</strong>
+                        <p>Transformer替代GRU</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <div class="content">
+                        <strong>SIM</strong>
+                        <p>处理超长行为序列</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Deep Interest Evolution Network for Click-Through Rate Prediction, Zhou et al., AAAI 2019
+                    <a href="https://arxiv.org/abs/1809.03672" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="din.html">DIN</a>
+                <a href="bst.html">BST</a>
+                <a href="deepfm.html">DeepFM</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

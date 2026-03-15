@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PQ - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#retrieval">向量检索</a> &gt;
+        <span>PQ</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>PQ - Product Quantization</h1>
+        <p class="algo-subtitle">乘积量化 | 向量压缩 | 内存优化</p>
+        <div class="algo-tags">
+            <span class="algo-tag">向量检索</span>
+            <span class="algo-tag">量化压缩</span>
+            <span class="algo-tag">内存优化</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>乘积量化(PQ)是一种<strong>向量压缩和近似搜索</strong>技术，将高维向量分割为多个子向量，分别量化，大幅降低内存占用。</p>
+            <div class="info-box">
+                <strong>核心优势：</strong>可将向量内存占用降低10-100倍，适合十亿级向量的存储和检索。
+            </div>
+        </section>
+
+        <section id="method">
+            <h2>量化过程</h2>
+
+            <div class="arch-diagram">
+                <!-- 原始向量 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">原始向量 D=128维</div>
+                        <div class="arch-content">
+                            <div class="vector-visual">
+                                <div class="vector-segment" style="background: #4285f4;">1-32</div>
+                                <div class="vector-segment" style="background: #ea4335;">33-64</div>
+                                <div class="vector-segment" style="background: #fbbc05;">65-96</div>
+                                <div class="vector-segment" style="background: #34a853;">97-128</div>
+                            </div>
+                            <p style="text-align: center; margin-top: 10px; color: #666;">原始大小: 128 × 4字节 = 512字节</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓ 分割</div>
+
+                <!-- 子向量分割 -->
+                <div class="arch-row">
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">子向量1 (32维)</div>
+                        <div class="arch-content">
+                            <div class="subvector-box" style="background: #4285f4;">dim 1-32</div>
+                        </div>
+                    </div>
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">子向量2 (32维)</div>
+                        <div class="arch-content">
+                            <div class="subvector-box" style="background: #ea4335;">dim 33-64</div>
+                        </div>
+                    </div>
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">子向量3 (32维)</div>
+                        <div class="arch-content">
+                            <div class="subvector-box" style="background: #fbbc05;">dim 65-96</div>
+                        </div>
+                    </div>
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">子向量4 (32维)</div>
+                        <div class="arch-content">
+                            <div class="subvector-box" style="background: #34a853;">dim 97-128</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓ K-means聚类</div>
+
+                <!-- 码本 -->
+                <div class="arch-row">
+                    <div class="arch-component primary" style="flex: 1;">
+                        <div class="arch-title">码本1</div>
+                        <div class="arch-content">
+                            <div class="codebook">
+                                <div class="centroid">c₁</div>
+                                <div class="centroid">c₂</div>
+                                <div class="centroid">...</div>
+                                <div class="centroid">c₂₅₆</div>
+                            </div>
+                            <p style="text-align: center; font-size: 0.85em;">256个中心点</p>
+                        </div>
+                    </div>
+                    <div class="arch-component primary" style="flex: 1;">
+                        <div class="arch-title">码本2</div>
+                        <div class="arch-content">
+                            <div class="codebook">
+                                <div class="centroid">c₁</div>
+                                <div class="centroid">c₂</div>
+                                <div class="centroid">...</div>
+                                <div class="centroid">c₂₅₆</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-component primary" style="flex: 1;">
+                        <div class="arch-title">码本3</div>
+                        <div class="arch-content">
+                            <div class="codebook">
+                                <div class="centroid">c₁</div>
+                                <div class="centroid">c₂</div>
+                                <div class="centroid">...</div>
+                                <div class="centroid">c₂₅₆</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-component primary" style="flex: 1;">
+                        <div class="arch-title">码本4</div>
+                        <div class="arch-content">
+                            <div class="codebook">
+                                <div class="centroid">c₁</div>
+                                <div class="centroid">c₂</div>
+                                <div class="centroid">...</div>
+                                <div class="centroid">c₂₅₆</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓ 编码</div>
+
+                <!-- 压缩结果 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="width: 100%; max-width: 600px;">
+                        <div class="arch-title">压缩后的编码</div>
+                        <div class="arch-content">
+                            <div class="encoded-vector">
+                                <span class="code-id">ID₁</span>
+                                <span class="code-id">ID₂</span>
+                                <span class="code-id">ID₃</span>
+                                <span class="code-id">ID₄</span>
+                            </div>
+                            <div class="compression-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">压缩后:</span>
+                                    <span class="stat-value">4字节 (每个ID 1字节)</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">压缩比:</span>
+                                    <span class="stat-value highlight">128倍</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>大幅降低内存</li>
+                        <li>支持十亿级向量</li>
+                        <li>可与IVF等结合</li>
+                        <li>适合大规模召回</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>有精度损失</li>
+                        <li>需要训练码本</li>
+                        <li>子空间划分影响效果</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Product Quantization for Nearest Neighbor Search, Jégou et al., TPAMI 2011</li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="hnsw.html">HNSW</a>
+                <a href="ebd.html">双塔召回</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

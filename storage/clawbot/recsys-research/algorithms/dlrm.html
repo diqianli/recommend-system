@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DLRM - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <span>DLRM</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>DLRM - Deep Learning Recommendation Model</h1>
+        <p class="algo-subtitle">深度学习推荐模型 | Meta/Facebook | arXiv 2019</p>
+        <div class="algo-tags">
+            <span class="algo-tag">推荐架构</span>
+            <span class="algo-tag">特征交叉</span>
+            <span class="algo-tag">工业基准</span>
+            <span class="algo-tag">MLPerf</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>DLRM是Meta(Facebook)在2019年提出的深度学习推荐模型，作为<strong>工业界推荐系统的基准架构</strong>，融合了嵌入表、MLP和特征交叉等核心组件，被MLPerf采用为推荐系统基准测试模型。</p>
+            <div class="info-box">
+                <strong>核心贡献：</strong>提供了一个高效、可扩展的推荐模型架构，并开源了完整的实现，成为学术界和工业界的标准基准。
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <!-- 双路输入 -->
+                <div class="arch-row">
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">稀疏特征 (类别特征)</div>
+                        <div class="arch-content">
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <span class="feature-badge sparse">Field 1</span>
+                                <span class="feature-badge sparse">Field 2</span>
+                                <span class="feature-badge sparse">Field 3</span>
+                                <span class="feature-badge sparse">...</span>
+                                <span class="feature-badge sparse">Field N</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">稠密特征 (连续特征)</div>
+                        <div class="arch-content">
+                            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                                <span class="feature-badge dense">数值1</span>
+                                <span class="feature-badge dense">数值2</span>
+                                <span class="feature-badge dense">数值3</span>
+                                <span class="feature-badge dense">...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- Embedding + MLP -->
+                <div class="arch-row">
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">Embedding Tables</div>
+                        <div class="arch-content">
+                            <div class="embedding-grid">
+                                <div class="embed-table">Emb 1</div>
+                                <div class="embed-table">Emb 2</div>
+                                <div class="embed-table">Emb 3</div>
+                                <div class="embed-table">...</div>
+                            </div>
+                            <p style="text-align: center; margin-top: 10px; font-size: 0.9em; color: #666;">每个稀疏特征一个嵌入表</p>
+                        </div>
+                    </div>
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">Bottom MLP</div>
+                        <div class="arch-content">
+                            <div class="mlp-block">
+                                <div class="mlp-layer">Dense 512</div>
+                                <div class="mlp-arrow">↓</div>
+                                <div class="mlp-layer">Dense 256</div>
+                                <div class="mlp-arrow">↓</div>
+                                <div class="mlp-layer">Dense 128</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- Feature Interaction -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 700px;">
+                        <div class="arch-title">Feature Interaction (特征交叉层)</div>
+                        <div class="arch-content">
+                            <div class="interaction-flow">
+                                <div class="interaction-row">
+                                    <span class="interaction-item">Emb₁</span>
+                                    <span class="interaction-op">×</span>
+                                    <span class="interaction-item">Emb₂</span>
+                                    <span class="interaction-result">点积</span>
+                                </div>
+                                <div class="interaction-row">
+                                    <span class="interaction-item">Emb₁</span>
+                                    <span class="interaction-op">×</span>
+                                    <span class="interaction-item">Emb₃</span>
+                                    <span class="interaction-result">点积</span>
+                                </div>
+                                <div class="interaction-row">
+                                    <span class="interaction-item">...</span>
+                                    <span class="interaction-op">×</span>
+                                    <span class="interaction-item">...</span>
+                                    <span class="interaction-result">...</span>
+                                </div>
+                            </div>
+                            <p style="text-align: center; margin-top: 15px; color: #fff;">点积交叉 + 向量拼接</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- Top MLP -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 500px;">
+                        <div class="arch-title">Top MLP</div>
+                        <div class="arch-content">
+                            <div class="mlp-block">
+                                <div class="mlp-layer">Dense 1024</div>
+                                <div class="mlp-arrow">↓</div>
+                                <div class="mlp-layer">Dense 512</div>
+                                <div class="mlp-arrow">↓</div>
+                                <div class="mlp-layer">Dense 256</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <!-- 输出 -->
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">输出层</div>
+                        <div class="arch-content">
+                            <span class="formula">Sigmoid → CTR预测</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>核心组件</h3>
+            <ul>
+                <li><strong>Embedding Tables</strong>：每个稀疏特征对应一个嵌入表</li>
+                <li><strong>Bottom MLP</strong>：处理连续特征</li>
+                <li><strong>Feature Interaction</strong>：特征间的点积交叉</li>
+                <li><strong>Top MLP</strong>：最终预测</li>
+            </ul>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>工业级基准模型</li>
+                        <li>高效的特征交叉</li>
+                        <li>开源实现完整</li>
+                        <li>MLPerf基准测试标准</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>点积交叉表达能力有限</li>
+                        <li>未考虑序列建模</li>
+                        <li>需要大量内存存储嵌入表</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Deep Learning Recommendation Model for Personalization and Recommendation Systems, Naumov et al., arXiv 2019</li>
+            </ul>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/facebookresearch/dlrm">Facebook DLRM GitHub</a></li>
+            </ul>
+            <div class="category-nav">
+                <a href="wide-deep.html">Wide & Deep</a>
+                <a href="deepfm.html">DeepFM</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

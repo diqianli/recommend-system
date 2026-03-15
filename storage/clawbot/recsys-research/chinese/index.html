@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国互联网公司搜索推荐系统技术调研</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="index.html" class="active">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="../algorithms/index.html">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <span>中国公司</span>
+    </nav>
+
+    <header>
+        <h1>中国互联网公司搜索推荐系统</h1>
+        <p>软件框架 | 硬件设施 | 核心算法 | 系统架构</p>
+    </header>
+
+    <main>
+        <section id="overview">
+            <h2>调研概述</h2>
+            <p>本部分调研中国头部互联网公司的搜索推荐系统技术栈，涵盖电商、短视频、社交、搜索、本地生活等多个业务场景。这些公司在海量用户和复杂业务场景下，积累了丰富的推荐系统实践经验。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="公司数量">8家</div>
+                <div class="stat" data-label="业务场景">5类</div>
+                <div class="stat" data-label="主要框架">TensorFlow/PyTorch</div>
+                <div class="stat" data-label="典型架构">多阶段漏斗</div>
+            </div>
+        </section>
+
+        <section id="companies">
+            <h2>公司列表</h2>
+            <div class="company-grid">
+                <a href="alibaba.html" class="company-card">
+                    <h3>阿里巴巴</h3>
+                    <p>淘宝/天猫商品推荐、搜索排序。拥有业界领先的电商推荐系统，开创了DIN、DIEN、BST等多个经典模型。</p>
+                    <span class="tag">电商推荐</span>
+                    <span class="tag">搜索排序</span>
+                </a>
+
+                <a href="bytedance.html" class="company-card">
+                    <h3>字节跳动</h3>
+                    <p>抖音/TikTok视频推荐、今日头条信息流。以算法为核心竞争力的短视频推荐系统，日活用户超7亿。</p>
+                    <span class="tag">短视频推荐</span>
+                    <span class="tag">信息流</span>
+                </a>
+
+                <a href="tencent.html" class="company-card">
+                    <h3>腾讯</h3>
+                    <p>微信看一看、视频号、QQ推荐。基于社交关系的推荐系统，融合内容理解和社交图谱。</p>
+                    <span class="tag">社交推荐</span>
+                    <span class="tag">视频号</span>
+                </a>
+
+                <a href="baidu.html" class="company-card">
+                    <h3>百度</h3>
+                    <p>搜索引擎、信息流推荐。从搜索到推荐的转型典范，拥有强大的NLP和知识图谱能力。</p>
+                    <span class="tag">搜索引擎</span>
+                    <span class="tag">信息流</span>
+                </a>
+
+                <a href="meituan.html" class="company-card">
+                    <h3>美团</h3>
+                    <p>外卖/酒店/到店推荐。本地生活服务推荐系统，处理LBS、时效性等独特挑战。</p>
+                    <span class="tag">本地生活</span>
+                    <span class="tag">LBS推荐</span>
+                </a>
+
+                <a href="jd.html" class="company-card">
+                    <h3>京东</h3>
+                    <p>电商商品推荐、搜索。以供应链为核心的推荐系统，强调转化率和用户体验。</p>
+                    <span class="tag">电商推荐</span>
+                    <span class="tag">供应链</span>
+                </a>
+
+                <a href="kuaishou.html" class="company-card">
+                    <h3>快手</h3>
+                    <p>短视频推荐。主打"普惠"算法的短视频平台，注重中腰部创作者的曝光机会。</p>
+                    <span class="tag">短视频推荐</span>
+                    <span class="tag">普惠算法</span>
+                </a>
+
+                <a href="pinduoduo.html" class="company-card">
+                    <h3>拼多多</h3>
+                    <p>社交电商推荐。基于社交裂变的电商推荐，融合拼团、补贴等独特业务模式。</p>
+                    <span class="tag">社交电商</span>
+                    <span class="tag">拼团推荐</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="highlights">
+            <h2>技术亮点</h2>
+            <div class="info-box">
+                <h4>算法创新</h4>
+                <p>中国公司在推荐算法领域有大量创新，如阿里巴巴的DIN/DIEN/BST、字节跳动的多任务学习、美团的POI推荐等。</p>
+            </div>
+            <div class="info-box">
+                <h4>工程实践</h4>
+                <p>面对海量用户和复杂业务，中国公司在实时计算、特征工程、模型服务等方面积累了丰富经验。</p>
+            </div>
+            <div class="info-box">
+                <h4>开源贡献</h4>
+                <p>多家公司开源了推荐系统相关项目，如阿里X-DeepRec、字节ABTest框架等。</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | <a href="../index.html">返回首页</a></p>
+    </footer>
+</body>
+</html>

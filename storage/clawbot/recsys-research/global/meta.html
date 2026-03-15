@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Meta</span>
+    </nav>
+
+    <header>
+        <h1>Meta搜索推荐系统</h1>
+        <p>News Feed | 广告推荐 | Reels | DLRM</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Meta(原Facebook)是全球最大的社交媒体公司，其推荐系统支撑着Facebook News Feed、Instagram Feed、Reels、广告系统等产品。Meta在深度学习推荐系统领域有开创性贡献，DLRM模型已成为行业标准架构。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="月活用户">30亿+</div>
+                <div class="stat" data-label="日活用户">21亿+</div>
+                <div class="stat" data-label="广告收入">1000亿+美元/年</div>
+                <div class="stat" data-label="推荐QPS">数十亿/天</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>PyTorch</td><td>深度学习训练与推理</td><td>Meta开源</td></tr>
+                <tr><td>FBLearner Flow</td><td>机器学习平台</td><td>Meta内部</td></tr>
+                <tr><td>Faiss</td><td>向量相似度搜索</td><td>Meta开源</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 实时特征处理管道</li>
+                <li><strong>向量检索</strong>: Faiss (十亿级向量检索)</li>
+                <li><strong>在线服务</strong>: TorchServe定制版</li>
+                <li><strong>实时计算</strong>: 流式特征处理</li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <table class="tech-table">
+                <tr><th>项目</th><th>描述</th><th>GitHub</th></tr>
+                <tr><td>PyTorch</td><td>深度学习框架</td><td>pytorch/pytorch</td></tr>
+                <tr><td>DLRM</td><td>深度学习推荐模型</td><td>facebookresearch/dlrm</td></tr>
+                <tr><td>Faiss</td><td>向量相似度搜索</td><td>facebookresearch/faiss</td></tr>
+                <tr><td>RecSys Challenge</td><td>推荐系统竞赛数据</td><td>facebookresearch</td></tr>
+            </table>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>MTIA (Meta Training and Inference Accelerator)</h3>
+            <p>Meta自研AI芯片：</p>
+            <ul>
+                <li><strong>MTIA v1</strong>: 2023年发布，用于推理</li>
+                <li><strong>设计目标</strong>: 针对推荐系统工作负载优化</li>
+                <li><strong>性能</strong>: 在推荐模型上优于GPU</li>
+            </ul>
+
+            <h3>训练集群</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>规格</th><th>来源</th></tr>
+                <tr><td>GPU集群</td><td>NVIDIA A100/H100大规模集群</td><td>公开资料</td></tr>
+                <tr><td>RSC (Research SuperCluster)</td><td>全球最快AI超算之一</td><td>Meta官方</td></tr>
+            </table>
+
+            <h3>推理服务</h3>
+            <ul>
+                <li><strong>MTIA推理</strong>: 自研芯片加速</li>
+                <li><strong>GPU推理</strong>: 大规模GPU集群</li>
+                <li><strong>全球部署</strong>: 边缘数据中心网络</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>DLRM (Deep Learning Recommendation Model)</h3>
+            <div class="algorithm-card">
+                <h4>DLRM架构</h4>
+                <p>Meta提出的经典推荐模型架构：</p>
+                <pre class="code">
+┌─────────────────────────────────────────┐
+│  稀疏特征 (类别特征)                     │
+│  → Embedding Table (数十亿参数)          │
+│  → Pooling                               │
+└─────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────┐
+│  特征交叉 (Feature Interaction)         │
+│  - 点积交叉                               │
+│  - 所有Embedding两两交互                 │
+└─────────────────────────────────────────┘
+                    ↓
+┌─────────────────────────────────────────┐
+│  稠密特征 + 交叉特征                      │
+│  → MLP (多层感知机)                      │
+│  → 输出概率                              │
+└─────────────────────────────────────────┘
+                </pre>
+                <p class="source">来源: DLRM: An Industry-Class Deep Learning Recommendation Model, arXiv 2019</p>
+            </div>
+
+            <h3>多任务学习</h3>
+            <div class="algorithm-card">
+                <h4>多目标推荐</h4>
+                <p>Meta推荐系统同时优化多个目标：</p>
+                <ul>
+                    <li>点击率 (CTR)</li>
+                    <li>互动率 (点赞、评论、分享)</li>
+                    <li>停留时长</li>
+                    <li>转化率 (广告)</li>
+                </ul>
+            </div>
+
+            <h3>图神经网络</h3>
+            <div class="algorithm-card">
+                <h4>社交图推荐</h4>
+                <p>利用社交图谱进行推荐：</p>
+                <ul>
+                    <li>PinSage: 图神经网络推荐</li>
+                    <li>社交关系建模</li>
+                    <li>社区发现</li>
+                </ul>
+            </div>
+
+            <h3>广告推荐</h3>
+            <div class="algorithm-card">
+                <h4>广告排序</h4>
+                <ul>
+                    <li>点击率预估: 深度学习</li>
+                    <li>转化率预估: 多任务学习</li>
+                    <li>竞价排序优化</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户打开App
+    ↓
+┌────────────────────────────────────────┐
+│  召回层 (Retrieval)                     │
+│  - 协同过滤                             │
+│  - Faiss向量检索                        │
+│  - 社交关系召回                         │
+│  - 热门/地域召回                        │
+│  候选集: 数千个内容                     │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  粗排层 (Early Ranking)                 │
+│  - 轻量级DLRM                           │
+│  候选集: 数百个内容                     │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  精排层 (Final Ranking)                 │
+│  - 完整DLRM                             │
+│  - 多任务学习                           │
+│  候选集: 数十个内容                     │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  重排层 (Re-ranking)                    │
+│  - 多样性控制                           │
+│  - 社区标准检查                         │
+│  - 个性化调整                           │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>大规模Embedding</strong>: 数十亿参数的Embedding Table</li>
+                <li><strong>自研芯片</strong>: MTIA针对推荐优化</li>
+                <li><strong>实时更新</strong>: 在线学习支持</li>
+                <li><strong>多产品统一</strong>: FB/Instagram/WhatsApp统一架构</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>DLRM: An Industry-Class Deep Learning Recommendation Model, Naumov et al., arXiv 2019</li>
+                <li>Deep Learning Recommendation Model for Personalization and Recommendation Systems, ACM 2019</li>
+                <li>Practical Lessons from Predicting Clicks on Ads at Facebook, ADKDD 2014</li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://engineering.fb.com/">Meta Engineering Blog</a></li>
+                <li><a href="https://ai.facebook.com/">Meta AI</a></li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/pytorch/pytorch">PyTorch</a></li>
+                <li><a href="https://github.com/facebookresearch/dlrm">DLRM</a></li>
+                <li><a href="https://github.com/facebookresearch/faiss">Faiss</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: Meta Engineering Blog, 学术论文, 开源项目</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

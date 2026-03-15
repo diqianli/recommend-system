@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Google</span>
+    </nav>
+
+    <header>
+        <h1>Google搜索推荐系统</h1>
+        <p>搜索引擎 | YouTube推荐 | 广告系统 | TPU</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Google是全球最大的搜索引擎公司，也是推荐系统领域的领导者。Google的推荐技术应用于搜索排序、YouTube视频推荐、Google Play应用推荐、广告投放等多个场景。Google开创了Wide&Deep、YouTube DNN等多个经典推荐架构，深刻影响了整个行业。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="搜索次数/天">85亿次+</div>
+                <div class="stat" data-label="YouTube月活">25亿+</div>
+                <div class="stat" data-label="TPU算力">全球最大</div>
+                <div class="stat" data-label="模型参数">万亿级</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>TensorFlow</td><td>深度学习训练与推理</td><td>Google开源</td></tr>
+                <tr><td>JAX</td><td>高性能数值计算</td><td>Google开源</td></tr>
+                <tr><td>TFX (TensorFlow Extended)</td><td>生产级ML流水线</td><td>Google开源</td></tr>
+                <tr><td>TensorFlow Recommenders</td><td>推荐系统库</td><td>Google开源</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: TFX Feature Store</li>
+                <li><strong>向量检索</strong>: ScaNN (可扩展最近邻)</li>
+                <li><strong>在线服务</strong>: TensorFlow Serving</li>
+                <li><strong>数据流水线</strong>: Beam/Dataflow</li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <table class="tech-table">
+                <tr><th>项目</th><th>描述</th><th>GitHub</th></tr>
+                <tr><td>TensorFlow</td><td>深度学习框架</td><td>tensorflow/tensorflow</td></tr>
+                <tr><td>JAX</td><td>高性能计算框架</td><td>google/jax</td></tr>
+                <tr><td>TFX</td><td>ML生产流水线</td><td>tensorflow/tfx</td></tr>
+                <tr><td>TensorFlow Recommenders</td><td>推荐系统库</td><td>tensorflow/recommenders</td></tr>
+                <tr><td>ScaNN</td><td>向量检索库</td><td>google-research/google-research</td></tr>
+            </table>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>TPU (Tensor Processing Unit)</h3>
+            <p>Google自研的AI专用芯片：</p>
+            <table class="tech-table">
+                <tr><th>代数</th><th>发布年份</th><th>特点</th></tr>
+                <tr><td>TPU v1</td><td>2016</td><td>推理专用，8-bit整数运算</td></tr>
+                <tr><td>TPU v2</td><td>2017</td><td>训练+推理，Pod集群</td></tr>
+                <tr><td>TPU v3</td><td>2018</td><td>液冷散热，性能翻倍</td></tr>
+                <tr><td>TPU v4</td><td>2021</td><td>与v3相比性能提升2-3倍</td></tr>
+                <tr><td>TPU v5</td><td>2023+</td><td>最新一代，性能进一步提升</td></tr>
+            </table>
+
+            <h3>训练集群</h3>
+            <ul>
+                <li><strong>TPU Pod</strong>: 数千个TPU组成的超大规模集群</li>
+                <li><strong>GPU集群</strong>: NVIDIA A100/H100集群</li>
+                <li><strong>数据中心</strong>: 全球分布的数据中心网络</li>
+            </ul>
+
+            <h3>推理服务</h3>
+            <ul>
+                <li><strong>TPU推理</strong>: 专用AI推理硬件</li>
+                <li><strong>边缘部署</strong>: 全球CDN网络</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>搜索排序</h3>
+            <div class="algorithm-card">
+                <h4>BERT + 排序模型</h4>
+                <p>Google搜索采用深度学习进行排序：</p>
+                <ul>
+                    <li>BERT: 查询和文档语义理解</li>
+                    <li>MUM: 多任务统一模型</li>
+                    <li>Passage Ranking: 段落级排序</li>
+                </ul>
+                <p class="source">来源: Google AI Blog</p>
+            </div>
+
+            <h3>YouTube推荐</h3>
+            <div class="algorithm-card">
+                <h4>YouTube DNN推荐架构</h4>
+                <p>经典的两阶段推荐架构：</p>
+                <pre class="code">
+┌─────────────────────────────────────┐
+│  召回层 (Candidate Generation)      │
+│  - 用户历史观看嵌入                  │
+│  - 搜索历史嵌入                      │
+│  - 协同过滤信号                      │
+│  - 输出: 数百个候选视频              │
+└─────────────────────────────────────┘
+                ↓
+┌─────────────────────────────────────┐
+│  排序层 (Ranking)                   │
+│  - 丰富的视频特征                    │
+│  - 用户-视频交叉特征                 │
+│  - 多目标: 观看时长、点击率等        │
+│  - 输出: 排序后的推荐列表            │
+└─────────────────────────────────────┘
+                </pre>
+                <p class="source">来源: Deep Neural Networks for YouTube Recommendations, RecSys 2016</p>
+            </div>
+
+            <div class="algorithm-card">
+                <h4>Wide & Deep Learning</h4>
+                <p>Google提出的经典推荐架构，结合记忆与泛化：</p>
+                <ul>
+                    <li><strong>Wide部分</strong>: 线性模型，记忆特征组合</li>
+                    <li><strong>Deep部分</strong>: DNN，学习泛化特征</li>
+                    <li><strong>联合训练</strong>: 同时优化两部分</li>
+                </ul>
+                <p class="source">来源: Wide & Deep Learning for Recommender Systems, DLRS 2016</p>
+            </div>
+
+            <h3>广告推荐</h3>
+            <div class="algorithm-card">
+                <h4>广告排序</h4>
+                <p>Google广告系统的推荐技术：</p>
+                <ul>
+                    <li>点击率预估: 深度学习模型</li>
+                    <li>竞价排序: pCTR × 出价</li>
+                    <li>质量控制: 广告相关性</li>
+                </ul>
+            </div>
+
+            <h3>最新进展</h3>
+            <div class="algorithm-card">
+                <h4>LLM增强推荐</h4>
+                <p>Google正在将大语言模型融入推荐系统：</p>
+                <ul>
+                    <li>语义理解增强</li>
+                    <li>生成式推荐</li>
+                    <li>对话式推荐</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户请求 (搜索/YouTube)
+         ↓
+┌────────────────────────────────────────┐
+│  理解层                                 │
+│  - BERT/MUM语义理解                     │
+│  - 查询扩展                             │
+│  - 意图识别                             │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  召回层 (Retrieval)                     │
+│  - 倒排索引                             │
+│  - 向量检索 (ScaNN)                     │
+│  - 协同过滤                             │
+│  候选集: 数千个                         │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  排序层 (Ranking)                       │
+│  - Wide & Deep                          │
+│  - Transformer                          │
+│  - 多目标优化                           │
+│  候选集: 数十个                         │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  重排层 (Re-ranking)                    │
+│  - 多样性                               │
+│  - 新鲜度                               │
+│  - 个性化                               │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>TPU加速</strong>: 专用硬件加速训练和推理</li>
+                <li><strong>端到端ML流水线</strong>: TFX全流程管理</li>
+                <li><strong>大规模特征</strong>: 数十亿特征维度</li>
+                <li><strong>实时更新</strong>: 模型和特征实时更新</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>Wide & Deep Learning for Recommender Systems, Cheng et al., DLRS 2016</li>
+                <li>Deep Neural Networks for YouTube Recommendations, Covington et al., RecSys 2016</li>
+                <li>Deep Interest Network for Click-Through Rate Prediction, KDD 2018</li>
+                <li>Ad Click Prediction: a View from the Trenches, KDD 2013</li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://ai.googleblog.com/">Google AI Blog</a></li>
+                <li><a href="https://blog.google/technology/ai/">Google AI News</a></li>
+                <li><a href="https://developers.google.com/machine-learning">Google ML Resources</a></li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/tensorflow/tensorflow">TensorFlow</a></li>
+                <li><a href="https://github.com/tensorflow/recommenders">TensorFlow Recommenders</a></li>
+                <li><a href="https://github.com/tensorflow/tfx">TFX</a></li>
+                <li><a href="https://github.com/google/jax">JAX</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: Google AI Blog, 学术论文, 开源项目</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

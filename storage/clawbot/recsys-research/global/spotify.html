@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">全球公司</a> &gt;
+        <span>Spotify</span>
+    </nav>
+
+    <header>
+        <h1>Spotify搜索推荐系统</h1>
+        <p>音乐推荐 | Discover Weekly | 播客推荐 | 音频分析</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>Spotify是全球最大的音乐流媒体平台，拥有6亿+月活用户。Spotify的推荐系统以Discover Weekly(每周发现)著称，通过协同过滤、自然语言处理和音频分析等多种技术，为用户提供个性化音乐推荐。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="月活用户">6亿+</div>
+                <div class="stat" data-label="付费用户">2亿+</div>
+                <div class="stat" data-label="曲库">1亿+首</div>
+                <div class="stat" data-label="Discover Weekly">4000万用户</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>TensorFlow</td><td>深度学习训练</td><td>开源</td></tr>
+                <tr><td>PyTorch</td><td>研究与应用</td><td>开源</td></tr>
+                <tr><td>Scikit-learn</td><td>传统ML算法</td><td>开源</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>协同过滤</strong>: 用户-歌曲交互矩阵</li>
+                <li><strong>NLP</strong>: 歌词、元数据分析</li>
+                <li><strong>音频分析</strong>: 音频特征提取</li>
+                <li><strong>图网络</strong>: 艺术家关系图</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>云基础设施</h3>
+            <p>Spotify使用Google Cloud Platform (GCP)：</p>
+            <ul>
+                <li><strong>计算</strong>: GCP虚拟机集群</li>
+                <li><strong>存储</strong>: BigQuery数据仓库</li>
+                <li><strong>流处理</strong>: Dataflow/Beam</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>Discover Weekly</h3>
+            <div class="algorithm-card">
+                <h4>每周发现推荐</h4>
+                <p>Spotify最著名的推荐功能：</p>
+                <ul>
+                    <li>协同过滤: 基于相似用户</li>
+                    <li>NLP: 分析歌曲/艺术家描述</li>
+                    <li>音频分析: 声学特征匹配</li>
+                    <li>每周为每个用户生成30首歌曲</li>
+                </ul>
+                <p class="source">来源: Spotify Engineering Blog</p>
+            </div>
+
+            <h3>三种推荐模型</h3>
+            <div class="algorithm-card">
+                <h4>混合推荐系统</h4>
+                <p>Spotify使用三种主要模型：</p>
+                <ul>
+                    <li><strong>协同过滤</strong>: 基于用户行为相似度</li>
+                    <li><strong>NLP模型</strong>: 分析歌曲元数据、歌词</li>
+                    <li><strong>音频模型</strong>: 分析原始音频特征</li>
+                </ul>
+            </div>
+
+            <h3>音频分析</h3>
+            <div class="algorithm-card">
+                <h4>音频特征提取</h4>
+                <ul>
+                    <li>BPM/节奏分析</li>
+                    <li>调性、音阶</li>
+                    <li>能量、舞蹈性</li>
+                    <li>声学度、器乐度</li>
+                </ul>
+            </div>
+
+            <h3>播客推荐</h3>
+            <div class="algorithm-card">
+                <h4>播客内容推荐</h4>
+                <ul>
+                    <li>语音转文字</li>
+                    <li>内容理解</li>
+                    <li>主题分类</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户收听音乐
+    ↓
+┌────────────────────────────────────────┐
+│  数据收集                               │
+│  - 收听历史                             │
+│  - 跳过行为                             │
+│  - 播放列表                             │
+│  - 搜索行为                             │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  特征提取                               │
+│  - 协同过滤特征                         │
+│  - 音频特征                             │
+│  - NLP特征                              │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  推荐生成                               │
+│  - 多模型融合                           │
+│  - 排序优化                             │
+│  - 多样性控制                           │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  播放列表生成                           │
+│  - Discover Weekly                      │
+│  - Daily Mix                            │
+│  - Release Radar                        │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>多模态融合</strong>: 行为+音频+文本</li>
+                <li><strong>批量处理</strong>: 周级推荐生成</li>
+                <li><strong>个性化播放列表</strong>: 动态生成</li>
+                <li><strong>实时更新</strong>: 行为实时反馈</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li><a href="https://engineering.atspotify.com/">Spotify Engineering Blog</a></li>
+                <li><a href="https://research.atspotify.com/">Spotify Research</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: Spotify Engineering Blog</p>
+        <p><a href="index.html">← 返回全球公司列表</a></p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>矩阵分解 - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#recall">召回算法</a> &gt;
+        <span>矩阵分解</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>Matrix Factorization (MF)</h1>
+        <p class="algo-subtitle">矩阵分解 | Netflix Prize冠军 | 2009</p>
+        <div class="algo-tags">
+            <span class="algo-tag">召回算法</span>
+            <span class="algo-tag">隐因子模型</span>
+            <span class="algo-tag">经典算法</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>矩阵分解是将用户-物品评分矩阵分解为用户隐向量矩阵和物品隐向量矩阵的乘积，Netflix Prize比赛中大放异彩，成为推荐系统的经典方法。</p>
+
+            <div class="info-box">
+                <strong>核心思想：</strong>假设存在潜在因子(如电影类型)，用户和物品都可以在这些潜在因子上表示，通过低维向量捕捉用户偏好和物品特征。
+            </div>
+        </section>
+
+        <section id="formula">
+            <h2>核心公式</h2>
+            <div class="formula-block">
+                <div class="formula">
+                    R ≈ U × V<sup>T</sup><br><br>
+                    其中 R 是 m×n 的评分矩阵<br>
+                    U 是 m×k 的用户隐向量矩阵<br>
+                    V 是 n×k 的物品隐向量矩阵<br>
+                    k 是隐因子维度<br><br>
+                    预测: r̂(u, i) = p<sub>u</sub><sup>T</sup> q<sub>i</sub>
+                </div>
+            </div>
+
+            <h3>SVD优化目标</h3>
+            <div class="formula-block">
+                <div class="formula">
+                    min Σ (r<sub>ui</sub> - p<sub>u</sub><sup>T</sup> q<sub>i</sub>)² + λ(||p<sub>u</sub>||² + ||q<sub>i</sub>||²)
+                </div>
+            </div>
+        </section>
+
+        <section id="variants">
+            <h2>主要变体</h2>
+            <table class="tech-table">
+                <tr><th>方法</th><th>特点</th></tr>
+                <tr><td>SVD</td><td>基础矩阵分解</td></tr>
+                <tr><td>SVD++</td><td>加入隐式反馈</td></tr>
+                <tr><td>TimeSVD++</td><td>考虑时间因素</td></tr>
+                <tr><td>ALS</td><td>交替最小二乘，适合并行</td></tr>
+                <tr><td>SGD</td><td>随机梯度下降</td></tr>
+            </table>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>处理稀疏矩阵</li>
+                        <li>发现潜在特征</li>
+                        <li>可扩展性好</li>
+                        <li>Netflix Prize验证</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>冷启动问题</li>
+                        <li>难以融入side info</li>
+                        <li>仅考虑二阶交互</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Matrix Factorization Techniques for Recommender Systems, Koren et al., Computer 2009</li>
+                <li>Netflix Prize论文集</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

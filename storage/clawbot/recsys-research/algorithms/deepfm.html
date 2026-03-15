@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepFM - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#ranking">排序算法</a> &gt;
+        <span>DeepFM</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>DeepFM - Deep Factorization Machines</h1>
+        <p class="algo-subtitle">深度因子分解机 | 华为 | IJCAI 2017</p>
+        <div class="algo-tags">
+            <span class="algo-tag">排序算法</span>
+            <span class="algo-tag">特征交叉</span>
+            <span class="algo-tag">FM+DNN</span>
+            <span class="algo-tag">端到端</span>
+        </div>
+    </div>
+
+    <main>
+        <!-- 概述 -->
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>DeepFM是华为在2017年IJCAI上提出的模型，将<strong>因子分解机(FM)</strong>和<strong>深度神经网络(DNN)</strong>结合，能够同时学习低阶和高阶特征交互，且无需人工特征工程。</p>
+
+            <div class="info-box">
+                <strong>核心创新：</strong>FM组件和Deep组件共享相同的输入embedding，实现端到端训练，无需预训练FM。
+            </div>
+        </section>
+
+        <!-- 背景知识 -->
+        <section id="background">
+            <h2>为什么需要DeepFM？</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>FM模型</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>低阶特征交互</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>无法学习高阶交互</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>端到端训练</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card">
+                    <div class="compare-card-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+                        <h4>FNN模型</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>无低阶交互</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>高阶特征交互</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>需要FM预训练</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card">
+                    <div class="compare-card-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        <h4>Wide&Deep</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>低阶+高阶交互</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>端到端训练</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">⚠️</span>
+                            <span>需要特征工程</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card highlight">
+                    <div class="compare-card-header model-b">
+                        <h4>DeepFM</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>低阶+高阶交互</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>端到端训练</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>无需特征工程</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模型架构 -->
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">输入特征层</div>
+                        <div class="arch-content">
+                            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                <span class="feature-badge">Field 1</span>
+                                <span class="feature-badge">Field 2</span>
+                                <span class="feature-badge">Field 3</span>
+                                <span class="feature-badge">...</span>
+                                <span class="feature-badge">Field N</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component primary" style="width: 100%; max-width: 800px;">
+                        <div class="arch-title">共享 Embedding 层</div>
+                        <div class="arch-content">
+                            <p style="text-align: center; margin: 0; color: #fff;">FM组件和Deep组件共享同一套Embedding参数</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="twin-tower">
+                    <div class="tower">
+                        <div class="tower-title">FM Component</div>
+                        <div class="tower-layers">
+                            <div class="tower-layer">一阶: Σwᵢxᵢ</div>
+                            <div class="tower-layer active">二阶交互层</div>
+                            <div class="tower-layer">
+                                <span class="formula-small">ΣΣ⟨vᵢ,vⱼ⟩xᵢxⱼ</span>
+                            </div>
+                            <div class="tower-layer">y<sub>FM</sub></div>
+                        </div>
+                    </div>
+
+                    <div class="tower-connector">
+                        <div class="dot"></div>
+                        <div class="line"></div>
+                        <div class="symbol">+</div>
+                        <div class="line"></div>
+                        <div class="dot"></div>
+                    </div>
+
+                    <div class="tower">
+                        <div class="tower-title">Deep Component</div>
+                        <div class="tower-layers">
+                            <div class="tower-layer">Concat Embeddings</div>
+                            <div class="tower-layer active">Hidden 1 (1024) + ReLU</div>
+                            <div class="tower-layer">Hidden 2 (512) + ReLU</div>
+                            <div class="tower-layer">Hidden 3 (256) + ReLU</div>
+                            <div class="tower-layer">y<sub>DNN</sub></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">联合输出</div>
+                        <div class="arch-content">
+                            <span class="formula">ŷ = σ(y<sub>FM</sub> + y<sub>DNN</sub>)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FM组件详解 -->
+        <section id="fm-component">
+            <h2>FM组件详解</h2>
+
+            <div class="formula-card">
+                <h4>FM公式</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        <strong>一阶部分：</strong> y<sub>(1)</sub> = w<sub>0</sub> + Σ<sub>i=1</sub><sup>n</sup> w<sub>i</sub> · x<sub>i</sub><br><br>
+                        <strong>二阶部分：</strong> y<sub>(2)</sub> = Σ<sub>i=1</sub><sup>n</sup> Σ<sub>j=i+1</sub><sup>n</sup> ⟨V<sub>i</sub>, V<sub>j</sub>⟩ · x<sub>i</sub> · x<sub>j</sub><br><br>
+                        <strong>高效计算：</strong> y<sub>(2)</sub> = ½ Σ<sub>f=1</sub><sup>k</sup> [(Σ<sub>i</sub> v<sub>if</sub> x<sub>i</sub>)² - Σ<sub>i</sub> v<sub>if</sub>² x<sub>i</sub>²]
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>一阶特征</h4>
+                    <p>线性组合，捕捉单特征的重要性</p>
+                </div>
+                <div class="feature-item">
+                    <h4>二阶交叉</h4>
+                    <p>特征对的交互，通过隐向量点积计算</p>
+                </div>
+                <div class="feature-item">
+                    <h4>高效计算</h4>
+                    <p>从O(n²)优化到O(nk)，k为隐向量维度</p>
+                </div>
+                <div class="feature-item">
+                    <h4>泛化能力</h4>
+                    <p>未见特征组合也能估计交互强度</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心创新 -->
+        <section id="innovations">
+            <h2>核心创新</h2>
+
+            <div class="arch-diagram">
+                <div class="arch-row">
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">1. 共享Embedding</div>
+                        <div class="arch-content">
+                            <ul style="margin: 0; padding-left: 20px;">
+                                <li>FM学到的表示指导DNN</li>
+                                <li>DNN反向改进FM表示</li>
+                                <li>联合优化效果更好</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">2. 端到端训练</div>
+                        <div class="arch-content">
+                            <ul style="margin: 0; padding-left: 20px;">
+                                <li>无需预训练FM</li>
+                                <li>简化训练流程</li>
+                                <li>避免误差传播</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">3. 无需特征工程</div>
+                        <div class="arch-content">
+                            <ul style="margin: 0; padding-left: 20px;">
+                                <li>FM自动二阶交叉</li>
+                                <li>DNN自动高阶交叉</li>
+                                <li>减少人工成本</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>同时学习低阶和高阶特征交互</li>
+                        <li>无需人工特征工程</li>
+                        <li>端到端训练，简单高效</li>
+                        <li>工业界验证效果显著</li>
+                        <li>FM和DNN相互增强</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>二阶交互计算复杂度O(n²)</li>
+                        <li>DNN学到的交互是隐式的</li>
+                        <li>可解释性相对较差</li>
+                        <li>未考虑用户行为序列</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>后续发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2017</div>
+                    <div class="content">
+                        <strong>DeepFM</strong>
+                        <p>华为提出，FM+DNN结合</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2017</div>
+                    <div class="content">
+                        <strong>NFM/AFM</strong>
+                        <p>神经网络FM/注意力FM</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>xDeepFM</strong>
+                        <p>压缩交互网络，显式高阶交互</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2019</div>
+                    <div class="content">
+                        <strong>DeepFM v2</strong>
+                        <p>优化计算效率</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>DeepFM: A Factorization-Machine based Neural Network for CTR Prediction, Guo et al., IJCAI 2017
+                    <a href="https://arxiv.org/abs/1703.04247" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="wide-deep.html">Wide & Deep</a>
+                <a href="din.html">DIN</a>
+                <a href="autoint.html">AutoInt</a>
+                <a href="dcn.html">DCN</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

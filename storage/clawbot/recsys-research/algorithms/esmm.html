@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESMM - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#multitask">多任务学习</a> &gt;
+        <span>ESMM</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>ESMM - Entire Space Multi-Task Model</h1>
+        <p class="algo-subtitle">全空间多任务模型 | 阿里巴巴 | SIGIR 2018</p>
+        <div class="algo-tags">
+            <span class="algo-tag">多任务学习</span>
+            <span class="algo-tag">CVR预估</span>
+            <span class="algo-tag">全空间训练</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>ESMM是阿里巴巴在2018年SIGIR上提出的模型，专门解决<strong>转化率(CVR)预估</strong>中的两个核心问题：<strong>样本选择偏差(SSB)</strong>和<strong>数据稀疏(DS)</strong>。</p>
+
+            <div class="info-box">
+                <strong>核心思想：</strong>不在点击样本上直接训练CVR，而是在全空间上联合训练CTR和CTCVR，通过 pCTCVR / pCTR 推导 pCVR。
+            </div>
+        </section>
+
+        <!-- 转化漏斗 -->
+        <section id="funnel-section">
+            <h2>转化漏斗</h2>
+            <div class="funnel-diagram">
+                <div class="funnel-stage">
+                    <div class="stage-name">曝光 (Impression)</div>
+                    <div class="stage-count">1000次</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">点击 (Click)</div>
+                    <div class="stage-count">50次 (5%)</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">转化 (Conversion)</div>
+                    <div class="stage-count">5次 (0.5%)</div>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <strong>问题：</strong>传统CVR只在50个点击样本上训练，其中只有5个正样本！数据极其稀疏。
+            </div>
+        </section>
+
+        <!-- 问题分析 -->
+        <section id="problems">
+            <h2>传统CVR预估的问题</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>样本选择偏差 (SSB)</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">📊</span>
+                            <span>训练空间: 点击样本</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">🎯</span>
+                            <span>预测空间: 所有曝光</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">⚠️</span>
+                            <span>分布不一致导致偏差</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card">
+                    <div class="compare-card-header model-b">
+                        <h4>数据稀疏 (DS)</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">📉</span>
+                            <span>点击率通常 1-5%</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">📉</span>
+                            <span>转化率通常 0.1-1%</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">⚠️</span>
+                            <span>转化样本极少</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESMM解决方案 -->
+        <section id="solution">
+            <h2>ESMM解决方案</h2>
+
+            <div class="formula-card">
+                <h4>关键公式</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        p(转化 | 曝光) = p(点击 | 曝光) × p(转化 | 点击)<br><br>
+                        pCTCVR = pCTR × pCVR<br><br>
+                        因此: pCVR = pCTCVR / pCTR
+                    </div>
+                </div>
+            </div>
+
+            <!-- 模型架构 -->
+            <div class="arch-diagram" style="margin-top: 30px;">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component">
+                        <div class="arch-title">输入特征 x</div>
+                        <div class="arch-content">用户/物品/上下文特征</div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row">
+                    <div class="arch-component highlight" style="flex: 1;">
+                        <div class="arch-title">共享 Embedding 层</div>
+                        <div class="arch-content">
+                            <div class="arch-item active">特征嵌入</div>
+                            <div class="arch-item active">联合学习</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row">
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">CTR Tower</div>
+                        <div class="arch-content">
+                            <div class="arch-item">主网络</div>
+                            <div class="arch-item">→ pCTR</div>
+                        </div>
+                    </div>
+                    <div class="arch-component" style="flex: 1;">
+                        <div class="arch-title">CVR Tower</div>
+                        <div class="arch-content">
+                            <div class="arch-item">主网络</div>
+                            <div class="arch-item">→ pCVR</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row">
+                    <div class="arch-component success" style="flex: 1;">
+                        <div class="arch-title">联合输出</div>
+                        <div class="arch-content">
+                            <span class="formula">pCTCVR = pCTR × pCVR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box success" style="margin-top: 20px;">
+                <strong>关键点：</strong>CVR塔不直接计算损失！通过CTCVR间接监督。
+            </div>
+        </section>
+
+        <!-- 为什么有效 -->
+        <section id="why-effective">
+            <h2>为什么ESMM有效？</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>解决SSB</h4>
+                    <p>在全空间(所有曝光)上训练，与预测空间一致</p>
+                </div>
+                <div class="feature-item">
+                    <h4>解决DS</h4>
+                    <p>使用所有曝光样本训练，数据量增加20-100倍</p>
+                </div>
+                <div class="feature-item">
+                    <h4>共享Embedding</h4>
+                    <p>CTR任务提供额外梯度信号，两个任务相互增强</p>
+                </div>
+                <div class="feature-item">
+                    <h4>多输出</h4>
+                    <p>同时输出CTR、CVR、CTCVR，无需单独模型</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>解决样本选择偏差问题</li>
+                        <li>缓解数据稀疏问题</li>
+                        <li>同时输出CTR、CVR、CTCVR</li>
+                        <li>工业界广泛验证有效</li>
+                        <li>训练简单，端到端</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>假设pCTCVR = pCTR × pCVR</li>
+                        <li>CVR塔只能间接学习</li>
+                        <li>对延迟转化处理不足</li>
+                        <li>需要全空间训练数据</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>后续发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>ESMM</strong>
+                        <p>全空间CVR建模</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2019</div>
+                    <div class="content">
+                        <strong>ESM²</strong>
+                        <p>多阶段转化建模</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2020</div>
+                    <div class="content">
+                        <strong>PLE</strong>
+                        <p>渐进式分层提取</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <div class="content">
+                        <strong>AITM</strong>
+                        <p>自适应信息传递</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Entire Space Multi-Task Model: An Effective Approach for Estimating Post-Click Conversion Rate, Ma et al., SIGIR 2018
+                    <a href="https://arxiv.org/abs/1804.07931" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="mmoe.html">MMoE</a>
+                <a href="ple.html">PLE</a>
+                <a href="aitm.html">AITM</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

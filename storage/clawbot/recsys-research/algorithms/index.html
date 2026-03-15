@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推荐算法百科全书 - 搜推技术研究院</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <span>算法百科</span>
+    </nav>
+
+    <header>
+        <h1>推荐算法百科全书</h1>
+        <p class="subtitle">搜推技术核心算法详解 | 召回·排序·多任务·图网络</p>
+    </header>
+
+    <main>
+        <!-- 分类导航 -->
+        <section id="categories">
+            <h2>算法分类</h2>
+            <div class="category-nav">
+                <a href="#recall" class="active">召回算法</a>
+                <a href="#ranking">排序算法</a>
+                <a href="#multitask">多任务学习</a>
+                <a href="#sequence">序列建模</a>
+                <a href="#graph">图神经网络</a>
+                <a href="#retrieval">向量检索</a>
+            </div>
+        </section>
+
+        <!-- 召回算法 -->
+        <section id="recall">
+            <h2>召回算法 (Recall)</h2>
+            <p>召回阶段负责从海量候选池(亿级)中快速筛选出候选集(千级)，是推荐系统的第一道关卡。</p>
+
+            <div class="algorithm-grid">
+                <a href="cf.html" class="algorithm-tile">
+                    <span class="algo-category">协同过滤</span>
+                    <h3>Collaborative Filtering (CF)</h3>
+                    <p>基于用户行为相似度进行推荐，包括User-CF和Item-CF两种经典方法。</p>
+                    <div class="algo-meta">
+                        <span>经典算法</span>
+                        <span>Amazon早期使用</span>
+                    </div>
+                </a>
+
+                <a href="matrix-factorization.html" class="algorithm-tile">
+                    <span class="algo-category">矩阵分解</span>
+                    <h3>Matrix Factorization (MF)</h3>
+                    <p>将用户-物品交互矩阵分解为低维隐向量，Netflix Prize冠军算法。</p>
+                    <div class="algo-meta">
+                        <span>Netflix Prize</span>
+                        <span>2009</span>
+                    </div>
+                </a>
+
+                <a href="item2vec.html" class="algorithm-tile">
+                    <span class="algo-category">嵌入召回</span>
+                    <h3>Item2Vec</h3>
+                    <p>将Word2Vec思想应用于物品序列，学习物品的分布式表示。</p>
+                    <div class="algo-meta">
+                        <span>Embedding</span>
+                        <span>Airbnb使用</span>
+                    </div>
+                </a>
+
+                <a href="youtube-dnn.html" class="algorithm-tile">
+                    <span class="algo-category">深度召回</span>
+                    <h3>YouTube DNN</h3>
+                    <p>YouTube深度学习召回模型，双塔结构用户和视频嵌入。</p>
+                    <div class="algo-meta">
+                        <span>Google</span>
+                        <span>RecSys 2016</span>
+                    </div>
+                </a>
+
+                <a href="ebd.html" class="algorithm-tile">
+                    <span class="algo-category">双塔召回</span>
+                    <h3>Embedding-Based Retrieval</h3>
+                    <p>双塔神经网络架构，用户塔和物品塔独立编码后计算相似度。</p>
+                    <div class="algo-meta">
+                        <span>工业标准</span>
+                        <span>ANN检索</span>
+                    </div>
+                </a>
+
+                <a href="swings.html" class="algorithm-tile">
+                    <span class="algo-category">图召回</span>
+                    <h3>Swing</h3>
+                    <p>阿里提出的基于图结构的物品相似度计算方法。</p>
+                    <div class="algo-meta">
+                        <span>阿里巴巴</span>
+                        <span>淘宝</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 排序算法 -->
+        <section id="ranking">
+            <h2>排序算法 (Ranking)</h2>
+            <p>排序阶段对召回候选集进行精细化打分排序，是决定推荐效果的核心环节。</p>
+
+            <div class="algorithm-grid">
+                <a href="wide-deep.html" class="algorithm-tile">
+                    <span class="algo-category">混合模型</span>
+                    <h3>Wide & Deep</h3>
+                    <p>Google提出的宽模型(记忆)与深模型(泛化)结合的架构。</p>
+                    <div class="algo-meta">
+                        <span>Google</span>
+                        <span>DLRS 2016</span>
+                    </div>
+                </a>
+
+                <a href="deepfm.html" class="algorithm-tile">
+                    <span class="algo-category">特征交叉</span>
+                    <h3>DeepFM</h3>
+                    <p>华为提出，将FM和DNN结合，自动学习高阶特征交叉。</p>
+                    <div class="algo-meta">
+                        <span>华为</span>
+                        <span>IJCAI 2017</span>
+                    </div>
+                </a>
+
+                <a href="din.html" class="algorithm-tile">
+                    <span class="algo-category">兴趣建模</span>
+                    <h3>DIN - Deep Interest Network</h3>
+                    <p>阿里提出，使用注意力机制捕捉用户历史行为中的兴趣。</p>
+                    <div class="algo-meta">
+                        <span>阿里巴巴</span>
+                        <span>KDD 2018</span>
+                    </div>
+                </a>
+
+                <a href="dien.html" class="algorithm-tile">
+                    <span class="algo-category">序列建模</span>
+                    <h3>DIEN - Deep Interest Evolution Network</h3>
+                    <p>DIN的升级版，建模用户兴趣的时序演化过程。</p>
+                    <div class="algo-meta">
+                        <span>阿里巴巴</span>
+                        <span>AAAI 2019</span>
+                    </div>
+                </a>
+
+                <a href="bst.html" class="algorithm-tile">
+                    <span class="algo-category">序列建模</span>
+                    <h3>BST - Behavior Sequence Transformer</h3>
+                    <p>阿里将Transformer应用于用户行为序列建模。</p>
+                    <div class="algo-meta">
+                        <span>阿里巴巴</span>
+                        <span>SIGIR 2019</span>
+                    </div>
+                </a>
+
+                <a href="dlrm.html" class="algorithm-tile">
+                    <span class="algo-category">推荐架构</span>
+                    <h3>DLRM - Deep Learning Recommendation Model</h3>
+                    <p>Meta提出的深度学习推荐模型基准架构。</p>
+                    <div class="algo-meta">
+                        <span>Meta/Facebook</span>
+                        <span>arXiv 2019</span>
+                    </div>
+                </a>
+
+                <a href="autoint.html" class="algorithm-tile">
+                    <span class="algo-category">特征交叉</span>
+                    <h3>AutoInt</h3>
+                    <p>使用多头自注意力自动学习特征交互。</p>
+                    <div class="algo-meta">
+                        <span>字节跳动</span>
+                        <span>CIKM 2019</span>
+                    </div>
+                </a>
+
+                <a href="dcn.html" class="algorithm-tile">
+                    <span class="algo-category">特征交叉</span>
+                    <h3>DCN/DCN-v2 - Deep Cross Network</h3>
+                    <p>Google提出的交叉网络，显式建模有界阶特征交叉。</p>
+                    <div class="algo-meta">
+                        <span>Google</span>
+                        <span>ADKDD 2017</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 多任务学习 -->
+        <section id="multitask">
+            <h2>多任务学习 (Multi-Task Learning)</h2>
+            <p>同时优化多个目标(CTR、CVR、时长等)，平衡不同业务指标。</p>
+
+            <div class="algorithm-grid">
+                <a href="mmoe.html" class="algorithm-tile">
+                    <span class="algo-category">多任务架构</span>
+                    <h3>MMoE - Multi-gate MoE</h3>
+                    <p>Google提出的多专家多门控混合架构，处理任务相关性。</p>
+                    <div class="algo-meta">
+                        <span>Google</span>
+                        <span>KDD 2018</span>
+                    </div>
+                </a>
+
+                <a href="ple.html" class="algorithm-tile">
+                    <span class="algo-category">多任务架构</span>
+                    <h3>PLE - Progressive Layered Extraction</h3>
+                    <p>腾讯提出，解决多任务负迁移问题，任务特定专家+共享专家。</p>
+                    <div class="algo-meta">
+                        <span>腾讯</span>
+                        <span>RecSys 2020</span>
+                    </div>
+                </a>
+
+                <a href="esmm.html" class="algorithm-tile">
+                    <span class="algo-category">转化率预估</span>
+                    <h3>ESMM - Entire Space Multi-Task Model</h3>
+                    <p>阿里提出，解决CVR预估的样本选择偏差问题。</p>
+                    <div class="algo-meta">
+                        <span>阿里巴巴</span>
+                        <span>SIGIR 2018</span>
+                    </div>
+                </a>
+
+                <a href="aitm.html" class="algorithm-tile">
+                    <span class="algo-category">转化漏斗</span>
+                    <h3>AITM - Adaptive Information Transfer</h3>
+                    <p>阿里提出，建模转化漏斗中的信息传递。</p>
+                    <div class="algo-meta">
+                        <span>阿里巴巴</span>
+                        <span>KDD 2021</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 序列建模 -->
+        <section id="sequence">
+            <h2>序列建模 (Sequence Modeling)</h2>
+            <p>建模用户行为序列，捕捉时序依赖和兴趣演化。</p>
+
+            <div class="algorithm-grid">
+                <a href="gru4rec.html" class="algorithm-tile">
+                    <span class="algo-category">序列推荐</span>
+                    <h3>GRU4Rec</h3>
+                    <p>使用GRU进行会话推荐，开创序列推荐深度学习方向。</p>
+                    <div class="algo-meta">
+                        <span>ICLR 2016</span>
+                        <span>Session-based</span>
+                    </div>
+                </a>
+
+                <a href="sasrec.html" class="algorithm-tile">
+                    <span class="algo-category">序列推荐</span>
+                    <h3>SASRec - Self-Attentive Sequential Rec</h3>
+                    <p>使用自注意力进行序列推荐，Transformer架构。</p>
+                    <div class="algo-meta">
+                        <span>ICDM 2018</span>
+                        <span>Attention</span>
+                    </div>
+                </a>
+
+                <a href="bert4rec.html" class="algorithm-tile">
+                    <span class="algo-category">序列推荐</span>
+                    <h3>BERT4Rec</h3>
+                    <p>使用双向Transformer(BERT)进行序列推荐。</p>
+                    <div class="algo-meta">
+                        <span>腾讯</span>
+                        <span>CIKM 2019</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 图神经网络 -->
+        <section id="graph">
+            <h2>图神经网络 (Graph Neural Networks)</h2>
+            <p>利用图结构信息(用户-物品二部图、社交图等)进行推荐。</p>
+
+            <div class="algorithm-grid">
+                <a href="pinsage.html" class="algorithm-tile">
+                    <span class="algo-category">图推荐</span>
+                    <h3>PinSage</h3>
+                    <p>Pinterest提出的图神经网络推荐，随机游走采样+图卷积。</p>
+                    <div class="algo-meta">
+                        <span>Pinterest</span>
+                        <span>KDD 2018</span>
+                    </div>
+                </a>
+
+                <a href="lightgcn.html" class="algorithm-tile">
+                    <span class="algo-category">图推荐</span>
+                    <h3>LightGCN</h3>
+                    <p>简化图卷积网络，去除特征变换，仅保留邻居聚合。</p>
+                    <div class="algo-meta">
+                        <span>SIGIR 2020</span>
+                        <span>高效简洁</span>
+                    </div>
+                </a>
+
+                <a href="ngcf.html" class="algorithm-tile">
+                    <span class="algo-category">图推荐</span>
+                    <h3>NGCF - Neural Graph CF</h3>
+                    <p>将用户-物品交互图建模为图神经网络进行消息传递。</p>
+                    <div class="algo-meta">
+                        <span>SIGIR 2019</span>
+                        <span>图消息传递</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 向量检索 -->
+        <section id="retrieval">
+            <h2>向量检索 (Vector Retrieval)</h2>
+            <p>高维向量的近似最近邻搜索(ANN)，支撑大规模召回。</p>
+
+            <div class="algorithm-grid">
+                <a href="faiss.html" class="algorithm-tile">
+                    <span class="algo-category">向量检索</span>
+                    <h3>Faiss</h3>
+                    <p>Meta开源的高效向量相似度搜索库，支持十亿级向量。</p>
+                    <div class="algo-meta">
+                        <span>Meta/Facebook</span>
+                        <span>开源</span>
+                    </div>
+                </a>
+
+                <a href="hnsw.html" class="algorithm-tile">
+                    <span class="algo-category">向量检索</span>
+                    <h3>HNSW - Hierarchical Navigable Small World</h3>
+                    <p>分层可导航小世界图，高效近似最近邻搜索算法。</p>
+                    <div class="algo-meta">
+                        <span>图索引</span>
+                        <span>高召回率</span>
+                    </div>
+                </a>
+
+                <a href="pq.html" class="algorithm-tile">
+                    <span class="algo-category">向量检索</span>
+                    <h3>PQ - Product Quantization</h3>
+                    <p>乘积量化，将高维向量压缩为低维码本，大幅降低内存。</p>
+                    <div class="algo-meta">
+                        <span>压缩</span>
+                        <span>内存优化</span>
+                    </div>
+                </a>
+
+                <a href="scann.html" class="algorithm-tile">
+                    <span class="algo-category">向量检索</span>
+                    <h3>ScaNN - Scalable NN</h3>
+                    <p>Google开源的向量检索库，支持量化感知训练。</p>
+                    <div class="algo-meta">
+                        <span>Google</span>
+                        <span>开源</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 学习资源 -->
+        <section id="resources">
+            <h2>学习资源</h2>
+            <h3>推荐论文集</h3>
+            <ul>
+                <li><strong>Deep Learning Recommendation Survey</strong> - Zhang et al., 2019</li>
+                <li><strong>Recommender Systems Handbook</strong> - Ricci et al.</li>
+                <li><strong>AutoML for Recommender Systems</strong> - Various Authors</li>
+            </ul>
+
+            <h3>开源框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>来源</th><th>特点</th></tr>
+                <tr><td>TensorFlow Recommenders</td><td>Google</td><td>端到端推荐系统</td></tr>
+                <tr><td>PyTorch Recommenders</td><td>Meta</td><td>灵活的研究框架</td></tr>
+                <tr><td>DeepRec</td><td>阿里</td><td>大规模稀疏模型</td></tr>
+                <tr><td>PaddleRec</td><td>百度</td><td>完整推荐算法库</td></tr>
+                <tr><td>Monolith</td><td>字节跳动</td><td>实时推荐系统</td></tr>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 搜推技术研究院</p>
+        <p><a href="../index.html">← 返回首页</a></p>
+    </footer>
+</body>
+</html>

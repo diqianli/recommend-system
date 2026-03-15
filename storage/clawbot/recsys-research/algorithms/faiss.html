@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Faiss - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#retrieval">向量检索</a> &gt;
+        <span>Faiss</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>Faiss - Facebook AI Similarity Search</h1>
+        <p class="algo-subtitle">向量相似度搜索 | Meta/Facebook | 开源库</p>
+        <div class="algo-tags">
+            <span class="algo-tag">向量检索</span>
+            <span class="algo-tag">ANN</span>
+            <span class="algo-tag">十亿级</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>Faiss是Meta(Facebook)开源的<strong>高效向量相似度搜索库</strong>
+支持十亿级向量的快速检索
+是工业界最常用的向量检索工具之一。</p>
+            <div class="info-box">
+                <strong>核心能力：</strong>支持GPU加速、多种索引类型、量化压缩
+可实现毫秒级十亿向量检索。
+            </div>
+        </section>
+
+        <section id="indexes">
+            <h2>主要索引类型</h2>
+            <table class="tech-table">
+                <tr><th>索引类型</th><th>特点</th><th>适用场景</th></tr>
+                <tr><td>Flat</td><td>暴力搜索
+最高精度</td><td>小规模数据</td></tr>
+                <tr><td>IVF</td><td>倒排索引
+聚类后搜索</td><td>中等规模</td></tr>
+                <tr><td>HNSW</td><td>图索引
+高召回率</td><td>高精度需求</td></tr>
+                <tr><td>PQ</td><td>乘积量化
+内存高效</td><td>大规模数据</td></tr>
+                <tr><td>IVF-PQ</td><td>混合索引</td><td>十亿级数据</td></tr>
+            </table>
+        </section>
+
+        <section id="features">
+            <h2>核心功能</h2>
+            <ul>
+                <li><strong>GPU加速</strong>: 支持NVIDIA GPU
+构建索引和搜索加速10-100倍</li>
+                <li><strong>量化压缩</strong>: PQ、OPQ等量化方法
+大幅降低内存占用</li>
+                <li><strong>分布式</strong>: 支持多机分布式索引</li>
+                <li><strong>多距离度量</strong>: L2、内积、余弦等</li>
+            </ul>
+        </section>
+
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>十亿级向量支持</li>
+                        <li>GPU加速高效</li>
+                        <li>多种索引选择</li>
+                        <li>工业界广泛使用</li>
+                        <li>开源免费</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>GPU版本需要NVIDIA</li>
+                        <li>索引构建耗时</li>
+                        <li>精度与速度需权衡</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/facebookresearch/faiss">GitHub: facebookresearch/faiss</a></li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

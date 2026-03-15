@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIN - Deep Interest Network | 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#ranking">排序算法</a> &gt;
+        <span>DIN</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>DIN - Deep Interest Network</h1>
+        <p class="algo-subtitle">深度兴趣网络 | 阿里巴巴 | KDD 2018</p>
+        <div class="algo-tags">
+            <span class="algo-tag">排序算法</span>
+            <span class="algo-tag">注意力机制</span>
+            <span class="algo-tag">用户兴趣建模</span>
+        </div>
+    </div>
+
+    <main>
+        <!-- 概述 -->
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>DIN是阿里巴巴在2018年KDD上提出的深度学习推荐模型，核心创新是使用<strong>注意力机制</strong>来捕捉用户历史行为中与当前候选物品相关的兴趣表达。</p>
+
+            <div class="info-box">
+                <strong>核心思想：</strong>用户的兴趣是多样化的，对于不同的候选物品，用户历史行为中的相关部分应该被赋予不同的权重。
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>局部激活单元</h4>
+                    <p>设计注意力机制，根据候选物品自适应激活用户历史行为中的相关部分</p>
+                </div>
+                <div class="feature-item">
+                    <h4>变长兴趣表达</h4>
+                    <p>用户兴趣向量长度随历史行为变化，而非固定长度</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Dice激活函数</h4>
+                    <p>提出Data Adaptive Activation Function，改进PReLU</p>
+                </div>
+                <div class="feature-item">
+                    <h4>小批量正则化</h4>
+                    <p>提出Mini-batch Aware Regularization，解决稀疏特征过拟合</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模型架构图 -->
+        <section id="architecture">
+            <h2>模型架构</h2>
+
+            <div class="arch-diagram">
+                <div class="arch-row">
+                    <div class="arch-component">
+                        <div class="arch-title">用户历史行为</div>
+                        <div class="arch-content">
+                            <div class="arch-item">键盘</div>
+                            <div class="arch-item">鼠标</div>
+                            <div class="arch-item">水杯</div>
+                            <div class="arch-item">T恤</div>
+                            <div class="arch-item">...</div>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-component highlight">
+                        <div class="arch-title">Embedding层</div>
+                        <div class="arch-content">
+                            <div class="arch-item active">[E₁]</div>
+                            <div class="arch-item active">[E₂]</div>
+                            <div class="arch-item">[E₃]</div>
+                            <div class="arch-item">[E₄]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-component primary" style="width: 100%; max-width: 600px; margin: 0 auto;">
+                    <div class="arch-title">Local Activation Unit (注意力机制)</div>
+                    <div class="arch-content">
+                        <div class="attention-flow">
+                            <div class="attention-item">
+                                <span class="item-name">键盘</span>
+                                <div class="attention-bar" style="width: 85%;">
+                                    <span class="attention-weight">0.85</span>
+                                </div>
+                            </div>
+                            <div class="attention-item">
+                                <span class="item-name">鼠标</span>
+                                <div class="attention-bar" style="width: 75%;">
+                                    <span class="attention-weight">0.75</span>
+                                </div>
+                            </div>
+                            <div class="attention-item">
+                                <span class="item-name">水杯</span>
+                                <div class="attention-bar low" style="width: 15%;">
+                                    <span class="attention-weight">0.15</span>
+                                </div>
+                            </div>
+                            <div class="attention-item">
+                                <span class="item-name">T恤</span>
+                                <div class="attention-bar low" style="width: 25%;">
+                                    <span class="attention-weight">0.25</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="attention-note">候选物品: 电脑包 → 相关兴趣获得高权重</div>
+                    </div>
+                </div>
+
+                <div class="arch-arrow vertical">↓</div>
+
+                <div class="arch-row">
+                    <div class="arch-component success">
+                        <div class="arch-title">加权求和</div>
+                        <div class="arch-content">
+                            <span class="formula">V<sub>u</sub> = Σ α<sub>i</sub> · E<sub>i</sub></span>
+                        </div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-component">
+                        <div class="arch-title">MLP</div>
+                        <div class="arch-content">用户兴趣向量</div>
+                    </div>
+                    <div class="arch-arrow">→</div>
+                    <div class="arch-component warning">
+                        <div class="arch-title">输出</div>
+                        <div class="arch-content">CTR预测</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 推荐漏斗 -->
+        <section id="funnel">
+            <h2>推荐系统漏斗</h2>
+            <div class="funnel-diagram">
+                <div class="funnel-stage">
+                    <div class="stage-name">候选池</div>
+                    <div class="stage-count">亿级物品</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">召回层</div>
+                    <div class="stage-count">千级候选</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">排序层 (DIN)</div>
+                    <div class="stage-count">百级打分</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">最终推荐</div>
+                    <div class="stage-count">数十展示</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心公式 -->
+        <section id="formula">
+            <h2>核心公式</h2>
+
+            <div class="formula-card">
+                <h4>注意力权重计算</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        α<sub>i</sub> = f(Emb<sub>candidate</sub>, Emb<sub>i</sub>)
+                    </div>
+                </div>
+                <p>其中 f 是一个前馈神经网络，输出归一化后的注意力权重</p>
+            </div>
+
+            <div class="formula-card">
+                <h4>用户兴趣向量</h4>
+                <div class="formula-block">
+                    <div class="formula">
+                        V<sub>u</sub> = Σ α<sub>i</sub> · Emb<sub>i</sub>
+                    </div>
+                </div>
+                <p>加权求和得到自适应的用户兴趣表示</p>
+            </div>
+        </section>
+
+        <!-- 对比分析 -->
+        <section id="comparison">
+            <h2>与基线模型对比</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>传统 Embedding+MLP</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>固定长度用户向量</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>历史行为求和/平均</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✗</span>
+                            <span>无法区分兴趣相关性</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card">
+                    <div class="compare-card-header model-b">
+                        <h4>DIN 深度兴趣网络</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>自适应兴趣表达</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>注意力加权聚合</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon check">✓</span>
+                            <span>对候选物品敏感</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>自适应捕捉用户兴趣</li>
+                        <li>注意力权重可解释性强</li>
+                        <li>工业验证效果显著</li>
+                        <li>提出的技术具有通用性</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>未考虑用户兴趣的时序演化</li>
+                        <li>历史行为之间相互独立</li>
+                        <li>长序列计算开销大</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>后续发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>DIN</strong>
+                        <p>提出注意力机制捕捉用户兴趣</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2019</div>
+                    <div class="content">
+                        <strong>DIEN</strong>
+                        <p>引入GRU建模兴趣演化</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2019</div>
+                    <div class="content">
+                        <strong>BST</strong>
+                        <p>使用Transformer替代GRU</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2021</div>
+                    <div class="content">
+                        <strong>SIM</strong>
+                        <p>处理超长行为序列</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Deep Interest Network for Click-Through Rate Prediction, Zhou et al., KDD 2018
+                    <a href="https://arxiv.org/abs/1706.06978" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="dien.html">DIEN</a>
+                <a href="bst.html">BST</a>
+                <a href="deepfm.html">DeepFM</a>
+                <a href="wide-deep.html">Wide & Deep</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

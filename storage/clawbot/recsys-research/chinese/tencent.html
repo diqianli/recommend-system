@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腾讯搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">中国公司</a> &gt;
+        <span>腾讯</span>
+    </nav>
+
+    <header>
+        <h1>腾讯搜索推荐系统</h1>
+        <p>微信看一看 | 视频号 | QQ推荐 | 社交图谱</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>腾讯的推荐系统覆盖微信(月活13亿+)、QQ等社交平台，其特点是基于社交关系的推荐。微信看一看、视频号等产品的推荐系统融合了内容理解、社交图谱和用户行为建模，是中国最大的社交推荐系统之一。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="微信月活">13亿+</div>
+                <div class="stat" data-label="QQ月活">5.7亿+</div>
+                <div class="stat" data-label="视频号日活">5亿+</div>
+                <div class="stat" data-label="社交关系">万亿级</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>TensorFlow</td><td>模型训练</td><td>官方资料</td></tr>
+                <tr><td>PyTorch</td><td>研究与应用</td><td>技术分享</td></tr>
+                <tr><td>Angel</td><td>分布式机器学习平台</td><td>腾讯开源</td></tr>
+                <tr><td>TFX</td><td>机器学习流水线</td><td>Google开源/腾讯定制</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 统一特征平台，支持社交特征实时计算</li>
+                <li><strong>向量检索</strong>: 自研高性能向量检索系统</li>
+                <li><strong>图计算</strong>: Angel-Graph大规模图计算平台</li>
+                <li><strong>在线服务</strong>: 分布式模型服务框架</li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <table class="tech-table">
+                <tr><th>项目</th><th>描述</th><th>GitHub</th></tr>
+                <tr><td>Angel</td><td>分布式机器学习平台</td><td>Angel-ML/angel</td></tr>
+                <tr><td>Angel-Graph</td><td>图神经网络框架</td><td>Angel-ML/angel</td></tr>
+            </table>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>训练集群</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>规格</th><th>来源</th></tr>
+                <tr><td>GPU集群</td><td>NVIDIA A100/V100大规模集群</td><td>公开资料</td></tr>
+                <tr><td>分布式存储</td><td>PB级特征数据存储</td><td>技术博客</td></tr>
+            </table>
+
+            <h3>推理服务</h3>
+            <ul>
+                <li><strong>GPU推理</strong>: 模型量化与加速</li>
+                <li><strong>CPU优化</strong>: 针对稀疏模型的深度优化</li>
+                <li><strong>边缘部署</strong>: 移动端模型压缩</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>社交推荐</h3>
+            <div class="algorithm-card">
+                <h4>基于社交关系的推荐</h4>
+                <p>利用微信的社交图谱进行推荐，包括：</p>
+                <ul>
+                    <li>好友行为传播: 基于好友互动的内容推荐</li>
+                    <li>社交影响力建模: 量化好友对用户的影响</li>
+                    <li>群组推荐: 基于群聊内容的推荐</li>
+                </ul>
+                <p class="source">来源: 腾讯技术工程</p>
+            </div>
+
+            <h3>图神经网络</h3>
+            <div class="algorithm-card">
+                <h4>GNN推荐</h4>
+                <p>腾讯在图神经网络推荐方面有深入研究：</p>
+                <ul>
+                    <li>GraphSAGE: 大规模图采样与聚合</li>
+                    <li>GAT: 图注意力网络</li>
+                    <li>社交图+行为图融合</li>
+                </ul>
+                <p class="source">来源: Angel-Graph开源项目</p>
+            </div>
+
+            <h3>多任务学习</h3>
+            <div class="algorithm-card">
+                <h4>微信看一看多目标优化</h4>
+                <p>同时优化多个目标：</p>
+                <ul>
+                    <li>点击率 (CTR)</li>
+                    <li>阅读时长</li>
+                    <li>点赞/评论/分享</li>
+                    <li>关注转化</li>
+                </ul>
+            </div>
+
+            <h3>视频号推荐</h3>
+            <div class="algorithm-card">
+                <h4>短视频推荐</h4>
+                <p>视频号推荐系统特点：</p>
+                <ul>
+                    <li>视频内容理解: 多模态特征提取</li>
+                    <li>社交传播: 基于朋友圈分享的传播预测</li>
+                    <li>创作者推荐: 关注关系+兴趣推荐</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户请求 (微信/QQ)
+         ↓
+┌────────────────────────────────────────┐
+│  特征服务层                             │
+│  - 用户画像                             │
+│  - 社交关系特征                         │
+│  - 实时行为特征                         │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - 协同过滤                             │
+│  - 向量召回                             │
+│  - 社交召回 (好友互动)                  │
+│  - 图神经网络召回                       │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度神经网络                         │
+│  - 多任务学习                           │
+│  - 社交特征融合                         │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 多样性控制                           │
+│  - 社交关系过滤                         │
+│  - 业务规则                             │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>社交融合</strong>: 独特的社交图谱与推荐系统深度融合</li>
+                <li><strong>隐私保护</strong>: 在利用社交关系的同时保护用户隐私</li>
+                <li><strong>实时性</strong>: 支持实时特征更新</li>
+                <li><strong>多模态</strong>: 融合文本、图片、视频特征</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>开源项目</h3>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/Angel-ML/angel">Angel - 分布式机器学习平台</a></li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li>腾讯技术工程公众号</li>
+                <li>微信技术公众号</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: 技术博客、开源项目</p>
+        <p><a href="index.html">← 返回中国公司列表</a></p>
+    </footer>
+</body>
+</html>
