@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京东搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">中国公司</a> &gt;
+        <span>京东</span>
+    </nav>
+
+    <header>
+        <h1>京东搜索推荐系统</h1>
+        <p>电商推荐 | 搜索排序 | 供应链优化 | 自营特色</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>京东是中国最大的自营电商平台，其推荐系统服务于京东App主站、京东超市、京东到家等多个场景。京东推荐系统的特点是深度结合供应链信息，强调转化率和用户体验，在自营商品推荐、供应链融合方面有独特优势。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="年活跃用户">6亿+</div>
+                <div class="stat" data-label="SKU数量">数千万</div>
+                <div class="stat" data-label="日均订单">数千万</div>
+                <div class="stat" data-label="推荐GMV占比">50%+</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>Transformer架构</td><td>重排序、搜索排序</td><td>ARMMT论文</td></tr>
+                <tr><td>Sparse MoE</td><td>可扩展生成式推荐</td><td>学术论文</td></tr>
+                <tr><td>图神经网络(GNN)</td><td>用户-商品关系建模</td><td>JD研究</td></tr>
+                <tr><td>强化学习</td><td>在线组合推荐</td><td>JDRec框架</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 语义Tokenizer (RQ-OPQ编码)</li>
+                <li><strong>向量检索</strong>: 商品向量检索系统</li>
+                <li><strong>在线服务</strong>: 高并发推理服务</li>
+                <li><strong>实时计算</strong>: 用户行为实时处理</li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <table class="tech-table">
+                <tr><th>项目</th><th>描述</th><th>GitHub</th></tr>
+                <tr><td>JDsearch</td><td>商品搜索数据集</td><td>rucliujn/JDsearch</td></tr>
+            </table>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>训练集群</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>规格</th><th>来源</th></tr>
+                <tr><td>GPU集群</td><td>NVIDIA大规模集群</td><td>公开资料</td></tr>
+                <tr><td>分布式存储</td><td>PB级特征数据存储</td><td>技术博客</td></tr>
+            </table>
+
+            <h3>推理服务</h3>
+            <ul>
+                <li><strong>在线推理</strong>: 毫秒级响应</li>
+                <li><strong>模型优化</strong>: 量化、剪枝</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>电商推荐</h3>
+            <div class="algorithm-card">
+                <h4>JDRec: 在线组合推荐框架</h4>
+                <p><strong>架构</strong>: Actor-Critic强化学习框架</p>
+                <ul>
+                    <li>List生成模块 + List评估模块</li>
+                    <li>Bootstrap探索算法</li>
+                    <li>CTR提升 +2.6%, 综合价值提升 +5.03%</li>
+                </ul>
+                <p class="source">来源: JDRec: Practical Actor-Critic Framework for Online Combinatorial Recommender System, arXiv:2207.13311</p>
+            </div>
+
+            <div class="algorithm-card">
+                <h4>ARMMT: 多模态重排序</h4>
+                <p><strong>架构</strong>: 注意力多模态融合 + 辅助排序任务</p>
+                <ul>
+                    <li>文本和视觉信息融合</li>
+                    <li>CVR提升 +0.22%</li>
+                </ul>
+                <p class="source">来源: ARMMT: Advancing Re-Ranking with Multimodal Fusion, arXiv:2408.05751</p>
+            </div>
+
+            <h3>搜索排序</h3>
+            <div class="algorithm-card">
+                <h4>Confidence Ranking</h4>
+                <p><strong>算法</strong>: 双模型CTR预测排序框架</p>
+                <ul>
+                    <li>置信度排序损失函数</li>
+                    <li>AUC和准确率联合优化</li>
+                </ul>
+                <p class="source">来源: Confidence Ranking for CTR Prediction, WWW 2023</p>
+            </div>
+
+            <h3>多任务学习</h3>
+            <div class="algorithm-card">
+                <h4>多目标架构</h4>
+                <ul>
+                    <li><strong>MMoE</strong>: 多专家门控混合</li>
+                    <li><strong>PLE</strong>: 渐进式分层提取</li>
+                    <li><strong>ESMM</strong>: 全空间多任务模型</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户请求
+    ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - 协同过滤                             │
+│  - 向量召回                             │
+│  - 热门/新品                            │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度学习模型                         │
+│  - 多目标优化                           │
+│  - 供应链特征融合                       │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 库存过滤                             │
+│  - 多样性控制                           │
+│  - 业务规则                             │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>云原生</strong>: 基于云基础设施构建</li>
+                <li><strong>实时性</strong>: 毫秒级响应</li>
+                <li><strong>供应链融合</strong>: 库存、物流信息融入推荐</li>
+                <li><strong>规模</strong>: 支持海量用户和商品</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>ARMMT: Advancing Re-Ranking with Multimodal Fusion, arXiv 2024</li>
+                <li>Confidence Ranking for CTR Prediction, WWW 2023</li>
+                <li>JDsearch: A Large-Scale Product Search Dataset, SIGIR 2023</li>
+                <li>JDRec: Practical Actor-Critic Framework, arXiv 2022</li>
+            </ul>
+
+            <h3>开源项目</h3>
+            <ul class="opensource-list">
+                <li><a href="https://github.com/rucliujn/JDsearch">JDsearch - 商品搜索数据集</a></li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li>京东技术公众号</li>
+                <li>京东零售技术博客</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: 学术论文、京东技术博客</p>
+        <p><a href="index.html">← 返回中国公司列表</a></p>
+    </footer>
+</body>
+</html>

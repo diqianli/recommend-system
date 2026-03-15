@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拼多多搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">中国公司</a> &gt;
+        <span>拼多多</span>
+    </nav>
+
+    <header>
+        <h1>拼多多搜索推荐系统</h1>
+        <p>社交电商推荐 | 拼团推荐 | 性价比推荐</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>拼多多是中国快速崛起的社交电商平台，年活跃买家超过9亿。拼多多推荐系统的特点是融合社交关系和拼团机制，通过"社交裂变"实现用户增长，以"性价比"为核心推荐策略。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="年活跃买家">9亿+</div>
+                <div class="stat" data-label="GMV">数万亿</div>
+                <div class="stat" data-label="月活用户">7亿+</div>
+                <div class="stat" data-label="社交裂变">核心增长</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>TensorFlow</td><td>模型训练</td><td>行业标准</td></tr>
+                <tr><td>自研框架</td><td>大规模推荐</td><td>内部开发</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 社交特征、行为特征</li>
+                <li><strong>社交图</strong>: 好友关系、拼团关系</li>
+                <li><strong>在线服务</strong>: 高并发推荐服务</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>训练集群</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>规格</th><th>来源</th></tr>
+                <tr><td>GPU集群</td><td>NVIDIA大规模集群</td><td>公开资料</td></tr>
+            </table>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>社交推荐</h3>
+            <div class="algorithm-card">
+                <h4>社交关系推荐</h4>
+                <p>利用社交关系增强推荐：</p>
+                <ul>
+                    <li>好友行为: 基于好友购买记录推荐</li>
+                    <li>拼团关系: 基于共同拼团用户推荐</li>
+                    <li>社交传播: 预测内容社交传播能力</li>
+                </ul>
+            </div>
+
+            <h3>性价比推荐</h3>
+            <div class="algorithm-card">
+                <h4>价格敏感推荐</h4>
+                <p>拼多多核心推荐策略：</p>
+                <ul>
+                    <li>价格因素: 强调性价比</li>
+                    <li>补贴商品: 百亿补贴商品推荐</li>
+                    <li>拼单优惠: 拼团价格优势</li>
+                </ul>
+            </div>
+
+            <h3>拼团推荐</h3>
+            <div class="algorithm-card">
+                <h4>拼团机制推荐</h4>
+                <ul>
+                    <li>正在拼团: 推荐即将成团的商品</li>
+                    <li>拼团成功率: 预测拼团成功概率</li>
+                    <li>社交邀请: 推荐适合分享的商品</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户请求
+    ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - 协同过滤                             │
+│  - 社交召回                             │
+│  - 性价比召回                           │
+│  - 拼团召回                             │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度学习模型                         │
+│  - 社交特征融合                         │
+│  - 价格敏感度建模                       │
+└────────────────────────────────────────┘
+    ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 拼团状态                             │
+│  - 多样性                               │
+│  - 业务规则                             │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>社交驱动</strong>: 社交关系是核心特征</li>
+                <li><strong>性价比优先</strong>: 价格敏感的推荐策略</li>
+                <li><strong>拼团机制</strong>: 独特的拼团推荐逻辑</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>Social Recommendation: A Review, IEEE Access 2021</li>
+                <li>Group Buying Recommendation with Social Networks, WWW 2020</li>
+                <li>Graph Neural Networks for Social Recommendation, WWW 2019</li>
+            </ul>
+
+            <h3>技术资料</h3>
+            <ul class="blog-list">
+                <li>拼多多技术团队公开分享</li>
+                <li>PDD Tech Blog</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: 公开技术分享</p>
+        <p><a href="index.html">← 返回中国公司列表</a></p>
+    </footer>
+</body>
+</html>

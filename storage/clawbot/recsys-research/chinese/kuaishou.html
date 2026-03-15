@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快手搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">中国公司</a> &gt;
+        <span>快手</span>
+    </nav>
+
+    <header>
+        <h1>快手搜索推荐系统</h1>
+        <p>短视频推荐 | 直播推荐 | 普惠算法 | 社区氛围</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>快手是中国领先的短视频平台，日活用户超过3.5亿。快手推荐系统的特点是"普惠"算法，注重中腰部创作者的曝光机会，保持社区生态的健康平衡。快手的推荐系统在实时性、公平性和社区氛围方面有独特的设计。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="日活用户">3.5亿+</div>
+                <div class="stat" data-label="月活用户">7亿+</div>
+                <div class="stat" data-label="日均使用时长">100+分钟</div>
+                <div class="stat" data-label="创作者比例">25%+</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>PyTorch</td><td>模型训练与研究</td><td>官方资料</td></tr>
+                <tr><td>TensorFlow</td><td>生产环境</td><td>技术分享</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 实时特征计算</li>
+                <li><strong>向量检索</strong>: 高性能向量检索引擎</li>
+                <li><strong>在线学习</strong>: 实时模型更新</li>
+                <li><strong>公平性机制</strong>: 创作者曝光控制</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>训练集群</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>规格</th><th>来源</th></tr>
+                <tr><td>GPU集群</td><td>NVIDIA大规模集群</td><td>公开资料</td></tr>
+            </table>
+
+            <h3>推理服务</h3>
+            <ul>
+                <li><strong>在线推理</strong>: 低延迟要求</li>
+                <li><strong>边缘部署</strong>: 移动端优化</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>普惠算法</h3>
+            <div class="algorithm-card">
+                <h4>公平性推荐</h4>
+                <p>快手推荐系统的核心理念是"普惠"：</p>
+                <ul>
+                    <li>中腰部创作者曝光: 避免头部垄断</li>
+                    <li>长尾内容分发: 新视频冷启动</li>
+                    <li>社区生态平衡: 多样性保护</li>
+                    <li>社交关系利用: 关注流与推荐流结合</li>
+                </ul>
+                <p class="source">来源: 快手技术分享</p>
+            </div>
+
+            <h3>多任务学习</h3>
+            <div class="algorithm-card">
+                <h4>多目标优化</h4>
+                <ul>
+                    <li>完播率</li>
+                    <li>点赞/评论/分享</li>
+                    <li>关注转化</li>
+                    <li>停留时长</li>
+                </ul>
+            </div>
+
+            <h3>实时学习</h3>
+            <div class="algorithm-card">
+                <h4>在线学习</h4>
+                <p>快手推荐系统支持实时更新：</p>
+                <ul>
+                    <li>用户行为实时反馈</li>
+                    <li>热点内容快速识别</li>
+                    <li>模型参数在线更新</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户打开App/滑动
+         ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - 协同过滤                             │
+│  - 向量召回                             │
+│  - 关注流                               │
+│  - 热门/地域                            │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度神经网络                         │
+│  - 多任务学习                           │
+│  - 普惠性调整                           │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 创作者公平性控制                     │
+│  - 多样性                               │
+│  - 社区氛围保护                         │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>普惠理念</strong>: 公平性是核心设计原则</li>
+                <li><strong>社区氛围</strong>: 保持健康的社区生态</li>
+                <li><strong>实时性</strong>: 快速响应热点和趋势</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>PPNet: A Personalized Parallel Network for Short Video Recommendation, KDD 2022</li>
+                <li>Multi-Task Learning for Dense Prediction Tasks: A Survey, TPAMI 2021</li>
+                <li>Fairness in Recommendation: A Survey, arXiv 2023</li>
+                <li>Exposure Fairness in Recommender Systems, KDD 2021</li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li>快手技术公众号</li>
+                <li>快手技术博客</li>
+                <li>快手Y-tech技术分享</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: 快手技术分享</p>
+        <p><a href="index.html">← 返回中国公司列表</a></p>
+    </footer>
+</body>
+</html>

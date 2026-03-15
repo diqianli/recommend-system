@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wide & Deep - 推荐算法百科</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="global-nav">
+        <ul>
+            <li><a href="../index.html">首页</a></li>
+            <li><a href="../chinese/index.html">中国公司</a></li>
+            <li><a href="../global/index.html">全球公司</a></li>
+            <li><a href="index.html" class="active">算法百科</a></li>
+        </ul>
+    </nav>
+
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">算法百科</a> &gt;
+        <a href="index.html#ranking">排序算法</a> &gt;
+        <span>Wide & Deep</span>
+    </nav>
+
+    <div class="algo-header">
+        <h1>Wide & Deep Learning</h1>
+        <p class="algo-subtitle">宽深学习 | Google | RecSys 2016</p>
+        <div class="algo-tags">
+            <span class="algo-tag">排序算法</span>
+            <span class="algo-tag">记忆+泛化</span>
+            <span class="algo-tag">工业标准</span>
+        </div>
+    </div>
+
+    <main>
+        <section id="overview">
+            <h2>算法概述</h2>
+            <p>Wide & Deep是Google在2016年提出的深度学习推荐模型，首次将<strong>线性模型(记忆能力)</strong>和<strong>深度神经网络(泛化能力)</strong>结合，在Google Play应用商店推荐中取得显著效果。</p>
+
+            <div class="info-box">
+                <strong>核心理念：</strong>记忆(Memorization)让模型记住历史规律，泛化(Generalization)让模型探索新的特征组合。
+            </div>
+        </section>
+
+        <!-- 核心概念 -->
+        <section id="concepts">
+            <h2>核心概念：记忆 vs 泛化</h2>
+            <div class="compare-cards">
+                <div class="compare-card">
+                    <div class="compare-card-header model-a">
+                        <h4>记忆 (Memorization)</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">📝</span>
+                            <span>记住历史共现规律</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">🎯</span>
+                            <span>线性模型/Wide部分</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✓</span>
+                            <span>可解释性强</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">⚠️</span>
+                            <span>无法泛化到未见组合</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="compare-card">
+                    <div class="compare-card-header model-b">
+                        <h4>泛化 (Generalization)</h4>
+                    </div>
+                    <div class="compare-card-body">
+                        <div class="compare-card-item">
+                            <span class="icon">🔮</span>
+                            <span>探索新的特征组合</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">🧠</span>
+                            <span>深度网络/Deep部分</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">✓</span>
+                            <span>低维嵌入学习</span>
+                        </div>
+                        <div class="compare-card-item">
+                            <span class="icon">⚠️</span>
+                            <span>可能过度泛化</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 模型架构 -->
+        <section id="architecture">
+            <h2>模型架构</h2>
+            <div class="twin-tower">
+                <div class="tower">
+                    <div class="tower-title">Wide 部分</div>
+                    <div class="tower-layers">
+                        <div class="tower-layer">交叉特征 (手工设计)</div>
+                        <div class="tower-layer active">y = wᵀx + b</div>
+                        <div class="tower-layer">线性变换</div>
+                        <div class="tower-layer">
+                            <strong>示例：</strong><br>
+                            AND(用户安装netflix, 候选youtube)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tower-connector">
+                    <div class="dot"></div>
+                    <div class="line"></div>
+                    <div class="symbol">+</div>
+                    <div class="line"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <div class="tower">
+                    <div class="tower-title">Deep 部分</div>
+                    <div class="tower-layers">
+                        <div class="tower-layer">稀疏特征 → Embedding</div>
+                        <div class="tower-layer active">Concatenate</div>
+                        <div class="tower-layer">Hidden Layer 1 (ReLU)</div>
+                        <div class="tower-layer">Hidden Layer 2 (ReLU)</div>
+                        <div class="tower-layer">Hidden Layer 3 (ReLU)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arch-diagram" style="margin-top: 30px;">
+                <div class="arch-row" style="justify-content: center;">
+                    <div class="arch-component success" style="text-align: center;">
+                        <div class="arch-title">联合输出</div>
+                        <div class="arch-content">
+                            <span class="formula">P(Y=1) = σ(W<sub>wide</sub>·x + W<sub>deep</sub>·h + b)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 训练策略 -->
+        <section id="training">
+            <h2>训练策略</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Wide部分优化</h4>
+                    <p>使用FTRL优化器，适合稀疏特征的L1正则化</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Deep部分优化</h4>
+                    <p>使用AdaGrad优化器，自适应学习率</p>
+                </div>
+                <div class="feature-item">
+                    <h4>联合训练</h4>
+                    <p>Wide和Deep同时训练，权重共同优化</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Dropout</h4>
+                    <p>深度网络使用Dropout防止过拟合</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Google Play案例 -->
+        <section id="case-study">
+            <h2>Google Play 应用案例</h2>
+            <div class="funnel-diagram">
+                <div class="funnel-stage">
+                    <div class="stage-name">100万+ 应用</div>
+                    <div class="stage-count">候选池</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">检索 + 过滤</div>
+                    <div class="stage-count">候选生成</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">Wide & Deep 排序</div>
+                    <div class="stage-count">精排打分</div>
+                </div>
+                <div class="funnel-stage">
+                    <div class="stage-name">应用下载 +1.8%</div>
+                    <div class="stage-count">效果提升</div>
+                </div>
+            </div>
+
+            <h3>特征设计</h3>
+            <table class="tech-table">
+                <tr><th>特征类型</th><th>Wide部分</th><th>Deep部分</th></tr>
+                <tr><td>用户特征</td><td>安装应用×候选类别</td><td>安装历史Embedding</td></tr>
+                <tr><td>应用特征</td><td>类别交叉</td><td>类别、开发者Embedding</td></tr>
+                <tr><td>上下文</td><td>国家×设备</td><td>时间、设备特征</td></tr>
+            </table>
+        </section>
+
+        <!-- 优缺点 -->
+        <section id="pros-cons">
+            <h2>优缺点分析</h2>
+            <div class="pros-cons">
+                <div class="pros">
+                    <h4>优点</h4>
+                    <ul>
+                        <li>同时具备记忆和泛化能力</li>
+                        <li>结构简单，易于实现</li>
+                        <li>Google大规模验证有效</li>
+                        <li>可融合业务知识</li>
+                        <li>工业界标准架构</li>
+                    </ul>
+                </div>
+                <div class="cons">
+                    <h4>局限性</h4>
+                    <ul>
+                        <li>Wide部分需要特征工程</li>
+                        <li>人工设计交叉特征工作量大</li>
+                        <li>未考虑用户行为序列</li>
+                        <li>高阶交叉能力有限</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 发展时间线 -->
+        <section id="evolution">
+            <h2>后续发展</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="year">2016</div>
+                    <div class="content">
+                        <strong>Wide & Deep</strong>
+                        <p>Google提出，线性+深度结合</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2017</div>
+                    <div class="content">
+                        <strong>DeepFM</strong>
+                        <p>用FM替代Wide，自动学习交叉</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2017</div>
+                    <div class="content">
+                        <strong>DCN</strong>
+                        <p>交叉网络显式建模特征交叉</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="year">2018</div>
+                    <div class="content">
+                        <strong>xDeepFM</strong>
+                        <p>压缩交互网络，向量级交叉</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 参考资料 -->
+        <section id="references">
+            <h2>参考资料</h2>
+            <ul class="paper-list">
+                <li>Wide & Deep Learning for Recommender Systems, Cheng et al., DLRS 2016
+                    <a href="https://arxiv.org/abs/1606.07792" class="link-btn">[arXiv]</a>
+                </li>
+            </ul>
+
+            <h3>相关算法</h3>
+            <div class="category-nav">
+                <a href="deepfm.html">DeepFM</a>
+                <a href="dcn.html">DCN</a>
+                <a href="dlrm.html">DLRM</a>
+                <a href="din.html">DIN</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 推荐算法百科</p>
+        <p><a href="index.html">← 返回算法百科</a></p>
+    </footer>
+</body>
+</html>

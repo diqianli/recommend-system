@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>美团搜索推荐系统技术解析</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <nav class="breadcrumb">
+        <a href="../index.html">首页</a> &gt;
+        <a href="index.html">中国公司</a> &gt;
+        <span>美团</span>
+    </nav>
+
+    <header>
+        <h1>美团搜索推荐系统</h1>
+        <p>外卖推荐 | 到店推荐 | 酒店旅游 | LBS推荐</p>
+    </header>
+
+    <main>
+        <!-- 1. 概览 -->
+        <section id="overview">
+            <h2>系统概览</h2>
+            <p>美团是中国最大的本地生活服务平台，其推荐系统覆盖外卖、到店餐饮、酒店旅游、电影票等多个业务场景。美团推荐系统的独特之处在于需要处理LBS(位置服务)、时效性等复杂约束，是O2O推荐系统的典型代表。</p>
+
+            <div class="stats">
+                <div class="stat" data-label="年交易用户">6亿+</div>
+                <div class="stat" data-label="活跃商家">900万+</div>
+                <div class="stat" data-label="日均订单">数千万</div>
+                <div class="stat" data-label="POI数量">数千万</div>
+            </div>
+        </section>
+
+        <!-- 2. 软件框架 -->
+        <section id="software">
+            <h2>软件技术栈</h2>
+
+            <h3>深度学习框架</h3>
+            <table class="tech-table">
+                <tr><th>框架</th><th>用途</th><th>来源</th></tr>
+                <tr><td>TensorFlow</td><td>模型训练</td><td>官方资料</td></tr>
+                <tr><td>PyTorch</td><td>研究与应用</td><td>技术博客</td></tr>
+                <tr><td>MLX (美团机器学习平台)</td><td>一站式机器学习平台</td><td>美团自研</td></tr>
+            </table>
+
+            <h3>推荐系统组件</h3>
+            <ul>
+                <li><strong>特征工程</strong>: 实时特征计算，地理位置特征处理</li>
+                <li><strong>向量检索</strong>: 自研向量检索系统</li>
+                <li><strong>LBS处理</strong>: 地理位置索引与检索</li>
+                <li><strong>时效性</strong>: 营业时间、配送时间约束</li>
+            </ul>
+        </section>
+
+        <!-- 3. 硬件基础设施 -->
+        <section id="hardware">
+            <h2>硬件基础设施</h2>
+
+            <h3>训练集群</h3>
+            <table class="tech-table">
+                <tr><th>组件</th><th>规格</th><th>来源</th></tr>
+                <tr><td>GPU集群</td><td>NVIDIA V100/A100集群</td><td>公开资料</td></tr>
+                <tr><td>分布式存储</td><td>特征数据存储</td><td>技术博客</td></tr>
+            </table>
+
+            <h3>推理服务</h3>
+            <ul>
+                <li><strong>在线推理</strong>: 低延迟要求，毫秒级响应</li>
+                <li><strong>边缘计算</strong>: 地理位置相关的边缘部署</li>
+            </ul>
+        </section>
+
+        <!-- 4. 核心算法 -->
+        <section id="algorithms">
+            <h2>核心算法</h2>
+
+            <h3>LBS推荐</h3>
+            <div class="algorithm-card">
+                <h4>地理位置推荐</h4>
+                <p>美团推荐系统需要考虑地理位置因素：</p>
+                <ul>
+                    <li>距离衰减: 用户偏好与距离的关系建模</li>
+                    <li>地理围栏: 基于商圈/区域的推荐</li>
+                    <li>配送范围: 外卖配送可达性约束</li>
+                    <li>用户轨迹: 基于移动轨迹的偏好推断</li>
+                </ul>
+                <p class="source">来源: 美团技术团队</p>
+            </div>
+
+            <h3>POI推荐</h3>
+            <div class="algorithm-card">
+                <h4>兴趣点(POI)推荐</h4>
+                <p>针对商家/餐厅的推荐：</p>
+                <ul>
+                    <li>协同过滤: 基于用户-POI交互</li>
+                    <li>内容特征: 菜品、价格、评分</li>
+                    <li>时序特征: 营业时间、等待时间</li>
+                    <li>图神经网络: POI关系图建模</li>
+                </ul>
+            </div>
+
+            <h3>多目标优化</h3>
+            <div class="algorithm-card">
+                <h4>业务目标平衡</h4>
+                <p>同时优化多个目标：</p>
+                <ul>
+                    <li>用户体验: 点击率、满意度</li>
+                    <li>平台收益: GMV、订单量</li>
+                    <li>商家利益: 曝光公平性</li>
+                    <li>配送效率: 配送时间优化</li>
+                </ul>
+            </div>
+
+            <h3>时效性处理</h3>
+            <div class="algorithm-card">
+                <h4>时间约束推荐</h4>
+                <p>美团推荐需要考虑时间因素：</p>
+                <ul>
+                    <li>营业时间: 过滤未营业商家</li>
+                    <li>配送时间: 预计送达时间</li>
+                    <li>用餐时段: 早餐/午餐/晚餐偏好</li>
+                    <li>节假日: 特殊时段需求</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. 系统架构 -->
+        <section id="architecture">
+            <h2>系统架构</h2>
+            <div class="architecture-diagram">
+                <pre>
+用户请求 (带位置信息)
+         ↓
+┌────────────────────────────────────────┐
+│  上下文处理                             │
+│  - 地理位置                             │
+│  - 时间信息                             │
+│  - 用户意图                             │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  召回层                                 │
+│  - 地理召回 (附近商家)                  │
+│  - 协同过滤                             │
+│  - 向量召回                             │
+│  - 热门/新品召回                        │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  过滤层                                 │
+│  - 营业状态过滤                         │
+│  - 配送范围过滤                         │
+│  - 库存检查                             │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  排序层                                 │
+│  - 深度学习排序模型                     │
+│  - 距离特征融合                         │
+│  - 多目标优化                           │
+└────────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│  重排层                                 │
+│  - 多样性                               │
+│  - 业务规则                             │
+│  - 价格/距离调整                        │
+└────────────────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>架构特点</h3>
+            <ul>
+                <li><strong>LBS优先</strong>: 地理位置是核心特征</li>
+                <li><strong>时效约束</strong>: 严格的时间有效性检查</li>
+                <li><strong>多业务融合</strong>: 外卖、到店、酒店等场景统一架构</li>
+                <li><strong>实时性</strong>: 库存、状态实时更新</li>
+            </ul>
+        </section>
+
+        <!-- 6. 参考文献 -->
+        <section id="references">
+            <h2>参考资料</h2>
+
+            <h3>学术论文</h3>
+            <ul class="paper-list">
+                <li>Deep Spatio-Temporal Neural Networks for Click-Through Rate Prediction, KDD 2019</li>
+                <li>Learning to Rank Features for Recommendation over Multiple Categories, CIKM 2020</li>
+                <li>Neural Factorization Machines for Sparse Predictive Analytics, SIGIR 2017</li>
+                <li>Geo-Teaser: Geo-Temporal Sequential Embedding Rank for POI Recommendation, RecSys 2017</li>
+            </ul>
+
+            <h3>技术博客</h3>
+            <ul class="blog-list">
+                <li>美团技术团队公众号</li>
+                <li>美团技术博客</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>最后更新: 2026-03-15 | 信息来源: 美团技术团队博客</p>
+        <p><a href="index.html">← 返回中国公司列表</a></p>
+    </footer>
+</body>
+</html>
