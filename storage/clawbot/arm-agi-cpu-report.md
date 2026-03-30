@@ -114,6 +114,10 @@
 | **每机架核心数** | **45,696核** | 22,528核 |
 | **核心密度** | **~2.0x** | 1.0x |
 
+> 注: NVIDIA Vera CPU Rack数据 (22,528核 = 88核 × 256颗CPU) 已由NVIDIA官方产品页确认:
+> https://www.nvidia.com/en-us/data-center/products/vera-rack/
+> 该数据与Arm发布会幻灯片引用一致 (ServeTheHome拍摄, 第15张)。
+
 ---
 
 ## 五、产品路线图

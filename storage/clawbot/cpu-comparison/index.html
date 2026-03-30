@@ -626,7 +626,7 @@
                 <tr>
                     <td class="spec-label">L2缓存</td>
                     <td class="arm-value winner">2MB/核 (272MB总计)</td>
-                    <td class="nvidia-value">2MB (总计)</td>
+                    <td class="nvidia-value">2MB/核 (总计176MB，源文件未明确，待确认)</td>
                 </tr>
                 <tr>
                     <td class="spec-label">共享缓存</td>
@@ -686,8 +686,8 @@
                 </tr>
                 <tr>
                     <td class="spec-label">内存容量</td>
-                    <td class="arm-value">12通道 (可扩展)</td>
-                    <td class="nvidia-value winner">1.5 TB (固定)</td>
+                    <td class="arm-value">可配置 (12通道DDR5)</td>
+                    <td class="nvidia-value">1.5 TB LPDDR5X (固定)</td>
                 </tr>
                 <tr>
                     <td class="spec-label">每核带宽</td>
@@ -700,8 +700,13 @@
                     <td class="nvidia-value">未披露 (LPDDR通常较高)</td>
                 </tr>
                 <tr>
-                    <td class="spec-label">互联技术</td>
-                    <td class="arm-value">PCIe Gen6 x96</td>
+                    <td class="spec-label">通用I/O</td>
+                    <td class="arm-value winner">PCIe Gen6 x96</td>
+                    <td class="nvidia-value">未独立披露</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">CPU-GPU互联</td>
+                    <td class="arm-value">无独立GPU (支持CXL 3.0)</td>
                     <td class="nvidia-value winner">NVLink-C2C 1.8 TB/s</td>
                 </tr>
                 <tr>
@@ -785,30 +790,31 @@
             </div>
             <div class="rack-card rack-visual-nvidia">
                 <div class="rack-icon">🔧</div>
-                <h3 class="rack-title nvidia">Vera Rubin NVL72</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">AI工厂平台 / 180-220kW</p>
+                <h3 class="rack-title nvidia">NVIDIA Vera CPU Rack</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">独立CPU机架产品 / MGX架构</p>
                 <div class="rack-specs">
                     <div class="rack-spec">
                         <span class="rack-spec-label">Vera CPU数量</span>
-                        <span class="rack-spec-value nvidia-rack-spec-value">72颗</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">256颗</span>
                     </div>
                     <div class="rack-spec">
                         <span class="rack-spec-label">CPU核心总数</span>
-                        <span class="rack-spec-value nvidia-rack-spec-value">6,336核</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">22,528核</span>
                     </div>
                     <div class="rack-spec">
                         <span class="rack-spec-label">CPU内存总量</span>
-                        <span class="rack-spec-value nvidia-rack-spec-value">108 TB</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">Up to 400 TB</span>
                     </div>
                     <div class="rack-spec">
-                        <span class="rack-spec-label">配套Rubin GPU</span>
-                        <span class="rack-spec-value nvidia-rack-spec-value">72颗</span>
+                        <span class="rack-spec-label">聚合带宽</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">Up to 315 TB/s</span>
                     </div>
                 </div>
             </div>
         </div>
         <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
-            <strong style="color: var(--arm-light);">Arm AGI CPU</strong> 每机架核心数是 <strong style="color: var(--nvidia-light);">Vera CPU</strong> 的 <strong>~7.2倍</strong>
+            <strong style="color: var(--arm-light);">Arm AGI CPU</strong> 每机架核心数是 <strong style="color: var(--nvidia-light);">Vera CPU Rack</strong> 的 <strong>~2.0倍</strong>（45,696 vs 22,528），
+            但Vera CPU Rack内存总量更高（400 TB vs 180 TB+），且支持SMT（45,056线程 vs 45,696线程）
         </p>
     </section>
 
@@ -841,16 +847,16 @@
             </div>
             <div class="compare-card nvidia">
                 <div class="compare-card-header">
-                    <h3>平台配套组件</h3>
+                    <h3>独立CPU机架 + GPU平台配套</h3>
                     <span class="nvidia-badge">NVIDIA Vera CPU</span>
                 </div>
                 <div class="compare-content">
-                    <p><strong>产品定位</strong>: Vera Rubin AI工厂平台的核心组件</p>
+                    <p><strong>产品定位</strong>: 双重部署形态 — 独立CPU机架产品(Vera CPU Rack)及Vera Rubin AI工厂平台核心组件</p>
                     <ul>
+                        <li><strong>Vera CPU Rack</strong>: 256颗CPU独立机架，面向强化学习和Agentic AI</li>
+                        <li><strong>Vera Rubin NVL72</strong>: 36颗CPU + 72颗GPU，面向AI训练</li>
                         <li>为Rubin GPU提供高速数据馈送</li>
-                        <li>管理AI训练框架和操作系统</li>
                         <li>通过NVLink-C2C扩展GPU显存</li>
-                        <li>不独立销售，仅作为平台组件</li>
                     </ul>
                     <p style="margin-top: 1rem;"><strong>首批客户</strong>:</p>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
@@ -887,7 +893,7 @@
             </div>
             <div class="market-card arm">
                 <h4>📊 机架密度领先</h4>
-                <p>液冷配置下单机架可达45,696核，核心密度约为Vera方案的7.2倍。</p>
+                <p>液冷配置下单机架45,696核，约为Vera CPU Rack的2.0倍；但Vera Rack内存总量(400TB)远超Arm方案(180TB+)，且SMT使线程总数(45,056)接近Arm的物理核数。</p>
             </div>
             <div class="market-card nvidia">
                 <h4>🎯 大模型训练优化</h4>
