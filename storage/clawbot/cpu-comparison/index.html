@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arm AGI CPU vs NVIDIA Vera CPU — 2026春季旗舰处理器对比</title>
+    <style>
+        :root {
+            --arm-gradient: linear-gradient(135deg, #0091BD 0%, #00D9FF 50%, #00C7BE 100%);
+            --nvidia-gradient: linear-gradient(135deg, #76B900 0%, #9FE600 50%, #C8F000 100%);
+            --arm-dark: #006B8C;
+            --arm-light: #00D9FF;
+            --nvidia-dark: #5A8A00;
+            --nvidia-light: #9FE600;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border-color: #2a2a3a;
+            --glow-arm: 0 0 30px rgba(0, 217, 255, 0.3);
+            --glow-nvidia: 0 0 30px rgba(127, 230, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0091BD15 0%, #76B90015 50%, #00C7BE15 100%);
+            z-index: 0;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 6vw, 4rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--arm-light) 0%, #ffffff 50%, var(--nvidia-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 800px;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .battle-arena {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .cpu-card {
+            width: 380px;
+            padding: 2.5rem;
+            border-radius: 20px;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cpu-card.arm {
+            background: var(--arm-gradient);
+            box-shadow: var(--glow-arm);
+        }
+
+        .cpu-card.nvidia {
+            background: var(--nvidia-gradient);
+            box-shadow: var(--glow-nvidia);
+        }
+
+        .cpu-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .cpu-card h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #000;
+        }
+
+        .cpu-card .subtitle {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: #000;
+            margin-bottom: 1.5rem;
+        }
+
+        .cpu-card .date {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            color: #000;
+        }
+
+        .vs-badge {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff0055, #ff6600);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--arm-light), var(--nvidia-light));
+            border-radius: 2px;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .comparison-table thead {
+            background: var(--bg-tertiary);
+        }
+
+        .comparison-table th {
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .comparison-table th.arm-header {
+            background: var(--arm-gradient);
+            color: #000;
+        }
+
+        .comparison-table th.nvidia-header {
+            background: var(--nvidia-gradient);
+            color: #000;
+        }
+
+        .comparison-table td {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table tbody tr:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .spec-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .arm-value {
+            color: var(--arm-light);
+            font-weight: 600;
+        }
+
+        .nvidia-value {
+            color: var(--nvidia-light);
+            font-weight: 600;
+        }
+
+        .winner {
+            position: relative;
+        }
+
+        .winner::after {
+            content: '';
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: currentColor;
+            border-radius: 50%;
+        }
+
+        /* Dual Column Compare */
+        .dual-compare {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .compare-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .compare-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .compare-card.arm {
+            border-color: var(--arm-dark);
+        }
+
+        .compare-card.arm:hover {
+            border-color: var(--arm-light);
+            box-shadow: var(--glow-arm);
+        }
+
+        .compare-card.nvidia {
+            border-color: var(--nvidia-dark);
+        }
+
+        .compare-card.nvidia:hover {
+            border-color: var(--nvidia-light);
+            box-shadow: var(--glow-nvidia);
+        }
+
+        .compare-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .compare-card-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .arm-badge {
+            padding: 0.25rem 0.75rem;
+            background: var(--arm-gradient);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .nvidia-badge {
+            padding: 0.25rem 0.75rem;
+            background: var(--nvidia-gradient);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .compare-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .compare-content ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .compare-content li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .compare-card.arm li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--arm-light);
+            border-radius: 50%;
+        }
+
+        .compare-card.nvidia li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--nvidia-light);
+            border-radius: 50%;
+        }
+
+        /* Rack Density Section */
+        .rack-visual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .rack-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .rack-visual-arm {
+            border: 2px solid var(--arm-dark);
+        }
+
+        .rack-visual-nvidia {
+            border: 2px solid var(--nvidia-dark);
+        }
+
+        .rack-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .rack-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .rack-title.arm {
+            color: var(--arm-light);
+        }
+
+        .rack-title.nvidia {
+            color: var(--nvidia-light);
+        }
+
+        .rack-specs {
+            margin-top: 1rem;
+        }
+
+        .rack-spec {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rack-spec:last-child {
+            border-bottom: none;
+        }
+
+        .rack-spec-label {
+            color: var(--text-secondary);
+        }
+
+        .rack-spec-value {
+            font-weight: 600;
+        }
+
+        .arm-rack-spec-value {
+            color: var(--arm-light);
+        }
+
+        .nvidia-rack-spec-value {
+            color: var(--nvidia-light);
+        }
+
+        /* Market Analysis */
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .market-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+        }
+
+        .market-card.arm {
+            border-left-color: var(--arm-light);
+        }
+
+        .market-card.nvidia {
+            border-left-color: var(--nvidia-light);
+        }
+
+        .market-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .market-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Ecosystem */
+        .ecosystem-section {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .partner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .partner-tag {
+            background: var(--bg-tertiary);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .partner-tag:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--arm-light);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dual-compare,
+            .rack-visual {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .battle-arena {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .vs-badge {
+                order: 1;
+            }
+
+            .cpu-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">2026春季旗舰处理器对决</h1>
+        <p class="hero-subtitle">Arm AGI CPU vs NVIDIA Vera CPU — 两款AI时代服务器处理器的深度对比分析</p>
+        <div class="battle-arena">
+            <div class="cpu-card arm">
+                <h2>Arm AGI CPU</h2>
+                <p class="subtitle">136核 Neoverse V3</p>
+                <p class="date">2026年3月24日发布<br>Arm Everywhere Event</p>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="cpu-card nvidia">
+                <h2>NVIDIA Vera CPU</h2>
+                <p class="subtitle">88核 Olympus</p>
+                <p class="date">2026年3月16日发布<br>GTC 2026</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Specifications Comparison -->
+    <section class="section">
+        <h2 class="section-title">核心规格对比</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">规格项目</th>
+                    <th class="arm-header" style="width: 40%;">Arm AGI CPU</th>
+                    <th class="nvidia-header" style="width: 40%;">NVIDIA Vera CPU</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="spec-label">发布时间</td>
+                    <td class="arm-value">2026年3月24日 (Arm Everywhere)</td>
+                    <td class="nvidia-value">2026年3月16日 (GTC 2026)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">核心数量</td>
+                    <td class="arm-value winner">136核 (Neoverse V3)</td>
+                    <td class="nvidia-value">88核 (Olympus)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">线程策略</td>
+                    <td class="arm-value">无SMT (1线程/核)</td>
+                    <td class="nvidia-value winner">SMT支持 (2线程/核, 176线程)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">微架构</td>
+                    <td class="arm-value">Neoverse V3 (CSS V3)</td>
+                    <td class="nvidia-value">Olympus (Arm v9.2兼容)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">制程工艺</td>
+                    <td class="arm-value">台积电3nm</td>
+                    <td class="nvidia-value">未披露</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">L2缓存</td>
+                    <td class="arm-value winner">2MB/核 (272MB总计)</td>
+                    <td class="nvidia-value">2MB (总计)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">共享缓存</td>
+                    <td class="arm-value">128 MB SLC</td>
+                    <td class="nvidia-value winner">162 MB L3</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">基础频率</td>
+                    <td class="arm-value">3.2 GHz</td>
+                    <td class="nvidia-value">未披露</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">加速频率</td>
+                    <td class="arm-value">3.7 GHz</td>
+                    <td class="nvidia-value">未披露</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">TDP功耗</td>
+                    <td class="arm-value">300W</td>
+                    <td class="nvidia-value">未披露</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Memory Subsystem -->
+    <section class="section">
+        <h2 class="section-title">内存子系统对比</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">规格项目</th>
+                    <th class="arm-header" style="width: 40%;">Arm AGI CPU</th>
+                    <th class="nvidia-header" style="width: 40%;">NVIDIA Vera CPU</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="spec-label">内存类型</td>
+                    <td class="arm-value">DDR5</td>
+                    <td class="nvidia-value">LPDDR5X</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">内存通道</td>
+                    <td class="arm-value">12通道</td>
+                    <td class="nvidia-value">SOCAMM插槽</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">最高速率</td>
+                    <td class="arm-value">DDR5-8800</td>
+                    <td class="nvidia-value">未披露</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">内存带宽</td>
+                    <td class="arm-value">825 GB/s</td>
+                    <td class="nvidia-value winner">1.2 TB/s</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">内存容量</td>
+                    <td class="arm-value">12通道 (可扩展)</td>
+                    <td class="nvidia-value winner">1.5 TB (固定)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">每核带宽</td>
+                    <td class="arm-value">~6 GB/s</td>
+                    <td class="nvidia-value">~13.6 GB/s</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">内存延迟</td>
+                    <td class="arm-value winner">&lt; 100 ns</td>
+                    <td class="nvidia-value">未披露 (LPDDR通常较高)</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">互联技术</td>
+                    <td class="arm-value">PCIe Gen6 x96</td>
+                    <td class="nvidia-value winner">NVLink-C2C 1.8 TB/s</td>
+                </tr>
+                <tr>
+                    <td class="spec-label">CXL支持</td>
+                    <td class="arm-value winner">CXL 3.0</td>
+                    <td class="nvidia-value">未披露</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Architecture Philosophy -->
+    <section class="section">
+        <h2 class="section-title">架构设计理念对比</h2>
+        <div class="dual-compare">
+            <div class="compare-card arm">
+                <div class="compare-card-header">
+                    <h3>Clean Sheet Design</h3>
+                    <span class="arm-badge">Arm AGI CPU</span>
+                </div>
+                <div class="compare-content">
+                    <p><strong>全新设计，无历史包袱</strong></p>
+                    <ul>
+                        <li>不包含遗留加速器或兼容功能</li>
+                        <li>100%为目标负载（Agentic AI）优化</li>
+                        <li>无SMT设计，追求确定性性能扩展</li>
+                        <li>双芯片（dual-chiplet）对称设计</li>
+                        <li>内存与I/O集成在计算die内，降低延迟</li>
+                        <li>亚100纳秒超低内存延迟</li>
+                        <li>双NUMA域架构</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="compare-card nvidia">
+                <div class="compare-card-header">
+                    <h3>Extreme Co-Design</h3>
+                    <span class="nvidia-badge">NVIDIA Vera CPU</span>
+                </div>
+                <div class="compare-content">
+                    <p><strong>极致协同设计</strong></p>
+                    <ul>
+                        <li>CPU+GPU+网络整体协同构建</li>
+                        <li>专为Vera Rubin平台配套设计</li>
+                        <li>支持SMT提升多线程吞吐</li>
+                        <li>NVLink-C2C统一CPU-GPU地址空间</li>
+                        <li>1.8 TB/s一致性互联带宽</li>
+                        <li>零拷贝数据传输</li>
+                        <li>自研Olympus核心（Arm v9.2兼容）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rack Density -->
+    <section class="section">
+        <h2 class="section-title">机架密度对比</h2>
+        <div class="rack-visual">
+            <div class="rack-card rack-visual-arm">
+                <div class="rack-icon">🖥️</div>
+                <h3 class="rack-title arm">Arm AGI CPU 液冷机架</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Open Rack Wide / 200kW</p>
+                <div class="rack-specs">
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">服务器数量</span>
+                        <span class="rack-spec-value arm-rack-spec-value">42台 × 8节点</span>
+                    </div>
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">CPU核心总数</span>
+                        <span class="rack-spec-value arm-rack-spec-value">45,696核</span>
+                    </div>
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">内存总量</span>
+                        <span class="rack-spec-value arm-rack-spec-value">180TB+</span>
+                    </div>
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">实际功率</span>
+                        <span class="rack-spec-value arm-rack-spec-value">~100kW</span>
+                    </div>
+                </div>
+            </div>
+            <div class="rack-card rack-visual-nvidia">
+                <div class="rack-icon">🔧</div>
+                <h3 class="rack-title nvidia">Vera Rubin NVL72</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">AI工厂平台 / 180-220kW</p>
+                <div class="rack-specs">
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">Vera CPU数量</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">72颗</span>
+                    </div>
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">CPU核心总数</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">6,336核</span>
+                    </div>
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">CPU内存总量</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">108 TB</span>
+                    </div>
+                    <div class="rack-spec">
+                        <span class="rack-spec-label">配套Rubin GPU</span>
+                        <span class="rack-spec-value nvidia-rack-spec-value">72颗</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary);">
+            <strong style="color: var(--arm-light);">Arm AGI CPU</strong> 每机架核心数是 <strong style="color: var(--nvidia-light);">Vera CPU</strong> 的 <strong>~7.2倍</strong>
+        </p>
+    </section>
+
+    <!-- Market Positioning -->
+    <section class="section">
+        <h2 class="section-title">市场定位与目标客户</h2>
+        <div class="dual-compare">
+            <div class="compare-card arm">
+                <div class="compare-card-header">
+                    <h3>独立服务器CPU</h3>
+                    <span class="arm-badge">Arm AGI CPU</span>
+                </div>
+                <div class="compare-content">
+                    <p><strong>产品定位</strong>: 独立销售的完整服务器处理器解决方案</p>
+                    <ul>
+                        <li>可作为AI智能体的主计算引擎</li>
+                        <li>可作为加速器集群的头节点</li>
+                        <li>通用网络/存储/计算工作负载</li>
+                        <li>填补Ampere之外的独立Arm服务器CPU市场空白</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>首发客户</strong>:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                        <span class="partner-tag">Meta</span>
+                        <span class="partner-tag">OpenAI</span>
+                        <span class="partner-tag">Cloudflare</span>
+                        <span class="partner-tag">SAP</span>
+                        <span class="partner-tag">Cerebras</span>
+                    </div>
+                </div>
+            </div>
+            <div class="compare-card nvidia">
+                <div class="compare-card-header">
+                    <h3>平台配套组件</h3>
+                    <span class="nvidia-badge">NVIDIA Vera CPU</span>
+                </div>
+                <div class="compare-content">
+                    <p><strong>产品定位</strong>: Vera Rubin AI工厂平台的核心组件</p>
+                    <ul>
+                        <li>为Rubin GPU提供高速数据馈送</li>
+                        <li>管理AI训练框架和操作系统</li>
+                        <li>通过NVLink-C2C扩展GPU显存</li>
+                        <li>不独立销售，仅作为平台组件</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>首批客户</strong>:</p>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                        <span class="partner-tag">AWS</span>
+                        <span class="partner-tag">Azure</span>
+                        <span class="partner-tag">Google Cloud</span>
+                        <span class="partner-tag">Meta</span>
+                        <span class="partner-tag">OpenAI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategic Significance -->
+    <section class="section">
+        <h2 class="section-title">战略意义分析</h2>
+        <div class="market-grid">
+            <div class="market-card arm">
+                <h4>🔄 Arm历史性转型</h4>
+                <p>Arm成立35年来首次从纯IP授权商转型为芯片成品供应商，标志着公司商业模式的根本性变革。</p>
+            </div>
+            <div class="market-card nvidia">
+                <h4>🏭 NVIDIA平台化战略</h4>
+                <p>通过CPU+GPU+网络的协同设计，NVIDIA构建完整的AI工厂生态壁垒，从"卖GPU"转向"卖AI基础设施"。</p>
+            </div>
+            <div class="market-card arm">
+                <h4>⚡ 确定性性能优势</h4>
+                <p>No-SMT设计配合亚100ns内存延迟，为AI智能体工作负载提供可预测的性能扩展。</p>
+            </div>
+            <div class="market-card nvidia">
+                <h4>🔗 统一内存架构</h4>
+                <p>NVLink-C2C实现CPU-GPU统一地址空间，零拷贝传输，显著降低数据移动开销。</p>
+            </div>
+            <div class="market-card arm">
+                <h4>📊 机架密度领先</h4>
+                <p>液冷配置下单机架可达45,696核，核心密度约为Vera方案的7.2倍。</p>
+            </div>
+            <div class="market-card nvidia">
+                <h4>🎯 大模型训练优化</h4>
+                <p>专为10T+参数MoE模型训练优化，配合Rubin GPU可将GPU需求降至Blackwell的1/4。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem -->
+    <section class="section">
+        <h2 class="section-title">生态系统与合作伙伴</h2>
+        <div class="ecosystem-section">
+            <h3 style="margin-bottom: 1rem;">系统合作伙伴</h3>
+            <div class="partner-grid">
+                <span class="partner-tag">Lenovo</span>
+                <span class="partner-tag">ASRock Rack</span>
+                <span class="partner-tag">QCT</span>
+                <span class="partner-tag">Supermicro</span>
+                <span class="partner-tag">Foxconn</span>
+                <span class="partner-tag">Quanta</span>
+                <span class="partner-tag">Wistron</span>
+            </div>
+            <h3 style="margin: 2rem 0 1rem 0;">云服务提供商</h3>
+            <div class="partner-grid">
+                <span class="partner-tag">AWS</span>
+                <span class="partner-tag">Microsoft Azure</span>
+                <span class="partner-tag">Google Cloud</span>
+                <span class="partner-tag">Meta</span>
+                <span class="partner-tag">OpenAI</span>
+                <span class="partner-tag">CoreWeave</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>数据来源: Arm Everywhere Event / GTC 2026 / ServeTheHome / SemiAnalysis / The Register</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="../arm-agi-cpu-report.md">Arm AGI CPU 完整报告</a> |
+            <a href="../vera-cpu-report.md">NVIDIA Vera CPU 完整报告</a>
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.8rem;">最后更新: 2026年3月30日</p>
+    </footer>
+
+    <script>
+        // Scroll animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.add('fade-in');
+            observer.observe(section);
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
