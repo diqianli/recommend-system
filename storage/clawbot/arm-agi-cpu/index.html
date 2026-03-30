@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arm AGI CPU — ARM 35年来首款自研芯片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00C1DE;
+            --primary-dark: #0091BD;
+            --accent: #FF6D00;
+            --bg: #0B0F14;
+            --card-bg: #141A22;
+            --success: #00C853;
+            --text: #E8E8E8;
+            --text-muted: #A0A8B0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(11, 15, 20, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 193, 222, 0.2);
+            padding: 0.75rem 1.5rem;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(0, 193, 222, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0B0F14 0%, #141A22 50%, #1a2332 100%);
+            padding: 5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0, 193, 222, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, rgba(0, 193, 222, 0.2) 0%, rgba(0, 193, 222, 0.1) 100%);
+            border: 1px solid rgba(0, 193, 222, 0.3);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .badge.accent {
+            background: linear-gradient(135deg, rgba(255, 109, 0, 0.2) 0%, rgba(255, 109, 0, 0.1) 100%);
+            border-color: rgba(255, 109, 0, 0.3);
+            color: var(--accent);
+        }
+
+        .hero-event {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 4rem 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 2rem;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 2px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 193, 222, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value.accent {
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+        }
+
+        .info-table {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+        }
+
+        .info-table-header {
+            background: linear-gradient(135deg, rgba(0, 193, 222, 0.15) 0%, rgba(0, 193, 222, 0.05) 100%);
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            border-bottom: 1px solid rgba(0, 193, 222, 0.2);
+        }
+
+        .info-table-row {
+            display: flex;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .info-table-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-table-row:hover {
+            background: rgba(0, 193, 222, 0.05);
+        }
+
+        .info-table-label {
+            flex: 0 0 140px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .info-table-value {
+            flex: 1;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .info-table-value.highlight {
+            color: var(--primary);
+        }
+
+        .arch-diagram {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            text-align: center;
+        }
+
+        .arch-diagram-title {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .arch-diagram-content {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Rack Config */
+        .rack-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .rack-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .rack-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .rack-card.liquid {
+            border-color: rgba(255, 109, 0, 0.2);
+            background: linear-gradient(135deg, rgba(255, 109, 0, 0.05) 0%, var(--card-bg) 100%);
+        }
+
+        .rack-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rack-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .rack-card .rack-icon {
+            background: rgba(0, 193, 222, 0.15);
+        }
+
+        .rack-card.liquid .rack-icon {
+            background: rgba(255, 109, 0, 0.15);
+        }
+
+        .rack-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .rack-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .rack-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .rack-stat:last-child {
+            border-bottom: none;
+        }
+
+        .rack-stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .rack-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .rack-card.liquid .rack-stat-value {
+            color: var(--accent);
+        }
+
+        /* Performance Comparison */
+        .comparison-table {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-row.header {
+            background: linear-gradient(135deg, rgba(0, 193, 222, 0.15) 0%, rgba(0, 193, 222, 0.05) 100%);
+            font-weight: 600;
+        }
+
+        .comparison-cell {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .comparison-cell.highlight {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .comparison-cell:not(.header) {
+            font-size: 0.95rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .progress-fill.primary {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+
+        .progress-fill.success {
+            background: linear-gradient(90deg, var(--success) 0%, #00a843 100%);
+        }
+
+        .vs-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+        }
+
+        .vs-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .vs-card-title {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .vs-card-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .vs-card-subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            overflow-x: auto;
+            padding-bottom: 2rem;
+        }
+
+        .timeline-item {
+            flex: 0 0 200px;
+            text-align: center;
+            position: relative;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 2px solid rgba(0, 193, 222, 0.3);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-item.current .timeline-dot {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 193, 222, 0.4);
+        }
+
+        .timeline-year {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-item.current .timeline-year {
+            color: var(--text);
+        }
+
+        .timeline-name {
+            color: var(--text);
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-arch {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Ecosystem Grid */
+        .ecosystem-section {
+            margin-bottom: 2rem;
+        }
+
+        .ecosystem-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .partners-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .partner-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            border-radius: 10px;
+            padding: 0.75rem 1.25rem;
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .partner-card:hover {
+            border-color: var(--primary);
+            background: rgba(0, 193, 222, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .partner-card.featured {
+            border-color: rgba(255, 109, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 109, 0, 0.1) 0%, rgba(255, 109, 0, 0.05) 100%);
+        }
+
+        .partner-card.featured:hover {
+            border-color: var(--accent);
+        }
+
+        /* Strategy Cards */
+        .strategy-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .strategy-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            transition: all 0.2s;
+        }
+
+        .strategy-card:hover {
+            border-color: rgba(0, 193, 222, 0.3);
+        }
+
+        .strategy-card-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 6px;
+            color: var(--bg);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 0.75rem;
+        }
+
+        .strategy-card-text {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Status Dashboard */
+        .status-dashboard {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+        }
+
+        .status-progress {
+            margin-bottom: 2rem;
+        }
+
+        .status-progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-progress-label {
+            font-weight: 600;
+        }
+
+        .status-progress-value {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .status-progress-bar {
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .status-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, #00e676 100%);
+            border-radius: 6px;
+            transition: width 1s ease;
+        }
+
+        .status-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .status-section-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-section-title.confirmed {
+            color: var(--success);
+        }
+
+        .status-section-title.pending {
+            color: var(--accent);
+        }
+
+        .status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.6rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .status-icon.confirmed {
+            background: rgba(0, 200, 83, 0.15);
+            color: var(--success);
+        }
+
+        .status-icon.pending {
+            background: rgba(255, 109, 0, 0.15);
+            color: var(--accent);
+        }
+
+        /* Sources & Footer */
+        .sources-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 193, 222, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .sources-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .source-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .source-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 0;
+            }
+
+            .nav-links a {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+            }
+
+            .comparison-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .comparison-row.header {
+                display: none;
+            }
+
+            .comparison-cell::before {
+                content: attr(data-label);
+                font-weight: 600;
+                margin-right: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Arm AGI CPU</a>
+            <div class="nav-links">
+                <a href="#specs">规格</a>
+                <a href="#arch">架构</a>
+                <a href="#rack">机架</a>
+                <a href="#performance">性能</a>
+                <a href="#roadmap">路线图</a>
+                <a href="#ecosystem">生态</a>
+                <a href="#strategy">战略</a>
+                <a href="#status">状态</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Arm AGI CPU</h1>
+            <p class="hero-subtitle">ARM 35年来首款自研芯片</p>
+            <div class="hero-badges">
+                <span class="badge">TSMC 3nm</span>
+                <span class="badge">136核</span>
+                <span class="badge accent">300W TDP</span>
+                <span class="badge">DDR5-8800</span>
+                <span class="badge">PCIe Gen6</span>
+            </div>
+            <p class="hero-event">2026年3月24日 · 旧金山 · Arm Everywhere Event</p>
+        </div>
+    </section>
+
+    <!-- Stats Grid -->
+    <section class="section" id="specs">
+        <h2 class="section-title">核心规格速览</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" data-target="136">0</div>
+                <div class="stat-label">核 Neoverse V3</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" data-target="3.7" data-suffix=" GHz">0</div>
+                <div class="stat-label">加速频率</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" data-target="825" data-suffix=" GB/s">0</div>
+                <div class="stat-label">内存带宽</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" data-target="128" data-suffix=" MB">0</div>
+                <div class="stat-label">共享SLC缓存</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" data-target="96">0</div>
+                <div class="stat-label">PCIe Gen6通道</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" data-target="12">0</div>
+                <div class="stat-label">通道 DDR5-8800</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="section" id="arch">
+        <h2 class="section-title">架构深度解析</h2>
+        <div class="two-column">
+            <div class="info-table">
+                <div class="info-table-header">核心架构</div>
+                <div class="info-table-row">
+                    <div class="info-table-label">制程工艺</div>
+                    <div class="info-table-value highlight">TSMC 3nm</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">核心数量</div>
+                    <div class="info-table-value highlight">136核</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">微架构</div>
+                    <div class="info-table-value">Neoverse V3 (CSS V3)</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">SMT多线程</div>
+                    <div class="info-table-value highlight">不支持 (1线程/核)</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">L2缓存</div>
+                    <div class="info-table-value">2MB/核 (总计272MB)</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">SLC缓存</div>
+                    <div class="info-table-value highlight">128 MB 共享</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">基础频率</div>
+                    <div class="info-table-value">3.2 GHz</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">加速频率</div>
+                    <div class="info-table-value highlight">3.7 GHz</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">TDP功耗</div>
+                    <div class="info-table-value highlight">300W</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">芯片设计</div>
+                    <div class="info-table-value">双芯片 (Dual-chiplet)</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">NUMA拓扑</div>
+                    <div class="info-table-value">双NUMA域/socket</div>
+                </div>
+            </div>
+
+            <div class="info-table">
+                <div class="info-table-header">内存子系统</div>
+                <div class="info-table-row">
+                    <div class="info-table-label">内存通道</div>
+                    <div class="info-table-value highlight">12通道 (每die 6通道)</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">内存类型</div>
+                    <div class="info-table-value">DDR5</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">最高速率</div>
+                    <div class="info-table-value highlight">DDR5-8800</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">每核带宽</div>
+                    <div class="info-table-value">6 GB/s</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">总带宽</div>
+                    <div class="info-table-value highlight">825 GB/s</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">内存延迟</div>
+                    <div class="info-table-value highlight">&lt; 100 ns</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">内存调优</div>
+                    <div class="info-table-value">为计算负载优化</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">集成方式</div>
+                    <div class="info-table-value">内存与I/O集成在计算die内</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">PCIe通道</div>
+                    <div class="info-table-value highlight">96条 PCIe Gen6</div>
+                </div>
+                <div class="info-table-row">
+                    <div class="info-table-label">CXL支持</div>
+                    <div class="info-table-value highlight">CXL 3.0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arch-diagram" style="margin-top: 2rem;">
+            <div class="arch-diagram-title">双Die架构设计</div>
+            <div class="arch-diagram-content">
+                两个相同设计的Die通过AMBA CHI extension links互联<br>
+                每个Die包含68核 + 6通道DDR5 + 48条PCIe Gen6<br>
+                每个Socket暴露为2个NUMA域，类似Intel Emerald Rapids集成方案
+            </div>
+        </div>
+    </section>
+
+    <!-- Rack Configuration -->
+    <section class="section" id="rack">
+        <h2 class="section-title">机架配置方案</h2>
+        <div class="rack-cards">
+            <div class="rack-card">
+                <div class="rack-header">
+                    <div class="rack-icon">?</div>
+                    <div class="rack-title">风冷方案</div>
+                </div>
+                <div class="rack-stats">
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">机架标准</span>
+                        <span class="rack-stat-value" style="font-size: 1rem;">Open Rack V3</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">功率</span>
+                        <span class="rack-stat-value">36 kW</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">服务器</span>
+                        <span class="rack-stat-value" style="font-size: 1rem;">30台双节点1U</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">CPU核心</span>
+                        <span class="rack-stat-value" data-target="8160">0</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">内存容量</span>
+                        <span class="rack-stat-value" style="font-size: 1.25rem;">180 TB+</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rack-card liquid">
+                <div class="rack-header">
+                    <div class="rack-icon">?</div>
+                    <div class="rack-title">液冷方案</div>
+                </div>
+                <div class="rack-stats">
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">机架标准</span>
+                        <span class="rack-stat-value" style="font-size: 1rem;">Open Rack Wide</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">功率</span>
+                        <span class="rack-stat-value" style="color: var(--accent);">200 kW</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">服务器</span>
+                        <span class="rack-stat-value" style="font-size: 1rem;">42台8节点1U</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">CPU核心</span>
+                        <span class="rack-stat-value" data-target="45696" data-accent="true">0</span>
+                    </div>
+                    <div class="rack-stat">
+                        <span class="rack-stat-label">密度优势</span>
+                        <span class="rack-stat-value" style="font-size: 1.25rem; color: var(--accent);">~5.6x</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance -->
+    <section class="section" id="performance">
+        <h2 class="section-title">性能对比</h2>
+
+        <div class="comparison-table">
+            <div class="comparison-row header">
+                <div class="comparison-cell">指标 (Agentic AI工作负载)</div>
+                <div class="comparison-cell highlight">Arm AGI CPU</div>
+                <div class="comparison-cell">x86 (SMT关)</div>
+                <div class="comparison-cell">x86 (SMT开)</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-cell">每线程持续性能</div>
+                <div class="comparison-cell highlight">~1.3x</div>
+                <div class="comparison-cell">~1.1x</div>
+                <div class="comparison-cell">~0.9x</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-cell">每机架持续线程数</div>
+                <div class="comparison-cell highlight">~1.9x</div>
+                <div class="comparison-cell">~1.0x</div>
+                <div class="comparison-cell">~1.3x</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-cell">每瓦性能</div>
+                <div class="comparison-cell highlight">~2.0x</div>
+                <div class="comparison-cell">~1.0x</div>
+                <div class="comparison-cell">~1.2x</div>
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="vs-card">
+                <div class="vs-card-header">
+                    <span class="vs-card-title">vs NVIDIA Vera</span>
+                    <span class="vs-card-value">~2.0x</span>
+                </div>
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">核心密度对比</div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <span style="color: var(--accent);">Arm AGI CPU: 45,696核</span>
+                    <span style="color: var(--text-muted);">NVIDIA Vera: 22,528核</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill primary" data-width="100"></div>
+                </div>
+                <div class="vs-card-subtitle">每机架核心数 (液冷配置)</div>
+            </div>
+
+            <div class="vs-card">
+                <div class="vs-card-header">
+                    <span class="vs-card-title">对比基准</span>
+                </div>
+                <div style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
+                    <strong style="color: var(--text);">x86基准:</strong> AMD EPYC (非Intel Xeon)<br>
+                    <strong style="color: var(--text);">数据来源:</strong> Arm官方发布<br>
+                    <strong style="color: var(--text);">工作负载:</strong> Agentic AI
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap -->
+    <section class="section" id="roadmap">
+        <h2 class="section-title">产品路线图</h2>
+        <div class="timeline">
+            <div class="timeline-item current">
+                <div class="timeline-dot">?</div>
+                <div class="timeline-year">Now (2026)</div>
+                <div class="timeline-name">Arm AGI CPU</div>
+                <div class="timeline-arch">CSS V3</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">?</div>
+                <div class="timeline-year">Future</div>
+                <div class="timeline-name">Arm AGI CPU 2</div>
+                <div class="timeline-arch">CSS V5</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot">?</div>
+                <div class="timeline-year">Future</div>
+                <div class="timeline-name">Arm AGI CPU 3</div>
+                <div class="timeline-arch">CSS V5</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem -->
+    <section class="section" id="ecosystem">
+        <h2 class="section-title">生态系统合作伙伴</h2>
+
+        <div class="ecosystem-section">
+            <div class="ecosystem-section-title">首发客户</div>
+            <div class="partners-grid">
+                <span class="partner-card featured">Meta</span>
+                <span class="partner-card featured">OpenAI</span>
+                <span class="partner-card">Cloudflare</span>
+                <span class="partner-card">SAP</span>
+                <span class="partner-card">Cerebras</span>
+                <span class="partner-card">F5</span>
+                <span class="partner-card">SK Telecom</span>
+                <span class="partner-card">Rebellions</span>
+            </div>
+        </div>
+
+        <div class="ecosystem-section">
+            <div class="ecosystem-section-title">系统合作伙伴</div>
+            <div class="partners-grid">
+                <span class="partner-card">Lenovo</span>
+                <span class="partner-card">ASRock Rack</span>
+                <span class="partner-card">QCT</span>
+                <span class="partner-card">Supermicro</span>
+            </div>
+        </div>
+
+        <div class="ecosystem-section">
+            <div class="ecosystem-section-title">特邀嘉宾</div>
+            <div class="partners-grid">
+                <span class="partner-card featured">Jensen Huang (NVIDIA CEO)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Strategy -->
+    <section class="section" id="strategy">
+        <h2 class="section-title">战略意义</h2>
+        <div class="strategy-list">
+            <div class="strategy-card">
+                <span class="strategy-card-number">1</span>
+                <span class="strategy-card-text">ARM成立35年来首次转型 — 从纯IP授权商转为芯片成品供应商</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">2</span>
+                <span class="strategy-card-text">直接以AMD EPYC为竞争对象，提供单路136核方案</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">3</span>
+                <span class="strategy-card-text">专为AI智能体工作负载设计，强调低延迟、高带宽</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">4</span>
+                <span class="strategy-card-text">CXL 3.0内存扩展成为重要卖点 (DDR5供应紧张背景下)</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">5</span>
+                <span class="strategy-card-text">2026年下半年进入量产</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">6</span>
+                <span class="strategy-card-text">Clean Sheet设计：无遗留加速器，100%为目标负载优化</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">7</span>
+                <span class="strategy-card-text">No SMT策略：每核单线程设计，追求确定性性能扩展</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">8</span>
+                <span class="strategy-card-text">双die设计使每个socket暴露为2个NUMA域</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">9</span>
+                <span class="strategy-card-text">不仅限于AI Agent，还可作为加速器头节点、通用网络/存储CPU</span>
+            </div>
+            <div class="strategy-card">
+                <span class="strategy-card-number">10</span>
+                <span class="strategy-card-text">填补Ampere Computing之外的独立Arm服务器CPU市场空白</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Dashboard -->
+    <section class="section" id="status">
+        <h2 class="section-title">规格确认状态</h2>
+        <div class="status-dashboard">
+            <div class="status-progress">
+                <div class="status-progress-header">
+                    <span class="status-progress-label">整体确认率</span>
+                    <span class="status-progress-value">71%</span>
+                </div>
+                <div class="status-progress-bar">
+                    <div class="status-progress-fill" data-width="71"></div>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div class="status-section-title confirmed">? 已确认规格 (12项)</div>
+                <div class="status-list">
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>L2缓存: 每核2MB (总计272MB)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>SLC系统级缓存: 128 MB 共享</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>TDP功耗: 300W</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>基础频率: 3.2 GHz</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>加速频率: 3.7 GHz</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>内存总带宽: 825 GB/s</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>每核内存带宽: 6 GB/s</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>SMT: 不支持 (1线程/核)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>NUMA: 双NUMA域/socket</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>PCIe: 96条 Gen6</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>CXL: 3.0</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon confirmed">?</span>
+                        <span>Die设计: 内存/I/O集成在计算die内</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="status-section">
+                <div class="status-section-title pending">? 待确认规格 (5项)</div>
+                <div class="status-list">
+                    <div class="status-item">
+                        <span class="status-icon pending">?</span>
+                        <span>L1缓存大小 (每核指令/数据缓存)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon pending">?</span>
+                        <span>Die尺寸 (芯片面积)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon pending">?</span>
+                        <span>具体benchmark绝对数值 (SPEC、MLPerf等)</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon pending">?</span>
+                        <span>Arm Everywhere Event完整演讲视频/文稿</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-icon pending">?</span>
+                        <span>技术PPT原始文件下载</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="section">
+        <h2 class="section-title">信息来源</h2>
+        <div class="sources-section">
+            <div class="sources-list">
+                <a href="https://www.servethehome.com/arm-agi-cpu-launched-establishing-arm-as-a-silicon-provider/" target="_blank" class="source-link">
+                    ServeTheHome - Arm AGI CPU Launched: Establishing Arm as a Silicon Provider
+                </a>
+                <a href="https://www.theregister.com/2026/03/24/arm_agi_cpu/" target="_blank" class="source-link">
+                    The Register - Arm's first CPU: 136 cores, 300 watts, and a whole new strategy (Tobias Mann)
+                </a>
+                <a href="https://www.servethehome.com/wp-content/uploads/2026/03/Arm-Everywhere-Event-Arm-AGI-CPU-Launch-11.jpg" target="_blank" class="source-link">
+                    ServeTheHome幻灯片 - 规格总览
+                </a>
+                <a href="https://www.servethehome.com/wp-content/uploads/2026/03/Arm-Everywhere-Event-Arm-AGI-CPU-Launch-9.jpg" target="_blank" class="source-link">
+                    ServeTheHome幻灯片 - 内存子系统
+                </a>
+                <a href="https://www.servethehome.com/wp-content/uploads/2026/03/Arm-Everywhere-Event-Arm-AGI-CPU-Launch-12.jpg" target="_blank" class="source-link">
+                    ServeTheHome幻灯片 - 机架配置
+                </a>
+                <a href="https://www.servethehome.com/wp-content/uploads/2026/03/Arm-Everywhere-Event-Arm-AGI-CPU-Launch-15.jpg" target="_blank" class="source-link">
+                    ServeTheHome幻灯片 - 性能对比
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Arm AGI CPU 技术规格展示页面</p>
+        <p>数据来源: ServeTheHome / The Register / Arm Everywhere Event | 报告整理日期: 2026年3月30日</p>
+        <p style="margin-top: 1rem;"><a href="https://github.com/" target="_blank">GitHub</a></p>
+    </footer>
+
+    <script>
+        // Number counting animation
+        function animateNumber(element) {
+            const target = parseFloat(element.dataset.target);
+            const suffix = element.dataset.suffix || '';
+            const isAccent = element.dataset.accent === 'true';
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = target * eased;
+
+                if (Number.isInteger(target)) {
+                    element.textContent = Math.floor(current).toLocaleString() + suffix;
+                } else {
+                    element.textContent = current.toFixed(1) + suffix;
+                }
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            requestAnimationFrame(update);
+        }
+
+        // Progress bar animation
+        function animateProgressBars() {
+            document.querySelectorAll('.progress-fill[data-width]').forEach(bar => {
+                const width = bar.dataset.width;
+                setTimeout(() => {
+                    bar.style.width = width + '%';
+                }, 200);
+            });
+        }
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+
+                    // Trigger number animations
+                    entry.target.querySelectorAll('[data-target]').forEach(el => {
+                        if (!el.dataset.animated) {
+                            el.dataset.animated = 'true';
+                            animateNumber(el);
+                        }
+                    });
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Observe all sections
+        document.querySelectorAll('.section, .stat-card, .rack-card, .strategy-card, .vs-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Initial progress bar animation
+        setTimeout(animateProgressBars, 500);
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
