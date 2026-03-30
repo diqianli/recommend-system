@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字节跳动推荐系统技术栈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e74c3c;
+        }
+        h2 {
+            color: #2c3e50;
+            margin: 30px 0 15px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        h3 {
+            color: #34495e;
+            margin: 20px 0 10px;
+        }
+        h4 {
+            color: #555;
+            margin: 15px 0 10px;
+        }
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .tech-table th, .tech-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        .tech-table th {
+            background-color: #3498db;
+            color: white;
+        }
+        .tech-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .tech-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .algorithm-card {
+            background: #f8f9fa;
+            border-left: 4px solid #27ae60;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .algorithm-card h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+        .algorithm-card ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .algorithm-card li {
+            margin: 5px 0;
+        }
+        .source {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        .paper-list {
+            list-style: none;
+            padding: 0;
+        }
+        .paper-list li {
+            padding: 10px 15px;
+            margin: 8px 0;
+            background: #ecf0f1;
+            border-radius: 4px;
+        }
+        .architecture-diagram {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 25px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 20px 0;
+            line-height: 1.4;
+        }
+        .architecture-diagram pre {
+            margin: 0;
+            white-space: pre;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .product-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .product-card h4 {
+            color: white;
+            margin-bottom: 5px;
+        }
+        .product-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .badge-open {
+            background: #27ae60;
+            color: white;
+        }
+        .badge-internal {
+            background: #e74c3c;
+            color: white;
+        }
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #bdc3c7, transparent);
+            margin: 40px 0;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>字节跳动推荐系统技术栈</h1>
+
+        <!-- 概述 -->
+        <h2>概述</h2>
+        <p>字节跳动（ByteDance）是全球领先的短视频和内容推荐公司，旗下产品包括抖音、TikTok、今日头条等。其推荐系统支撑着超过10亿日活用户的内容分发，是业界最具规模和先进性的推荐系统之一。</p>
+
+        <!-- 产品矩阵 -->
+        <h2>核心产品线</h2>
+        <div class="product-grid">
+            <div class="product-card">
+                <h4>抖音</h4>
+                <p>短视频 | 7亿+ DAU</p>
+            </div>
+            <div class="product-card">
+                <h4>TikTok</h4>
+                <p>短视频(国际) | 10亿+ DAU</p>
+            </div>
+            <div class="product-card">
+                <h4>今日头条</h4>
+                <p>新闻资讯 | 2亿+ DAU</p>
+            </div>
+            <div class="product-card">
+                <h4>西瓜视频</h4>
+                <p>中长视频 | 1亿+ DAU</p>
+            </div>
+            <div class="product-card">
+                <h4>懂车帝</h4>
+                <p>汽车垂直</p>
+            </div>
+            <div class="product-card">
+                <h4>番茄小说</h4>
+                <p>网文阅读</p>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 技术架构图 -->
+        <h2>技术架构层次</h2>
+        <div class="architecture-diagram">
+<pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                          业务应用层                                   │
+│        抖音 | TikTok | 今日头条 | 西瓜视频 | 懂车帝 | 番茄小说          │
+└─────────────────────────────────────────────────────────────────────┘
+                                 ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                          推荐服务层                                   │
+│       Erdos(Marine排序) | Viking(召回) | Monolith(实时训练)          │
+└─────────────────────────────────────────────────────────────────────┘
+                                 ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                        特征与数据层                                   │
+│      特征服务 | 用户画像 | 内容理解 | 实时计算 | 行为分析              │
+└─────────────────────────────────────────────────────────────────────┘
+                                 ↓
+┌─────────────────────────────────────────────────────────────────────┐
+│                          基础设施层                                   │
+│        BytePS分布式训练 | GPU集群 | 自研芯片 | 云原生架构             │
+└─────────────────────────────────────────────────────────────────────┘
+</pre>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 软件技术栈 -->
+        <h2>软件技术栈</h2>
+
+        <h3>推荐系统核心平台</h3>
+        <table class="tech-table">
+            <tr>
+                <th>平台</th>
+                <th>功能</th>
+                <th>说明</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>Erdos <span class="badge badge-internal">内部</span></td>
+                <td>排序平台</td>
+                <td>集成Marine深度学习框架，支持多目标排序</td>
+                <td>内部系统</td>
+            </tr>
+            <tr>
+                <td>Marine <span class="badge badge-internal">内部</span></td>
+                <td>深度学习框架</td>
+                <td>Erdos平台中的排序模型训练框架</td>
+                <td>内部系统</td>
+            </tr>
+            <tr>
+                <td>Viking <span class="badge badge-internal">内部</span></td>
+                <td>召回系统</td>
+                <td>多路召回，支持向量检索、协同过滤等策略</td>
+                <td>内部系统</td>
+            </tr>
+            <tr>
+                <td>Monolith <span class="badge badge-open">开源</span></td>
+                <td>实时训练</td>
+                <td>碰撞无关Embedding表，在线学习</td>
+                <td><a href="https://github.com/bytedance/monolith" target="_blank">GitHub</a></td>
+            </tr>
+            <tr>
+                <td>BytePS <span class="badge badge-open">开源</span></td>
+                <td>分布式训练</td>
+                <td>高性能分布式训练框架，256GPU达90%扩展效率</td>
+                <td><a href="https://github.com/bytedance/byteps" target="_blank">GitHub</a></td>
+            </tr>
+        </table>
+
+        <h3>开源项目详情</h3>
+        <table class="tech-table">
+            <tr>
+                <th>项目</th>
+                <th>描述</th>
+                <th>核心特性</th>
+                <th>链接</th>
+            </tr>
+            <tr>
+                <td>Monolith</td>
+                <td>大规模推荐系统深度学习框架，支持碰撞无关Embedding和实时训练</td>
+                <td>
+                    <ul>
+                        <li>Collisionless Embedding Table: 保证不同ID特征有唯一表示</li>
+                        <li>Real-time Training: 捕捉最新热点</li>
+                        <li>基于TensorFlow构建</li>
+                    </ul>
+                </td>
+                <td><a href="https://github.com/bytedance/monolith" target="_blank">bytedance/monolith</a></td>
+            </tr>
+            <tr>
+                <td>BytePS</td>
+                <td>高性能分布式训练框架</td>
+                <td>
+                    <ul>
+                        <li>支持TensorFlow、Keras、PyTorch、MXNet</li>
+                        <li>支持TCP和RDMA网络</li>
+                        <li>BERT-large训练在256 GPU上达到~90%扩展效率</li>
+                    </ul>
+                </td>
+                <td><a href="https://github.com/bytedance/byteps" target="_blank">bytedance/byteps</a></td>
+            </tr>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <!-- 推荐流程 -->
+        <h2>推荐流程详解</h2>
+
+        <h3>召回阶段 (Recall)</h3>
+        <div class="algorithm-card">
+            <h4>Viking召回系统 <span class="badge badge-internal">内部系统</span></h4>
+            <p>Viking是字节跳动的核心召回系统，负责从海量候选中筛选相关内容。召回阶段需要从亿级候选池中快速筛选出千级别的候选集。</p>
+            <ul>
+                <li><strong>多路召回策略</strong>：协同过滤、向量检索、图召回、热点召回等</li>
+                <li><strong>高并发处理</strong>：支持千万级QPS</li>
+                <li><strong>实时更新</strong>：候选池实时更新，捕捉新内容</li>
+                <li><strong>个性化召回</strong>：基于用户画像的精准召回</li>
+            </ul>
+            <p class="source">来源: 内部系统，公开参考资料有限</p>
+        </div>
+
+        <h3>排序阶段 (Ranking)</h3>
+        <div class="algorithm-card">
+            <h4>Erdos排序平台 (Marine框架) <span class="badge badge-internal">内部系统</span></h4>
+            <p>Erdos是字节跳动的核心排序平台，使用Marine深度学习框架进行精细化排序。排序阶段对召回的候选进行多维度评估和排序。</p>
+            <ul>
+                <li><strong>多目标优化</strong>：完播率、点赞率、评论率、分享率、关注率等</li>
+                <li><strong>实时排序</strong>：毫秒级响应，支持实时反馈</li>
+                <li><strong>大规模模型</strong>：支持千亿级参数，深度学习模型</li>
+                <li><strong>特征工程</strong>：用户特征、内容特征、上下文特征、交叉特征</li>
+            </ul>
+            <p class="source">来源: 内部系统，公开参考资料有限。命名可能与图论相关（Erdos数）</p>
+        </div>
+
+        <h3>重排阶段 (Re-ranking)</h3>
+        <div class="algorithm-card">
+            <h4>重排策略</h4>
+            <p>在精排之后进行最终调整，优化用户体验。</p>
+            <ul>
+                <li><strong>多样性控制</strong>：避免内容同质化</li>
+                <li><strong>频次控制</strong>：限制同类内容展示频率</li>
+                <li><strong>时效性</strong>：优先展示新鲜内容</li>
+                <li><strong>业务规则</strong>：满足平台政策和运营需求</li>
+            </ul>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 实时训练 -->
+        <h2>实时训练系统</h2>
+        <div class="algorithm-card">
+            <h4>Monolith实时训练 <span class="badge badge-open">开源</span></h4>
+            <p>Monolith是字节跳动开源的大规模推荐系统深度学习框架，核心创新是碰撞无关的Embedding表设计。</p>
+            <ul>
+                <li><strong>Collisionless Embedding Table</strong>：使用动态哈希表保证不同ID特征有唯一表示，避免哈希冲突导致的特征污染</li>
+                <li><strong>Real-time Training</strong>：在线学习能力，捕捉用户最新兴趣和热点事件</li>
+                <li><strong>流式训练</strong>：支持Kafka等消息队列的实时数据流</li>
+                <li><strong>增量更新</strong>：模型参数实时增量更新，无需全量重训</li>
+            </ul>
+            <p class="source">论文: Monolith: Real Time Recommendation System With Collisionless Embedding Table, arXiv:2209.07663</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 分布式训练 -->
+        <h2>分布式训练基础设施</h2>
+        <div class="algorithm-card">
+            <h4>BytePS <span class="badge badge-open">开源</span></h4>
+            <p>BytePS是字节跳动开源的高性能分布式训练框架，显著优于传统的Horovod+NCCL方案。</p>
+            <ul>
+                <li><strong>多框架支持</strong>：TensorFlow、Keras、PyTorch、MXNet</li>
+                <li><strong>高效通信</strong>：支持TCP和RDMA网络</li>
+                <li><strong>扩展效率</strong>：BERT-large训练在256 GPU上达到~90%扩展效率</li>
+                <li><strong>参数服务器优化</strong>：创新的参数服务器架构设计</li>
+            </ul>
+            <p class="source">论文: BytePS: A High-Performance Distributed Training Framework, OSDI'20</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 学术论文 -->
+        <h2>学术论文与参考资料</h2>
+
+        <h3>字节跳动推荐系统相关论文</h3>
+        <ul class="paper-list">
+            <li><strong>Monolith</strong>: Real Time Recommendation System With Collisionless Embedding Table, arXiv:2209.07663 - <a href="https://arxiv.org/abs/2209.07663" target="_blank">arXiv链接</a></li>
+            <li><strong>BytePS</strong>: A High-Performance Distributed Training Framework for Distributed Deep Learning, OSDI'20 - <a href="https://www.usenix.org/conference/osdi20/presentation/jiang" target="_blank">USENIX链接</a></li>
+            <li><strong>PLE</strong>: Progressive Layered Extraction for Multi-Task Learning, RecSys 2020 - 多任务学习模型</li>
+            <li><strong>ESMM</strong>: Entire Space Multi-Task Model, SIGIR 2018 - 转化率预估</li>
+        </ul>
+
+        <h3>开源项目链接</h3>
+        <ul class="paper-list">
+            <li><strong>Monolith</strong>: <a href="https://github.com/bytedance/monolith" target="_blank">github.com/bytedance/monolith</a></li>
+            <li><strong>BytePS</strong>: <a href="https://github.com/bytedance/byteps" target="_blank">github.com/bytedance/byteps</a></li>
+        </ul>
+
+        <div class="section-divider"></div>
+
+        <!-- 数据规模 -->
+        <h2>系统规模</h2>
+        <table class="tech-table">
+            <tr>
+                <th>指标</th>
+                <th>规模</th>
+                <th>说明</th>
+            </tr>
+            <tr>
+                <td>日活跃用户</td>
+                <td>10亿+</td>
+                <td>抖音+TikTok全球用户</td>
+            </tr>
+            <tr>
+                <td>日视频上传量</td>
+                <td>亿级</td>
+                <td>用户生成内容</td>
+            </tr>
+            <tr>
+                <td>推荐请求QPS</td>
+                <td>千万级</td>
+                <td>实时推荐请求</td>
+            </tr>
+            <tr>
+                <td>模型参数量</td>
+                <td>千亿级</td>
+                <td>深度学习排序模型</td>
+            </tr>
+            <tr>
+                <td>特征维度</td>
+                <td>亿级</td>
+                <td>稀疏特征Embedding</td>
+            </tr>
+            <tr>
+                <td>响应延迟</td>
+                <td>毫秒级</td>
+                <td>端到端推荐延迟</td>
+            </tr>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <!-- 免责声明 -->
+        <h2>免责声明</h2>
+        <p style="color: #7f8c8d; font-size: 0.9em;">
+            本页面整理自公开资料和学术论文。Erdos、Marine、Viking为字节跳动内部系统，公开参考资料有限，
+            具体实现细节以官方信息为准。Monolith和BytePS为开源项目，可在GitHub获取源码。
+            如有信息不准确，欢迎指正。
+        </p>
+
+        <p style="text-align: center; color: #bdc3c7; margin-top: 40px; font-size: 0.85em;">
+            最后更新: 2026年3月 | 整理自公开资料
+        </p>
+    </div>
+</body>
+</html>
