@@ -200,6 +200,77 @@ inline bool is_fma(OpcodeType op) {
     }
 }
 
+/// Opcode to string name (for visualization/disassembly)
+inline std::string_view opcode_to_string(OpcodeType op) {
+    switch (op) {
+        case OpcodeType::Add: return "ADD";
+        case OpcodeType::Sub: return "SUB";
+        case OpcodeType::Mul: return "MUL";
+        case OpcodeType::Div: return "DIV";
+        case OpcodeType::And: return "AND";
+        case OpcodeType::Orr: return "ORR";
+        case OpcodeType::Eor: return "EOR";
+        case OpcodeType::Lsl: return "LSL";
+        case OpcodeType::Lsr: return "LSR";
+        case OpcodeType::Asr: return "ASR";
+        case OpcodeType::Mov: return "MOV";
+        case OpcodeType::Cmp: return "CMP";
+        case OpcodeType::Shift: return "SHIFT";
+        case OpcodeType::Load: return "LDR";
+        case OpcodeType::Store: return "STR";
+        case OpcodeType::LoadPair: return "LDP";
+        case OpcodeType::StorePair: return "STP";
+        case OpcodeType::Branch: return "B";
+        case OpcodeType::BranchCond: return "B.cond";
+        case OpcodeType::BranchReg: return "BR";
+        case OpcodeType::Msr: return "MSR";
+        case OpcodeType::Mrs: return "MRS";
+        case OpcodeType::Sys: return "SYS";
+        case OpcodeType::Nop: return "NOP";
+        case OpcodeType::Fadd: return "FADD";
+        case OpcodeType::Fsub: return "FSUB";
+        case OpcodeType::Fmul: return "FMUL";
+        case OpcodeType::Fdiv: return "FDIV";
+        case OpcodeType::DcZva: return "DC ZVA";
+        case OpcodeType::DcCivac: return "DC CIVAC";
+        case OpcodeType::DcCvac: return "DC CVAC";
+        case OpcodeType::DcCsw: return "DC CSW";
+        case OpcodeType::IcIvau: return "IC IVAU";
+        case OpcodeType::IcIallu: return "IC IALLU";
+        case OpcodeType::IcIalluis: return "IC IALLUIS";
+        case OpcodeType::Aesd: return "AESD";
+        case OpcodeType::Aese: return "AESE";
+        case OpcodeType::Aesimc: return "AESIMC";
+        case OpcodeType::Aesmc: return "AESMC";
+        case OpcodeType::Sha1H: return "SHA1H";
+        case OpcodeType::Sha256H: return "SHA256H";
+        case OpcodeType::Sha512H: return "SHA512H";
+        case OpcodeType::Vadd: return "VADD";
+        case OpcodeType::Vsub: return "VSUB";
+        case OpcodeType::Vmul: return "VMUL";
+        case OpcodeType::Vmla: return "VMLA";
+        case OpcodeType::Vmls: return "VMLS";
+        case OpcodeType::Vld: return "VLD";
+        case OpcodeType::Vst: return "VST";
+        case OpcodeType::Vdup: return "VDUP";
+        case OpcodeType::Vmov: return "VMOV";
+        case OpcodeType::Fmadd: return "FMADD";
+        case OpcodeType::Fmsub: return "FMSUB";
+        case OpcodeType::Fnmadd: return "FNMADD";
+        case OpcodeType::Fnmsub: return "FNMSUB";
+        case OpcodeType::Fcvt: return "FCVT";
+        case OpcodeType::Dmb: return "DMB";
+        case OpcodeType::Dsb: return "DSB";
+        case OpcodeType::Isb: return "ISB";
+        case OpcodeType::Eret: return "ERET";
+        case OpcodeType::Yield: return "YIELD";
+        case OpcodeType::Adr: return "ADR";
+        case OpcodeType::Pmull: return "PMULL";
+        case OpcodeType::Other: return "OTHER";
+    }
+    return "?";
+}
+
 /// Execution latency in cycles (simplified model)
 inline uint64_t latency(OpcodeType op) {
     switch (op) {

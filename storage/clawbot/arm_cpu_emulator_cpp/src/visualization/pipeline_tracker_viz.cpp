@@ -136,9 +136,7 @@ void PipelineTrackerViz::record_memory(InstructionId id, uint64_t start_cycle, u
 }
 
 void PipelineTrackerViz::record_cache_access(InstructionId id, const CacheAccessInfoViz& info) {
-    // Store cache info alongside timing (simplified - not storing full info)
-    (void)id;
-    (void)info;
+    cache_access_map_[id] = info;
 }
 
 void PipelineTrackerViz::record_complete(InstructionId id, uint64_t cycle) {
@@ -254,6 +252,16 @@ std::vector<KonataOp> PipelineTrackerViz::to_konata_ops(
         else if (mut_timing.execute_start && mut_timing.execute_end)
             op.add_stage(StageId::EX, *mut_timing.execute_start, *mut_timing.execute_end);
 
+        // Add cache sub-stages for memory ops (e.g. ME:L1, ME:L2, ME:Memory)
+        auto cache_it = cache_access_map_.find(id);
+        if (cache_it != cache_access_map_.end()) {
+            const auto& cache_info = cache_it->second;
+            if (!cache_info.level_name.empty()) {
+                op.add_stage_with_name("ME:" + cache_info.level_name,
+                    cache_info.start_cycle, cache_info.end_cycle);
+            }
+        }
+
         // Writeback: from execute/memory end to complete
         uint64_t exec_mem_end = mut_timing.memory_end.value_or(
             mut_timing.execute_end.value_or(0));
@@ -337,6 +345,16 @@ std::vector<KonataOp> PipelineTrackerViz::export_all_konata_ops() const {
         else if (timing.execute_start && timing.execute_end)
             op.add_stage(StageId::EX, *timing.execute_start, *timing.execute_end);
 
+        // Add cache sub-stages for memory ops (e.g. ME:L1, ME:L2, ME:Memory)
+        auto cache_it = cache_access_map_.find(id);
+        if (cache_it != cache_access_map_.end()) {
+            const auto& cache_info = cache_it->second;
+            if (!cache_info.level_name.empty()) {
+                op.add_stage_with_name("ME:" + cache_info.level_name,
+                    cache_info.start_cycle, cache_info.end_cycle);
+            }
+        }
+
         uint64_t exec_mem_end = timing.memory_end.value_or(timing.execute_end.value_or(0));
         if (timing.complete_cycle && exec_mem_end > 0)
             op.add_stage(StageId::WB, exec_mem_end, *timing.complete_cycle);
@@ -382,6 +400,7 @@ void PipelineTrackerViz::clear() {
     src_regs_map_.clear();
     dst_regs_map_.clear();
     mem_access_map_.clear();
+    cache_access_map_.clear();
 }
 
 const StageTimingViz* PipelineTrackerViz::get_timing(InstructionId id) const {
@@ -392,6 +411,11 @@ const StageTimingViz* PipelineTrackerViz::get_timing(InstructionId id) const {
 const std::vector<TrackerDependencyInfo>* PipelineTrackerViz::get_dependencies(InstructionId id) const {
     auto it = dependencies_.find(id);
     return it != dependencies_.end() ? &it->second : nullptr;
+}
+
+const CacheAccessInfoViz* PipelineTrackerViz::get_cache_access(InstructionId id) const {
+    auto it = cache_access_map_.find(id);
+    return it != cache_access_map_.end() ? &it->second : nullptr;
 }
 
 } // namespace arm_cpu

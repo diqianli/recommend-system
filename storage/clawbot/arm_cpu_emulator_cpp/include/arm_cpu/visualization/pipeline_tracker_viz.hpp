@@ -113,6 +113,7 @@ public:
 
     const StageTimingViz* get_timing(InstructionId id) const;
     const std::vector<TrackerDependencyInfo>* get_dependencies(InstructionId id) const;
+    const CacheAccessInfoViz* get_cache_access(InstructionId id) const;
 
 private:
     uint64_t get_or_assign_viz_id(InstructionId id);
@@ -131,6 +132,7 @@ private:
     std::unordered_map<InstructionId, std::vector<uint16_t>, InstructionId::Hash> src_regs_map_;
     std::unordered_map<InstructionId, std::vector<uint16_t>, InstructionId::Hash> dst_regs_map_;
     std::unordered_map<InstructionId, std::tuple<uint64_t, uint8_t, bool>, InstructionId::Hash> mem_access_map_;
+    std::unordered_map<InstructionId, CacheAccessInfoViz, InstructionId::Hash> cache_access_map_;
 
     std::size_t fetch_width_ = 8;
     std::size_t fetch_count_in_cycle_ = 0;

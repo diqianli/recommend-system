@@ -154,6 +154,12 @@ public:
     const KonataSnapshot* latest_konata_snapshot() const;
     const std::deque<KonataSnapshot>& konata_snapshots() const { return konata_snapshots_; }
 
+    /// Export latest Konata snapshot to a JSON file.
+    bool export_konata_to_file(const std::string& path, bool pretty = false) const;
+
+    /// Export all tracked Konata ops to a JSON file.
+    bool export_all_konata_to_file(const std::string& path, bool pretty = false) const;
+
     uint64_t current_cycle() const { return current_cycle_; }
     uint64_t committed_count() const { return committed_count_; }
 

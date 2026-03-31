@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include <nlohmann/json_fwd.hpp>
+
 namespace arm_cpu {
 
 // =====================================================================
@@ -74,6 +76,8 @@ struct KonataStage {
     uint64_t duration() const {
         return end_cycle >= start_cycle ? end_cycle - start_cycle : 0;
     }
+
+    nlohmann::json to_json() const;
 };
 
 // =====================================================================
@@ -89,6 +93,8 @@ struct KonataLane {
     void add_stage(KonataStage stage) {
         stages.push_back(std::move(stage));
     }
+
+    nlohmann::json to_json() const;
 };
 
 // =====================================================================
@@ -157,6 +163,8 @@ struct KonataOp {
         if (!retired_cycle.has_value()) return std::nullopt;
         return *retired_cycle >= fetched_cycle ? *retired_cycle - fetched_cycle : 0;
     }
+
+    nlohmann::json to_json() const;
 };
 
 // =====================================================================
@@ -192,6 +200,10 @@ struct KonataSnapshot {
     void add_op(KonataOp op) { ops.push_back(std::move(op)); }
     std::size_t size() const { return ops.size(); }
     bool empty() const { return ops.empty(); }
+
+    nlohmann::json to_json() const;
+    std::string to_json_string(bool pretty = false) const;
+    bool write_to_file(const std::string& path, bool pretty = false) const;
 };
 
 // =====================================================================

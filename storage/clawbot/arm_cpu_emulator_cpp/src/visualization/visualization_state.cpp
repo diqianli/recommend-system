@@ -90,6 +90,21 @@ const KonataSnapshot* VisualizationState::latest_konata_snapshot() const {
     return &konata_snapshots_.back();
 }
 
+bool VisualizationState::export_konata_to_file(const std::string& path, bool pretty) const {
+    const KonataSnapshot* snap = latest_konata_snapshot();
+    if (!snap) return false;
+    return snap->write_to_file(path, pretty);
+}
+
+bool VisualizationState::export_all_konata_to_file(const std::string& path, bool pretty) const {
+    auto ops = pipeline_tracker_.export_all_konata_ops();
+    KonataSnapshot snapshot{{}, current_cycle_, committed_count_, KonataMetadata{}};
+    for (auto& op : ops) {
+        snapshot.ops.push_back(std::move(op));
+    }
+    return snapshot.write_to_file(path, pretty);
+}
+
 std::vector<InstructionSnapshot> VisualizationState::collect_instructions(const OoOEngine& engine) const {
     std::vector<InstructionSnapshot> instructions;
     auto entries = engine.get_window_entries();
@@ -98,6 +113,7 @@ std::vector<InstructionSnapshot> VisualizationState::collect_instructions(const 
         InstructionSnapshot snap;
         snap.id = entry->instruction.id.value;
         snap.pc = entry->instruction.pc;
+        snap.opcode = std::string(opcode_to_string(entry->instruction.opcode_type));
         snap.is_memory = entry->instruction.mem_access.has_value();
         snap.mem_addr = entry->instruction.mem_access ? std::optional<uint64_t>(entry->instruction.mem_access->addr) : std::nullopt;
         snap.mem_size = entry->instruction.mem_access ? std::optional<uint8_t>(entry->instruction.mem_access->size) : std::nullopt;
@@ -106,6 +122,16 @@ std::vector<InstructionSnapshot> VisualizationState::collect_instructions(const 
         snap.dispatch_cycle = entry->dispatch_cycle;
         snap.issue_cycle = entry->issue_cycle;
         snap.complete_cycle = entry->complete_cycle;
+        snap.pending_deps = engine.dependency_tracker().pending_count(entry->instruction.id);
+
+        // Map InstrStatus -> VizInstructionStatus
+        switch (entry->status) {
+            case InstrStatus::Waiting:   snap.status = VizInstructionStatus::Waiting; break;
+            case InstrStatus::Ready:     snap.status = VizInstructionStatus::Ready; break;
+            case InstrStatus::Executing: snap.status = VizInstructionStatus::Executing; break;
+            case InstrStatus::Completed: snap.status = VizInstructionStatus::Completed; break;
+            case InstrStatus::Committed: snap.status = VizInstructionStatus::Committed; break;
+        }
 
         for (const auto& r : entry->instruction.src_regs) snap.src_regs.push_back(r.value);
         for (const auto& r : entry->instruction.dst_regs) snap.dst_regs.push_back(r.value);
