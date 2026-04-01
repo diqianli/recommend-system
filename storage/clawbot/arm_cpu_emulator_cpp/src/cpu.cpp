@@ -386,16 +386,13 @@ Result<void> CPUEmulator::handle_memory_op(InstructionId id, const MemAccess& ac
     visualization_->pipeline_tracker().record_memory(id, current_cycle_, complete_cycle);
     visualization_->pipeline_tracker().record_complete(id, complete_cycle);
 
-    // Record cache sub-stages for visualization (e.g. ME:L1, ME:L2, ME:Memory)
+    // Record cache hierarchy info for visualization
     if (request.cache_info.has_value()) {
-        for (const auto& lt : request.cache_info->level_timing) {
-            CacheAccessInfoViz viz_info;
-            viz_info.start_cycle = lt.start_cycle;
-            viz_info.end_cycle = lt.end_cycle;
-            viz_info.level_name = cache_level_name(lt.level);
-            viz_info.latency = lt.duration();
-            visualization_->pipeline_tracker().record_cache_access(id, viz_info);
-        }
+        CacheAccessInfoViz viz_info;
+        viz_info.servicing_level = request.cache_info->servicing_level;
+        viz_info.total_latency = request.cache_info->total_latency;
+        viz_info.level_timing = request.cache_info->level_timing;
+        visualization_->pipeline_tracker().record_cache_access(id, viz_info);
     }
 
     // Record stats

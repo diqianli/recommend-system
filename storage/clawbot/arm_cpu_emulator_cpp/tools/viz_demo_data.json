@@ -67,7 +67,6 @@
       },
       "pc": 4096,
       "retired_cycle": 9,
-      "rid": 0,
       "src_regs": [
         1,
         2
@@ -132,11 +131,10 @@
       "prods": [
         {
           "producer_id": 0,
-          "type": "Register"
+          "type": "register"
         }
       ],
       "retired_cycle": 12,
-      "rid": 0,
       "src_regs": [
         4,
         5
@@ -206,7 +204,6 @@
       "mem_addr": 524288,
       "pc": 4104,
       "retired_cycle": 12,
-      "rid": 0,
       "src_regs": [
         7
       ]
@@ -270,11 +267,10 @@
       "prods": [
         {
           "producer_id": 2,
-          "type": "Register"
+          "type": "register"
         }
       ],
       "retired_cycle": 16,
-      "rid": 0,
       "src_regs": [
         6,
         9
@@ -354,7 +350,6 @@
       "mem_addr": 1048576,
       "pc": 4112,
       "retired_cycle": 22,
-      "rid": 0,
       "src_regs": [
         11
       ]
@@ -443,7 +438,6 @@
       "mem_addr": 8388608,
       "pc": 4116,
       "retired_cycle": 32,
-      "rid": 0,
       "src_regs": [
         13
       ]
@@ -509,7 +503,6 @@
       "mem_addr": 524320,
       "pc": 4120,
       "retired_cycle": 16,
-      "rid": 0,
       "src_regs": [
         14,
         15
@@ -609,7 +602,6 @@
       "mem_addr": 67108864,
       "pc": 4124,
       "retired_cycle": 52,
-      "rid": 0,
       "src_regs": [
         17
       ]
@@ -671,7 +663,6 @@
       },
       "pc": 4128,
       "retired_cycle": 18,
-      "rid": 0,
       "src_regs": [
         1,
         2
@@ -734,7 +725,6 @@
       },
       "pc": 4132,
       "retired_cycle": 28,
-      "rid": 0,
       "src_regs": [
         4,
         5
@@ -793,8 +783,7 @@
         }
       },
       "pc": 4136,
-      "retired_cycle": 14,
-      "rid": 0
+      "retired_cycle": 14
     },
     {
       "dst_regs": [
@@ -855,15 +844,14 @@
       "prods": [
         {
           "producer_id": 0,
-          "type": "Register"
+          "type": "register"
         },
         {
           "producer_id": 2,
-          "type": "Register"
+          "type": "register"
         }
       ],
       "retired_cycle": 24,
-      "rid": 0,
       "src_regs": [
         0,
         6

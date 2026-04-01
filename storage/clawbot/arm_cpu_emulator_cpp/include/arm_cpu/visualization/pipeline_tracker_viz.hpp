@@ -44,6 +44,10 @@ struct StageTimingViz {
     std::optional<uint64_t> memory_end;
     std::optional<uint64_t> complete_cycle;
     std::optional<uint64_t> retire_cycle;
+    std::optional<CacheAccessInfoViz> cache_access;
+
+    /// Convert to sequential Konata stages with overlap prevention and DI gap annotations.
+    std::vector<KonataStage> to_stages() const;
 };
 
 // =====================================================================
@@ -132,7 +136,7 @@ private:
     std::unordered_map<InstructionId, std::vector<uint16_t>, InstructionId::Hash> src_regs_map_;
     std::unordered_map<InstructionId, std::vector<uint16_t>, InstructionId::Hash> dst_regs_map_;
     std::unordered_map<InstructionId, std::tuple<uint64_t, uint8_t, bool>, InstructionId::Hash> mem_access_map_;
-    std::unordered_map<InstructionId, CacheAccessInfoViz, InstructionId::Hash> cache_access_map_;
+    std::unordered_map<InstructionId, uint64_t, InstructionId::Hash> retire_order_map_;
 
     std::size_t fetch_width_ = 8;
     std::size_t fetch_count_in_cycle_ = 0;

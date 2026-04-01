@@ -93,16 +93,24 @@ const KonataSnapshot* VisualizationState::latest_konata_snapshot() const {
 bool VisualizationState::export_konata_to_file(const std::string& path, bool pretty) const {
     const KonataSnapshot* snap = latest_konata_snapshot();
     if (!snap) return false;
-    return snap->write_to_file(path, pretty);
+
+    KonataExport export_data;
+    export_data.total_cycles = snap->cycle;
+    export_data.total_instructions = snap->committed_count;
+    export_data.ops = snap->ops;
+    export_data.ops_count = snap->ops.size();
+    return export_data.write_to_file(path, pretty);
 }
 
 bool VisualizationState::export_all_konata_to_file(const std::string& path, bool pretty) const {
     auto ops = pipeline_tracker_.export_all_konata_ops();
-    KonataSnapshot snapshot{{}, current_cycle_, committed_count_, KonataMetadata{}};
-    for (auto& op : ops) {
-        snapshot.ops.push_back(std::move(op));
-    }
-    return snapshot.write_to_file(path, pretty);
+
+    KonataExport export_data;
+    export_data.total_cycles = current_cycle_;
+    export_data.total_instructions = committed_count_;
+    export_data.ops = std::move(ops);
+    export_data.ops_count = export_data.ops.size();
+    return export_data.write_to_file(path, pretty);
 }
 
 std::vector<InstructionSnapshot> VisualizationState::collect_instructions(const OoOEngine& engine) const {

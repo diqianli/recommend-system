@@ -7,10 +7,14 @@
 /// visualization tool format, enabling detailed stage-by-stage visualization.
 
 #include <cstdint>
+#include <format>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <vector>
+
+#include <arm_cpu/memory/cache.hpp>
 
 #include <nlohmann/json_fwd.hpp>
 
@@ -59,6 +63,34 @@ inline const char* stage_id_full_name(StageId s) {
         case StageId::RR: return "Retire";
     }
     return "Unknown";
+}
+
+/// HSL color components for a stage (hue, saturation%, lightness%)
+inline std::tuple<uint16_t, uint8_t, uint8_t> stage_id_hsl(StageId s) {
+    switch (s) {
+        case StageId::IF: return {200, 70, 60};
+        case StageId::DE: return {180, 60, 55};
+        case StageId::RN: return {160, 50, 50};
+        case StageId::DI: return {140, 60, 55};
+        case StageId::IS: return {120, 70, 45};
+        case StageId::EX: return {60, 80, 55};
+        case StageId::ME: return {30, 80, 55};
+        case StageId::WB: return {280, 60, 55};
+        case StageId::RR: return {320, 50, 50};
+    }
+    return {0, 0, 50};
+}
+
+/// CSS hsl() color string for a stage.
+inline std::string stage_id_css_color(StageId s) {
+    auto [h, sat, l] = stage_id_hsl(s);
+    return std::format("hsl({}, {}%, {}%)", h, sat, l);
+}
+
+/// CSS hsla() color string for a stage with transparency.
+inline std::string stage_id_css_color_transparent(StageId s, float alpha) {
+    auto [h, sat, l] = stage_id_hsl(s);
+    return std::format("hsla({}, {}%, {}%, {})", h, sat, l, alpha);
 }
 
 // =====================================================================
@@ -127,7 +159,7 @@ struct KonataDependencyRef {
 struct KonataOp {
     uint64_t id = 0;
     uint64_t gid = 0;
-    uint64_t rid = 0;
+    std::optional<uint64_t> rid;
     uint64_t fetched_cycle = 0;
     std::optional<uint64_t> retired_cycle;
     std::string label_name;
@@ -162,6 +194,17 @@ struct KonataOp {
     std::optional<uint64_t> total_latency() const {
         if (!retired_cycle.has_value()) return std::nullopt;
         return *retired_cycle >= fetched_cycle ? *retired_cycle - fetched_cycle : 0;
+    }
+
+    /// Collect all stages across all lanes.
+    std::vector<const KonataStage*> all_stages() const {
+        std::vector<const KonataStage*> result;
+        for (const auto& [key, lane] : lanes) {
+            for (const auto& stage : lane.stages) {
+                result.push_back(&stage);
+            }
+        }
+        return result;
     }
 
     nlohmann::json to_json() const;
@@ -207,13 +250,26 @@ struct KonataSnapshot {
 };
 
 // =====================================================================
+// KonataExport - File export wrapper with metadata
+// =====================================================================
+struct KonataExport {
+    std::string version = "1.0";
+    uint64_t total_cycles = 0;
+    uint64_t total_instructions = 0;
+    std::size_t ops_count = 0;
+    std::vector<KonataOp> ops;
+
+    nlohmann::json to_json() const;
+    bool write_to_file(const std::string& path, bool pretty = false) const;
+};
+
+// =====================================================================
 // CacheAccessInfoViz - Cache access information for visualization
 // =====================================================================
 struct CacheAccessInfoViz {
-    uint64_t start_cycle = 0;
-    uint64_t end_cycle = 0;
-    std::string level_name;
-    uint64_t latency = 0;
+    CacheLevel servicing_level = CacheLevel::L1;
+    uint64_t total_latency = 0;
+    std::vector<CacheLevelTiming> level_timing;
 };
 
 } // namespace arm_cpu

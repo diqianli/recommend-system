@@ -43,7 +43,7 @@ nlohmann::json KonataOp::to_json() const {
     nlohmann::json j;
     j["id"] = id;
     j["gid"] = gid;
-    j["rid"] = rid;
+    if (rid.has_value()) j["rid"] = *rid;
     j["pc"] = pc;
     j["label_name"] = label_name;
 
@@ -59,7 +59,7 @@ nlohmann::json KonataOp::to_json() const {
         for (const auto& dep : prods) {
             nlohmann::json dep_j;
             dep_j["producer_id"] = dep.producer_id;
-            dep_j["type"] = (dep.dep_type == KonataDependencyType::Memory) ? "Memory" : "Register";
+            dep_j["type"] = (dep.dep_type == KonataDependencyType::Memory) ? "memory" : "register";
             j["prods"].push_back(std::move(dep_j));
         }
     }
@@ -128,6 +128,31 @@ bool KonataSnapshot::write_to_file(const std::string& path, bool pretty) const {
     std::ofstream file(path);
     if (!file.is_open()) return false;
     file << to_json_string(pretty);
+    return static_cast<bool>(file);
+}
+
+// =====================================================================
+// KonataExport
+// =====================================================================
+
+nlohmann::json KonataExport::to_json() const {
+    nlohmann::json j;
+    j["version"] = version;
+    j["total_cycles"] = total_cycles;
+    j["total_instructions"] = total_instructions;
+    j["ops_count"] = ops_count;
+    j["ops"] = nlohmann::json::array();
+    for (const auto& op : ops) {
+        j["ops"].push_back(op.to_json());
+    }
+    return j;
+}
+
+bool KonataExport::write_to_file(const std::string& path, bool pretty) const {
+    std::ofstream file(path);
+    if (!file.is_open()) return false;
+    auto j = to_json();
+    file << (pretty ? j.dump(2) : j.dump());
     return static_cast<bool>(file);
 }
 
