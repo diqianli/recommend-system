@@ -263,7 +263,7 @@ int main() {
         snapshot.add_op(std::move(op));
     }
 
-    // Write JSON output
+    // Write JSON output (legacy snapshot format)
     auto json_path = "viz_demo_data.json";
     bool ok = snapshot.write_to_file(json_path, true);
     if (!ok) {
@@ -275,5 +275,24 @@ int main() {
         json_path, snapshot.ops.size(),
         static_cast<unsigned long long>(snapshot.cycle),
         static_cast<unsigned long long>(snapshot.committed_count));
+
+    // Write KonataExport format for the Canvas-based frontend
+    KonataExport exp;
+    exp.total_cycles = snapshot.cycle;
+    exp.total_instructions = snapshot.committed_count;
+    exp.ops_count = snapshot.ops.size();
+    exp.ops = std::move(snapshot.ops);
+
+    auto export_path = "arm_cpu_emulator_cpp/tools/viz_server/viz_demo_data.json";
+    ok = exp.write_to_file(export_path, true);
+    if (!ok) {
+        std::fprintf(stderr, "Error: could not write %s\n", export_path);
+        return 1;
+    }
+
+    std::printf("Generated %s (%zu ops, %llu cycles, %llu instructions)\n",
+        export_path, exp.ops_count,
+        static_cast<unsigned long long>(exp.total_cycles),
+        static_cast<unsigned long long>(exp.total_instructions));
     return 0;
 }
