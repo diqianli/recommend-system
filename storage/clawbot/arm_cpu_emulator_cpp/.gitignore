@@ -1,0 +1,39 @@
+# Build
+build/
+build-debug/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled
+*.o
+*.d
+*.a
+*.dylib
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Output
+output/
+
+# Screenshots & images
+*.png
+*.jpg
+*.jpeg
+
+# Temporary
+*.tmp
+*.bak
+aieda-temp/
